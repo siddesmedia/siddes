@@ -1,0 +1,23 @@
+{
+  "name": "social-media",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/throwaway-social-media-github-account/social-media.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/throwaway-social-media-github-account/social-media/issues"
+  },
+  "homepage": "https://github.com/throwaway-social-media-github-account/social-media#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1"
+  }
+}
