@@ -1,1 +1,7 @@
-<h1>@<span><%- username %></span></h1>
+<% if(user.displayname == "") { %>
+<h2><span><%- user.displayname %></span></h2>
+<h3>@<span><%- user.username %></span></h3>
+<% } else { %>
+<h2>@<span><%- user.username %></span></h2>
+<% } %>
+<p><b>Bio: </b><span><%- user.description %></span></p>

@@ -56,6 +56,10 @@ router.get('/:username', async function (req, res, next) {
             footer: true
         });
     } else {
+        var user = await User.findOne({
+            username: req.params.username
+        })
+
         const username = req.params.username
 
         console.log('/')
@@ -68,7 +72,7 @@ router.get('/:username', async function (req, res, next) {
             footer: true,
 
             // user data being loaded
-            username: username,
+            user: user
         };
         return res.render('base', about);
     }
