@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router()
 require('dotenv').config()
 const Name = process.env.NAME
-const mongoose = require('mongoose')
 const Post = require('../models/Post');
+const Comment = require('../models/Comment');
 const {
     forwardAuthenticated
 } = require('../config/auth');
@@ -28,6 +28,21 @@ router.get('/account', function (req, res, next) {
         res.redirect('/login')
     } else {
         res.redirect('/' + req.user.username)
+    }
+});
+
+router.get('/account/:id', async function (req, res, next) {
+    console.log('/account/' + req.params.id)
+    const userexists = await User.exists({
+        _id: req.params.id
+    })
+    if (userexists == false) {
+        return;
+    } else {
+        const username = await User.findOne({
+            _id: req.params.id
+        })
+        res.redirect('/' + username.username)
     }
 });
 
@@ -107,6 +122,9 @@ router.get('/s/:postid', async function (req, res, next) {
         var post = await Post.findOne({
             _id: req.params.postid
         })
+        var comments = await Comment.find({
+            parentid: req.params.postid
+        })
         var owner = await User.findOne({
             _id: post.owner
         })
@@ -121,7 +139,8 @@ router.get('/s/:postid', async function (req, res, next) {
 
             // post data being loaded
             post: post,
-            owner: owner
+            owner: owner,
+            comments: comments.reverse()
         };
         return res.render('base', about);
     }
@@ -148,6 +167,31 @@ router.post('/post/new', async function (req, res, next) {
             .save()
             .then(user => {
                 res.redirect('/s/' + newPost._id);
+            })
+    }
+})
+
+router.post('/comment/new', async function (req, res, next) {
+    console.log('/comment/new POST')
+    if (!req.user) {
+        res.redirect('/login')
+    } else {
+        var body = req.body.body;
+        var parentid = req.body.parentid;
+        var owner = req.user._id;
+        var date = Date.now()
+
+        const newComment = new Comment({
+            body: body,
+            parentid: parentid,
+            owner: owner,
+            date: date
+        })
+
+        newComment
+            .save()
+            .then(user => {
+                res.redirect('/s/' + parentid);
             })
     }
 })

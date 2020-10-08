@@ -6,3 +6,28 @@
 <% } %>
 <p class="postbody"><%- post.body %></p>
 <p class="postmeta"><%- post.date.toLocaleString() %></p>
+<form action="/comment/new" method="POST">
+    <input name="body" type="text" style="width:30%" autocomplete="off">
+    <input name="parentid" type="text" style="width:0%" class="hidden" value="<%- post._id %>">
+    <button type="submit">Comment</button>
+</form>
+<h2>Comments:</h2>
+<div id="comments">
+    <hr>
+    <% for(var i = 0; i < comments.length; i++) { %>
+    <div class="commentcontainer">
+        <div class="commentsdiv" style="cursor: pointer;" onclick="window.location='/s/<%- comments[i]._id %>'">
+            <p class="commentsowner">@<a class="postownerlink" href="/account/<%- comments[i].owner %>"
+                    id="comment_<%- i %>_<%- comments[i].owner %>">View
+                    Poster</a>
+            </p>
+            <p class="commentsbody"><%= comments[i].body %></p>
+            <p class="commentsmeta"><%= comments[i].date.toLocaleString() %></p>
+        </div>
+        <hr>
+    </div>
+    <script>
+        getusername("comment_<%- i %>_<%- comments[i].owner %>", "<%- comments[i].owner %>")
+    </script>
+    <% } %>
+</div>

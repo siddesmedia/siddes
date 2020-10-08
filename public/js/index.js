@@ -11,3 +11,9 @@ function newPost(toggle) {
         document.getElementById("postModal").classList.add("hidden")
     }
 }
+
+async function getusername(id, userid) {
+    $.getJSON('/api/get/username/' + userid, function (json) {
+        return document.getElementById(id).innerHTML = json.username
+    });
+}

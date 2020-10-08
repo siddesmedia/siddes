@@ -28,6 +28,14 @@
     padding: 15px;
 }
 
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
 /* post classes */
 .postowner{}
 .postownerlink{}
