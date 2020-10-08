@@ -5,10 +5,24 @@ const router = express.Router()
 const mongoose = require('mongoose')
 const User = mongoose.model('User')
 const bcrypt = require('bcryptjs');
+const passport = require('passport')
 const Name = process.env.NAME
 const {
     forwardAuthenticated
 } = require('../config/auth');
+
+router.get('/signup', forwardAuthenticated, function (req, res, next) {
+    console.log('/signup')
+    const about = {
+        title: 'Signup - ' + Name,
+        template: 'pages/signup',
+        name: Name,
+        loggedin: loggedin(req.user),
+        navbar: true,
+        footer: true
+    };
+    return res.render('base', about);
+});
 
 router.post('/signup', (req, res) => {
     console.log('/signup POST')
@@ -49,7 +63,10 @@ router.post('/signup', (req, res) => {
                 const newUser = new User({
                     username,
                     email,
-                    password
+                    password,
+                    "description": "This is a description. Click \"edit\" to change me!",
+                    "moderator": false,
+                    "admin": false
                 });
 
                 bcrypt.genSalt(10, (err, salt) => {
@@ -67,6 +84,39 @@ router.post('/signup', (req, res) => {
             }
         });
     }
+});
+
+router.get('/login', forwardAuthenticated, function (req, res, next) {
+    console.log('/login')
+    passport.authenticate('local', {
+        failureRedirect: '/login'
+    })
+    if (req.user) {
+        return res.redirect('/');
+    }
+    const about = {
+        title: 'Login - ' + Name,
+        template: 'pages/login',
+        name: Name,
+        loggedin: loggedin(req.user),
+        navbar: true,
+        footer: true
+    };
+    return res.render('base', about);
+});
+
+router.post('/login', (req, res, next) => {
+    console.log('/login POST')
+    passport.authenticate('local', {
+        successRedirect: '/',
+        failureRedirect: '/login',
+    })(req, res, next);
+});
+
+router.get('/logout', (req, res) => {
+    console.log('/logout')
+    req.logout();
+    res.redirect('/login');
 });
 
 function loggedin(user) {

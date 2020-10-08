@@ -6,6 +6,11 @@ const User = new mongoose.Schema({
         unique: true,
         required: true
     },
+    displayname: {
+        type: String,
+        unique: false,
+        required: false
+    },
     email: {
         type: String,
         unique: true,
@@ -20,6 +25,18 @@ const User = new mongoose.Schema({
         type: String,
         unique: false,
         required: true
+    },
+    moderator: {
+        type: Boolean,
+        unique: false,
+        required: true,
+        default: false
+    },
+    admin: {
+        type: Boolean,
+        unique: false,
+        required: true,
+        default: false
     },
     date: {
         type: Date,
