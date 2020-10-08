@@ -13,7 +13,7 @@ const Post = new mongoose.Schema({
     },
     media: {
         type: Boolean,
-        unique: true,
+        unique: false,
         required: true
     },
     date: {

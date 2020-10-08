@@ -4,6 +4,32 @@
     All other use is prohibited without permission.
 */
 
+:root {
+    --main-bg: black;
+}
+
 .hidden {
     display: none;
 }
+
+.blurred {
+    filter: blur(8px);
+}
+
+.post-box {
+    position: fixed;
+    background-color: var(--main-bg);
+    top: 12.5%;
+    bottom: 12.5%;
+    left: 12.5%;
+    right: 12.5%;
+    border: 1px solid black;
+    border-radius: 25px;
+    padding: 15px;
+}
+
+/* post classes */
+.postowner{}
+.postownerlink{}
+.postbody{}
+.postmeta{}

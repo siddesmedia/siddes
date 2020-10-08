@@ -1,1 +1,8 @@
-post
+<% if(owner.displayname == "") { %>
+<h2><a href="/<%- owner.username %>"><%- owner.displayname %></a></h2>
+<h3>@<a href="/<%- owner.username %>"><%- owner.username %></a></h3>
+<% } else { %>
+<h2>@<a href="/<%- owner.username %>"><%- owner.username %></a></h2>
+<% } %>
+<p class="postbody"><%- post.body %></p>
+<p class="postmeta"><%- post.date.toLocaleString() %></p>
