@@ -23,10 +23,10 @@ app.set('view engine', 'ejs');
 app.use(passport.initialize());
 app.use(passport.session());
 
-const main = require('./routes/main')
-app.use('/', main);
 const user = require('./routes/user')
 app.use('/', user);
+const main = require('./routes/main')
+app.use('/', main);
 
 mongoose.connect(process.env.MONGO, {
     useNewUrlParser: true,

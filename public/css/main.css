@@ -3,3 +3,7 @@
 
     All other use is prohibited without permission.
 */
+
+.hidden {
+    display: none;
+}

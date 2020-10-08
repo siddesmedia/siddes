@@ -5,6 +5,7 @@ const Name = process.env.NAME
 const {
     forwardAuthenticated
 } = require('../config/auth');
+const User = require('../models/User');
 
 router.get('/', function (req, res, next) {
     console.log('/')
@@ -19,6 +20,14 @@ router.get('/', function (req, res, next) {
     return res.render('base', about);
 });
 
+router.get('/account', function (req, res, next) {
+    if (!req.user) {
+        res.redirect('/login')
+    } else {
+        res.redirect('/' + req.user.username)
+    }
+});
+
 router.get('/about', function (req, res, next) {
     console.log('/')
     const about = {
@@ -30,6 +39,39 @@ router.get('/about', function (req, res, next) {
         footer: true
     };
     return res.render('base', about);
+});
+
+router.get('/:username', async function (req, res, next) {
+    var userObject = await User.exists({
+        username: req.params.username
+    })
+
+    if (userObject == false) {
+        return res.render('base', {
+            title: "404 Not Found" + Name,
+            template: "errors/404",
+            name: Name,
+            loggedin: loggedin(req.user),
+            navbar: true,
+            footer: true
+        });
+    } else {
+        const username = req.params.username
+
+        console.log('/')
+        const about = {
+            title: username + Name,
+            template: 'pages/user',
+            name: Name,
+            loggedin: loggedin(req.user),
+            navbar: true,
+            footer: true,
+
+            // user data being loaded
+            username: username,
+        };
+        return res.render('base', about);
+    }
 });
 
 function loggedin(user) {
