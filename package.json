@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/throwaway-social-media-github-account/social-media#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
     "dotenv": "^8.2.0",
@@ -25,6 +26,7 @@
     "express-session": "^1.17.1",
     "mongoose": "^5.10.8",
     "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
     "serve-static": "^1.14.1"
   }
 }
