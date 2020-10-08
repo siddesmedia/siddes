@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><% title %></title>
+    <link rel="stylesheet" href="/css/main.css">
+    <script src="/js/main.js"></script>
+</head>
+
+<body>
+    <% if (navbar == true) { %>
+    <%- include('partials/navbar') %>
+    <br>
+    <% } else {} %>
+    <%- include(template) %>
+    <% if (footer == true) { %>
+    <br>
+    <%- include('partials/footer') %>
+    <% } else {} %>
+</body>
+
+</html>
