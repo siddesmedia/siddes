@@ -98,6 +98,28 @@ router.get('/about', function (req, res, next) {
     return res.render('base', about);
 });
 
+router.get('/search', async function (req, res, next) {
+    console.log('/search/' + req.query.q)
+
+    var posts = await Post.find({
+        $text: {
+            $search: req.query.q
+        }
+    })
+
+    const about = {
+        title: req.query.q + ' - ' + Name,
+        template: 'pages/search',
+        name: Name,
+        loggedin: loggedin(req.user),
+        navbar: true,
+        footer: true,
+        posts: posts,
+        searchterm: req.query.q
+    };
+    return res.render('base', about);
+});
+
 router.get('/:username', async function (req, res, next) {
     console.log('/' + req.params.username)
     var userObject = await User.exists({

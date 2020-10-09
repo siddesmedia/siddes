@@ -24,4 +24,10 @@ const Post = new mongoose.Schema({
     }
 });
 
+Post.index({
+    body: 'text',
+    owner: 'text',
+    date: 'text'
+});
+
 module.exports = mongoose.model('Post', Post)
