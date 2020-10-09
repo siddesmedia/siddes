@@ -38,6 +38,12 @@ const User = new mongoose.Schema({
         required: true,
         default: false
     },
+    following: {
+        type: Array,
+        unique: false,
+        required: true,
+        default: ["orbit"]
+    },
     date: {
         type: Date,
         unique: false,

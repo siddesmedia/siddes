@@ -1,0 +1,16 @@
+<br>
+<form action="/account/edit" method="POST">
+    <label for="username">Username:</label><br>
+    <input type="text" name="username" value="<%- user.username %>" style="width: 50%;">
+    <br><br>
+    <label for="displayname">Display name (optional):</label><br>
+    <input type="text" name="displayname" value="<%- user.displayname %>" style="width: 50%;">
+    <br><br>
+    <label for="description">Bio:</label><br>
+    <input type="text" name="description" value="<%- user.description %>" style="width: 50%;">
+    <br><br>
+    <label for="email">Email:</label><br>
+    <input type="email" name="email" value="<%- user.email %>" style="width: 50%;">
+    <br><br>
+    <button type="submit">Save</button>
+</form>

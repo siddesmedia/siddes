@@ -1,6 +1,6 @@
 <a href="/">Home</a>
 <% if(loggedin == true) { %>
-<a href="/account">Account</a> <a href="javascript:newPost('show')">New</a>
+<a href="/account">Account</a> <a href="/account/edit">Edit Account</a> <a href="javascript:newPost('show')">New</a>
 <% } else { %>
-<a href="/login">Login</a> <a href="/register">Register</a>
+<a href="/login">Login</a> <a href="/signup">Register</a>
 <% } %>

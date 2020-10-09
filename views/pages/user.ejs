@@ -1,9 +1,24 @@
 <% if(user.displayname == "") { %>
+<h2>@<span><%- user.username %></span></h2>
+<% } else { %>
 <h2><span><%- user.displayname %></span></h2>
 <h3>@<span><%- user.username %></span></h3>
-<% } else { %>
-<h2>@<span><%- user.username %></span></h2>
 <% } %>
+<% if (sameuser == true) { %>
+<a href="/account/edit">Edit Account</a>
+<% } %>
+<% if (sameuser == false) { %>
+<% if(follows == false) { %>
+<form action="/follow/new" method="POST">
+    <input type="text" name="username" value="<%- user._id %>" class="hidden">
+    <button type="submit">Follow</button>
+</form>
+<% } else { %>
+<form action="/follow/remove" method="POST">
+    <input type="text" name="username" value="<%- user._id %>" class="hidden">
+    <button type="submit">Unfollow</button>
+</form>
+<% }} %>
 <p><b>Bio: </b><span><%- user.description %></span></p>
 <h2>Posts:</h2>
 <div id="posts">

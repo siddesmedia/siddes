@@ -17,3 +17,7 @@ async function getusername(id, userid) {
         return document.getElementById(id).innerHTML = json.username
     });
 }
+
+function follow(username) {
+    
+}

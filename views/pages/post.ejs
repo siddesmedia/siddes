@@ -16,7 +16,7 @@
     <hr>
     <% for(var i = 0; i < comments.length; i++) { %>
     <div class="commentcontainer">
-        <div class="commentsdiv" style="cursor: pointer;" onclick="window.location='/s/<%- comments[i]._id %>'">
+        <div class="commentsdiv">
             <p class="commentsowner">@<a class="postownerlink" href="/account/<%- comments[i].owner %>"
                     id="comment_<%- i %>_<%- comments[i].owner %>">View
                     Poster</a>

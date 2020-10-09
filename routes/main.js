@@ -10,6 +10,23 @@ const {
 const User = require('../models/User');
 
 router.get('/', function (req, res, next) {
+    if (!req.user) {
+        console.log('/')
+        const about = {
+            title: 'New User - ' + Name,
+            template: 'pages/newuser',
+            name: Name,
+            loggedin: loggedin(req.user),
+            navbar: true,
+            footer: true
+        };
+        return res.render('base', about);
+    } else {
+        res.redirect('/home')
+    }
+});
+
+router.get('/home', function (req, res, next) {
     console.log('/')
     const about = {
         title: 'Home - ' + Name,
@@ -20,6 +37,28 @@ router.get('/', function (req, res, next) {
         footer: true
     };
     return res.render('base', about);
+});
+
+router.get('/account/edit', async function (req, res, next) {
+    console.log('/account/edit')
+    if (!req.user) {
+        res.redirect('/login')
+    } else {
+        const user = await User.findById({
+            _id: req.user._id
+        })
+
+        const about = {
+            title: 'Edit Account - ' + Name,
+            template: 'pages/account/edit',
+            name: Name,
+            loggedin: loggedin(req.user),
+            navbar: true,
+            footer: true,
+            user: user
+        };
+        return res.render('base', about);
+    }
 });
 
 router.get('/account', function (req, res, next) {
@@ -76,12 +115,31 @@ router.get('/:username', async function (req, res, next) {
             footer: true
         });
     } else {
+
         var user = await User.findOne({
             username: req.params.username
         })
         var posts = await Post.find({
             owner: user._id
         })
+
+        var currentUser;
+        var followingbool;
+        var follows;
+        if (!req.user) {
+            currentUser = null;
+            followingbool = null;
+        } else {
+            follows = await User.findById(req.user._id)
+
+            followingbool = follows.following.includes(user._id)
+
+            if (req.user.username == user.username) {
+                currentUser = true;
+            } else {
+                currentUser = false;
+            }
+        }
 
         const username = req.params.username
 
@@ -95,7 +153,9 @@ router.get('/:username', async function (req, res, next) {
 
             // user data being loaded
             user: user,
-            posts: posts.reverse()
+            posts: posts.reverse(),
+            sameuser: currentUser,
+            follows: followingbool
         };
         return res.render('base', about);
     }
@@ -193,6 +253,90 @@ router.post('/comment/new', async function (req, res, next) {
             .then(user => {
                 res.redirect('/s/' + parentid);
             })
+    }
+})
+
+router.post('/account/edit', async function (req, res, next) {
+    console.log('/account/edit POST')
+    if (!req.user) {
+        res.redirect('/login')
+    } else {
+        var username = req.body.username;
+        var displayname = req.body.displayname;
+        var description = req.body.description;
+        var email = req.body.email;
+
+        var update = await User.findOneAndUpdate({
+            _id: req.user._id
+        }, {
+            username: username,
+            displayname: displayname,
+            description: description,
+            email: email
+        });
+
+        update
+
+        res.redirect('/account/' + req.user._id)
+    }
+})
+
+router.post('/follow/new', async function (req, res, next) {
+    console.log('/follow/new POST')
+    if (!req.user) {
+        res.redirect('/login')
+    } else {
+        var username = req.body.username;
+
+        var usertoedit = await User.findOne(req.user._id)
+
+        var newFollowing = usertoedit.following
+
+        if (newFollowing.includes(username)) {
+            return res.redirect('/account/' + username);
+        } else {
+            newFollowing.push(username.toString())
+
+            var update = await User.findOneAndUpdate({
+                _id: req.user._id
+            }, {
+                following: newFollowing
+            });
+
+            update;
+
+            res.redirect('/account/' + username)
+        }
+    }
+})
+
+router.post('/follow/remove', async function (req, res, next) {
+    console.log('/follow/remove POST')
+    if (!req.user) {
+        res.redirect('/login')
+    } else {
+        var username = req.body.username;
+
+        var usertoedit = await User.findOne(req.user._id)
+
+        var newFollowing = usertoedit.following
+
+        if (!newFollowing.includes(username)) {
+            return res.redirect('/account/' + username);
+        } else {
+
+            newFollowing.splice(newFollowing.indexOf(req.body.username), 1)
+
+            var update = await User.findOneAndUpdate({
+                _id: req.user._id
+            }, {
+                following: newFollowing
+            });
+
+            update;
+
+            res.redirect('/account/' + username)
+        }
     }
 })
 
