@@ -125,6 +125,10 @@ router.get('/:username', async function (req, res, next) {
 
         var currentUser;
         var followingbool;
+        var followercount = await User.find({
+            following: user._id.toString()
+        })
+
         var follows;
         if (!req.user) {
             currentUser = null;
@@ -155,7 +159,8 @@ router.get('/:username', async function (req, res, next) {
             user: user,
             posts: posts.reverse(),
             sameuser: currentUser,
-            follows: followingbool
+            follows: followingbool,
+            followers: followercount.length.toString()
         };
         return res.render('base', about);
     }

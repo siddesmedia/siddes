@@ -64,7 +64,7 @@ router.post('/signup', (req, res) => {
                     username,
                     email,
                     password,
-                    "description": "This is a description. Click \"Edit Account\" to change me!",
+                    "description": "This is a description. Click 'Edit Account to change me!",
                     "moderator": false,
                     "admin": false
                 });
