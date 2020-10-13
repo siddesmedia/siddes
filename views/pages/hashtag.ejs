@@ -1,0 +1,27 @@
+<h1>#<%- hashtag %></h1>
+<div id="posts">
+    <hr>
+    <% for(var i = 0; i < posts.length; i++) { %>
+    <% if(posts[i].body.includes("#" + hashtag) == false) {  } else { %>
+    <div class="postcontainer">
+        <div class="postdiv" style="cursor: pointer;" onclick="window.location='/s/<%- posts[i]._id %>'">
+            <p class="postowner">@<a class="postownerlink" href="/account/<%- posts[i].owner %>"
+                    id='post_<%- i.toString() %>_<%- posts[i]._id %>'><%= posts[i].owner %></a></p>
+            <p class="postbody" id="post_<%- posts[i]._id %>"><%= posts[i].body %></p>
+            <p class="postmeta"><%= posts[i].date.toLocaleString() %></p>
+        </div>
+        <form action="/comment/new" method="POST">
+            <input name="body" type="text" style="width:30%" autocomplete="off" required>
+            <input name="parentid" type="text" style="width:0%" class="hidden" value="<%- posts[i]._id %>" required>
+            <button type="submit">Comment</button> <button type="button"
+                onclick="window.location='/s/<%- posts[i]._id %>#comments'">Show Comments</button>
+        </form>
+        <hr>
+    </div>
+    <script>
+        replacehashtags('post_<%- posts[i]._id %>')
+        getusername('post_<%- i.toString() %>_<%- posts[i]._id %>', '<%- posts[i].owner %>')
+    </script>
+    <% } %>
+    <% } %>
+</div>

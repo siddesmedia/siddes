@@ -105,6 +105,28 @@ router.get('/search', async function (req, res, next) {
     return res.render('base', about);
 });
 
+router.get('/tag/:hashtag', async function (req, res, next) {
+    console.log('/tag/' + req.params.hashtag)
+
+    var posts = await Post.find({
+        $text: {
+            $search: '#' + req.params.hashtag
+        }
+    })
+
+    const about = {
+        title: req.query.q + ' - ' + Name,
+        template: 'pages/hashtag',
+        name: Name,
+        loggedin: loggedin(req.user),
+        navbar: true,
+        footer: true,
+        posts: posts,
+        hashtag: req.params.hashtag
+    };
+    return res.render('base', about);
+});
+
 router.get('/account/search', async function (req, res, next) {
     console.log('/account/search?q=' + req.query.q)
 
