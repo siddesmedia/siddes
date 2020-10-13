@@ -4,7 +4,7 @@
     All other use is prohibited without permission.
 */
 
-function replacehashtags(id) {
+function replacepostlinks(id) {
     return document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#(\S*)/g, "<a href='/tag/$1'>#$1</a>")
 }
 

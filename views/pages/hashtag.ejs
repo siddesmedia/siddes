@@ -19,7 +19,7 @@
         <hr>
     </div>
     <script>
-        replacehashtags('post_<%- posts[i]._id %>')
+        replacepostlinks('post_<%- posts[i]._id %>')
         getusername('post_<%- i.toString() %>_<%- posts[i]._id %>', '<%- posts[i].owner %>')
     </script>
     <% } %>
