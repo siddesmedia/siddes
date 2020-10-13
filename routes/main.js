@@ -115,7 +115,7 @@ router.get('/tag/:hashtag', async function (req, res, next) {
     })
 
     const about = {
-        title: req.query.q + ' - ' + Name,
+        title: '#' + req.params.hashtag + ' - ' + Name,
         template: 'pages/hashtag',
         name: Name,
         loggedin: loggedin(req.user),
