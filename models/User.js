@@ -52,4 +52,10 @@ const User = new mongoose.Schema({
     }
 });
 
+User.index({
+    username: 'text',
+    displayname: 'text',
+    description: 'text'
+});
+
 module.exports = mongoose.model('User', User)

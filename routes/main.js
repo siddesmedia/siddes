@@ -27,7 +27,7 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/home', function (req, res, next) {
-    console.log('/')
+    console.log('/home')
     const about = {
         title: 'Home - ' + Name,
         template: 'pages/home',
@@ -70,21 +70,6 @@ router.get('/account', function (req, res, next) {
     }
 });
 
-router.get('/account/:id', async function (req, res, next) {
-    console.log('/account/' + req.params.id)
-    const userexists = await User.exists({
-        _id: req.params.id
-    })
-    if (userexists == false) {
-        return;
-    } else {
-        const username = await User.findOne({
-            _id: req.params.id
-        })
-        res.redirect('/' + username.username)
-    }
-});
-
 router.get('/about', function (req, res, next) {
     console.log('/about')
     const about = {
@@ -99,7 +84,7 @@ router.get('/about', function (req, res, next) {
 });
 
 router.get('/search', async function (req, res, next) {
-    console.log('/search/' + req.query.q)
+    console.log('/search?q=' + req.query.q)
 
     var posts = await Post.find({
         $text: {
@@ -118,6 +103,91 @@ router.get('/search', async function (req, res, next) {
         searchterm: req.query.q
     };
     return res.render('base', about);
+});
+
+router.get('/account/search', async function (req, res, next) {
+    console.log('/account/search?q=' + req.query.q)
+
+    var usersthatwerefound = await User.find({
+        $text: {
+            $search: req.query.q
+        }
+    })
+
+    console.log(req.query.q)
+
+    console.log(usersthatwerefound)
+
+    const about = {
+        title: req.query.q + ' - ' + Name,
+        template: 'pages/account/search',
+        name: Name,
+        loggedin: loggedin(req.user),
+        navbar: true,
+        footer: true,
+        users: usersthatwerefound,
+        searchterm: req.query.q
+    };
+    return res.render('base', about);
+});
+
+router.get('/account/delete', async function (req, res, next) {
+    console.log('/account/delete')
+    if (!req.user) {
+        res.redirect('/login')
+    } else {
+        const about = {
+            title: 'Delete Account - ' + Name,
+            template: 'pages/account/delete',
+            name: Name,
+            loggedin: loggedin(req.user),
+            navbar: true,
+            footer: true,
+        };
+        return res.render('base', about);
+    }
+})
+
+router.get('/account/delete/confirm', async function (req, res, next) {
+    console.log('/account/delete/confirm')
+    if (!req.user) {
+        res.redirect('/login')
+    } else {
+        const userid = req.user._id;
+        const deleteuser = await User.findByIdAndRemove({
+            _id: req.user._id
+        })
+        const transfercomments = await Comment.find({
+            owner: userid
+        }, {
+            owner: "5f81236001eff9e796b8a39f"
+        })
+        const transferposts = await Post.find({
+            owner: userid
+        }, {
+            owner: "5f81236001eff9e796b8a39f"
+        })
+
+        transfercomments;
+        transferposts;
+        deleteuser;
+        res.redirect('/login')
+    }
+})
+
+router.get('/account/:id', async function (req, res, next) {
+    console.log('/account/' + req.params.id)
+    const userexists = await User.exists({
+        _id: req.params.id
+    })
+    if (userexists == false) {
+        return;
+    } else {
+        const username = await User.findOne({
+            _id: req.params.id
+        })
+        res.redirect('/' + username.username)
+    }
 });
 
 router.get('/:username', async function (req, res, next) {
