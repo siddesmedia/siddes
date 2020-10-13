@@ -222,7 +222,7 @@ router.get('/:username/following', async function (req, res, next) {
         res.status(404)
         res.status(404).render('base', {
             title: "404 Not Found" + Name,
-            template: "errors/404",
+            template: "errors/400",
             name: Name,
             loggedin: loggedin(req.user),
             navbar: true,
@@ -262,7 +262,7 @@ router.get('/:username', async function (req, res, next) {
         res.status(404)
         res.status(404).render('base', {
             title: "404 Not Found" + Name,
-            template: "errors/404",
+            template: "errors/400",
             name: Name,
             loggedin: loggedin(req.user),
             navbar: true,
@@ -331,7 +331,7 @@ router.get('/s/:postid', async function (req, res, next) {
         res.status(404)
         res.status(404).render('base', {
             title: "404 Not Found" + Name,
-            template: "errors/404",
+            template: "errors/400",
             name: Name,
             loggedin: loggedin(req.user),
             navbar: true,
