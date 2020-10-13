@@ -49,6 +49,12 @@ const User = new mongoose.Schema({
         unique: false,
         required: true,
         default: Date.now()
+    },
+    theme: {
+        type: String,
+        unique: false,
+        required: false,
+        default: "retro"
     }
 });
 
