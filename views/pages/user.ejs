@@ -29,7 +29,7 @@
     <div class="postcontainer">
         <div class="postdiv" style="cursor: pointer;" onclick="window.location='/s/<%- posts[i]._id %>'">
             <p class="postowner">@<a class="postownerlink" href="/<%- user.username %>"><%= user.username %></a></p>
-            <p class="postbody"><%= posts[i].body %></p>
+            <p class="postbody" id="post_<%- posts[i]._id %>"><%= posts[i].body %></p>
             <p class="postmeta"><%= posts[i].date.toLocaleString() %></p>
         </div>
         <form action="/comment/new" method="POST">
@@ -40,5 +40,8 @@
         </form>
         <hr>
     </div>
+    <script>
+        replacehashtags('post_<%- posts[i]._id %>')
+    </script>
     <% } %>
 </div>
