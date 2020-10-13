@@ -1,4 +1,4 @@
-<h1>Following: <%- user.following.length %></h1>
+<h1>@<a href="/<%- username %>"><%- username %></a> is Following <%- user.following.length %> People</h1>
 <% for(var i = 0; i < user.following.length; i++) { %>
 <div class="postcontainer">
     <div class="postdiv" style="cursor: pointer;" onclick="window.location='/<%- user.following[i] %>'">

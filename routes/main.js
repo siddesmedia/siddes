@@ -223,6 +223,7 @@ router.get('/:username/following', async function (req, res, next) {
             footer: true,
 
             // user data being loaded
+            username: username,
             user: user
         };
         return res.render('base', about);
