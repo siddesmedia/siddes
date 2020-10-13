@@ -1,0 +1,13 @@
+<h1>Following: <%- user.following.length %></h1>
+<% for(var i = 0; i < user.following.length; i++) { %>
+<div class="postcontainer">
+    <div class="postdiv" style="cursor: pointer;" onclick="window.location='/<%- user.following[i] %>'">
+        <p class="postowner">@<a class="postownerlink" href="/account/<%- user.following[i] %>"
+                id="followingusername<%- i %>"><%= user.following[i] %></a></p>
+    </div>
+    <hr>
+</div>
+<script>
+    getusername("followingusername" + '<%- i %>', '<%- user.following[i] %>')
+</script>
+<% } %>

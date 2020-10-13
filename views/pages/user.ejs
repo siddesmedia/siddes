@@ -4,7 +4,8 @@
 <h2><span><%- user.displayname %></span></h2>
 <h3>@<span><%- user.username %></span></h3>
 <% } %>
-<p>Following: <span><%- user.following.length %></span> - Followers: <span><%- followers %></span></p>
+<p><a href="<%- user.username %>/following">Following: <span><%- user.following.length %></span></a> - Followers:
+    <span><%- followers %></span></p>
 <% if (sameuser == true) { %>
 <a href="/account/edit">Edit Account</a>
 <% } %>

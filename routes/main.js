@@ -190,6 +190,45 @@ router.get('/account/:id', async function (req, res, next) {
     }
 });
 
+router.get('/:username/following', async function (req, res, next) {
+    console.log('/' + req.params.username + '/following')
+    var userObject = await User.exists({
+        username: req.params.username
+    })
+
+    if (userObject == false) {
+        res.status(404)
+        res.status(404).render('base', {
+            title: "404 Not Found" + Name,
+            template: "errors/404",
+            name: Name,
+            loggedin: loggedin(req.user),
+            navbar: true,
+            footer: true
+        });
+    } else {
+
+        var user = await User.findOne({
+            username: req.params.username
+        })
+
+        const username = req.params.username
+
+        const about = {
+            title: username + ' Following - ' + Name,
+            template: 'pages/following',
+            name: Name,
+            loggedin: loggedin(req.user),
+            navbar: true,
+            footer: true,
+
+            // user data being loaded
+            user: user
+        };
+        return res.render('base', about);
+    }
+});
+
 router.get('/:username', async function (req, res, next) {
     console.log('/' + req.params.username)
     var userObject = await User.exists({
