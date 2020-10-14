@@ -11,6 +11,13 @@
             <h2><span><%= users[i].displayname %></span></h2>
             <h3>@<a href="/account/<%= users[i]._id %>"><%= users[i].username %></a></h3>
             <% } %>
+            <h6>
+                <% if(users[i].premium == true) { %><span>Premium</span><% } %>
+                <% if(users[i].developer == true) { %><span><%= name %> Developer</span><% } %>
+                <% if(users[i].staff == true) { %><span><%= name %> Staff</span><% } %>
+                <% if(users[i].betatester == true) { %><span>Beta Tester</span><% } %>
+                <% if(users[i].bot == true) { %><span>Bot Account</span><% } %>
+            </h6>
             <p><%= users[i].description %></p>
             <p>Following: <span><%= users[i].following.length %></span></p>
         </div>

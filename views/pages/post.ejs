@@ -4,6 +4,13 @@
 <% } else { %>
 <h2>@<a href="/<%= owner.username %>"><%= owner.username %></a></h2>
 <% } %>
+<h6>
+    <% if(owner.premium == true) { %><span>Premium</span><% } %>
+    <% if(owner.developer == true) { %><span><%= name %> Developer</span><% } %>
+    <% if(owner.staff == true) { %><span><%= name %> Staff</span><% } %>
+    <% if(owner.betatester == true) { %><span>Beta Tester</span><% } %>
+    <% if(owner.bot == true) { %><span>Bot Account</span><% } %>
+</h6>
 <div>
     <p class="postbody" id="postbody">
         <%= post.body.toString() %>

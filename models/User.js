@@ -61,6 +61,35 @@ const User = new mongoose.Schema({
         unique: false,
         required: true,
         default: false
+    },
+    premiumexpiration: {
+        type: Date,
+        unique: false,
+        required: false,
+    },
+    developer: {
+        type: Boolean,
+        unique: false,
+        required: true,
+        default: false
+    },
+    staff: {
+        type: Boolean,
+        unique: false,
+        required: true,
+        default: false
+    },
+    betatester: {
+        type: Boolean,
+        unique: false,
+        required: true,
+        default: false
+    },
+    bot: {
+        type: Boolean,
+        unique: false,
+        required: true,
+        default: false
     }
 });
 
