@@ -1,47 +1,47 @@
 <% if(user.displayname == "") { %>
-<h2>@<span><%- user.username %></span></h2>
+<h2>@<span><%= user.username %></span></h2>
 <% } else { %>
-<h2><span><%- user.displayname %></span></h2>
-<h3>@<span><%- user.username %></span></h3>
+<h2><span><%= user.displayname %></span></h2>
+<h3>@<span><%= user.username %></span></h3>
 <% } %>
-<p><a href="<%- user.username %>/following">Following: <span><%- user.following.length %></span></a> - Followers:
-    <span><%- followers %></span></p>
+<p><a href="<%= user.username %>/following">Following: <span><%= user.following.length %></span></a> - Followers:
+    <span><%= followers %></span></p>
 <% if (sameuser == true) { %>
 <a href="/account/edit">Edit Account</a>
 <% } %>
 <% if (sameuser == false) { %>
 <% if(follows == false) { %>
 <form action="/follow/new" method="POST">
-    <input type="text" name="username" value="<%- user._id %>" class="hidden">
+    <input type="text" name="username" value="<%= user._id %>" class="hidden">
     <button type="submit">Follow</button>
 </form>
 <% } else { %>
 <form action="/follow/remove" method="POST">
-    <input type="text" name="username" value="<%- user._id %>" class="hidden">
+    <input type="text" name="username" value="<%= user._id %>" class="hidden">
     <button type="submit">Unfollow</button>
 </form>
 <% }} %>
-<p><b>Bio: </b><span><%- user.description %></span></p>
+<p><b>Bio: </b><span><%= user.description %></span></p>
 <h2>Posts:</h2>
 <div id="posts">
     <hr>
     <% for(var i = 0; i < posts.length; i++) { %>
     <div class="postcontainer">
-        <div class="postdiv" style="cursor: pointer;" onclick="window.location='/s/<%- posts[i]._id %>'">
-            <p class="postowner">@<a class="postownerlink" href="/<%- user.username %>"><%= user.username %></a></p>
-            <p class="postbody" id="post_<%- posts[i]._id %>"><%= posts[i].body %></p>
+        <div class="postdiv" style="cursor: pointer;" onclick="window.location='/s/<%= posts[i]._id %>'">
+            <p class="postowner">@<a class="postownerlink" href="/<%= user.username %>"><%= user.username %></a></p>
+            <p class="postbody" id="post_<%= posts[i]._id %>"><%= posts[i].body %></p>
             <p class="postmeta"><%= posts[i].date.toLocaleString() %></p>
         </div>
         <form action="/comment/new" method="POST">
             <input name="body" type="text" style="width:30%" autocomplete="off" required>
-            <input name="parentid" type="text" style="width:0%" class="hidden" value="<%- posts[i]._id %>" required>
+            <input name="parentid" type="text" style="width:0%" class="hidden" value="<%= posts[i]._id %>" required>
             <button type="submit">Comment</button> <button type="button"
-                onclick="window.location='/s/<%- posts[i]._id %>#comments'">Show Comments</button>
+                onclick="window.location='/s/<%= posts[i]._id %>#comments'">Show Comments</button>
         </form>
         <hr>
     </div>
     <script>
-        replacepostlinks('post_<%- posts[i]._id %>')
+        replacepostlinks('post_<%= posts[i]._id %>')
     </script>
     <% } %>
 </div>

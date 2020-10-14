@@ -1,18 +1,18 @@
-<h1><%- searchterm %></h1>
-<a href="/search?q=<%- searchterm %>">Search posts for <i><%- searchterm %></i></a>
+<h1><%= searchterm %></h1>
+<a href="/search?q=<%= searchterm %>">Search posts for <i><%= searchterm %></i></a>
 <div id="users">
     <hr>
     <% for(var i = 0; i < users.length; i++) { %>
     <div class="postcontainer">
-        <div class="postdiv" style="cursor: pointer;" onclick="window.location='/account/<%- users[i]._id %>'">
+        <div class="postdiv" style="cursor: pointer;" onclick="window.location='/account/<%= users[i]._id %>'">
             <% if(users[i].displayname == "") { %>
-            <h2>@<span><%- users[i].username %></span></h2>
+            <h2>@<a href="/account/<%= users[i]._id %>"><%= users[i].username %></a></h2>
             <% } else { %>
-            <h2><span><%- users[i].displayname %></span></h2>
-            <h3>@<span><%- users[i].username %></span></h3>
+            <h2><span><%= users[i].displayname %></span></h2>
+            <h3>@<a href="/account/<%= users[i]._id %>"><%= users[i].username %></a></h3>
             <% } %>
-            <p><%- users[i].description %></p>
-            <p>Following: <span><%- users[i].following.length %></span></p>
+            <p><%= users[i].description %></p>
+            <p>Following: <span><%= users[i].following.length %></span></p>
         </div>
         <hr>
     </div>

@@ -1,14 +1,18 @@
 <% if(owner.displayname == "") { %>
-<h2><a href="/<%- owner.username %>"><%- owner.displayname %></a></h2>
-<h3>@<a href="/<%- owner.username %>"><%- owner.username %></a></h3>
+<h2><a href="/<%= owner.username %>"><%= owner.displayname %></a></h2>
+<h3>@<a href="/<%= owner.username %>"><%= owner.username %></a></h3>
 <% } else { %>
-<h2>@<a href="/<%- owner.username %>"><%- owner.username %></a></h2>
+<h2>@<a href="/<%= owner.username %>"><%= owner.username %></a></h2>
 <% } %>
-<p class="postbody" id="postbody"><%- post.body %></p>
-<p class="postmeta"><%- post.date.toLocaleString() %></p>
+<div>
+    <p class="postbody" id="postbody">
+        <%= post.body.toString() %>
+    </p>
+    <p class="postmeta"><%= post.date.toLocaleString() %></p>
+</div>
 <form action="/comment/new" method="POST">
     <input name="body" type="text" style="width:30%" autocomplete="off" required>
-    <input name="parentid" type="text" style="width:0%" class="hidden" value="<%- post._id %>" required>
+    <input name="parentid" type="text" style="width:0%" class="hidden" value="<%= post._id %>" required>
     <button type="submit">Comment</button>
 </form>
 <h2>Comments:</h2>
@@ -17,8 +21,8 @@
     <% for(var i = 0; i < comments.length; i++) { %>
     <div class="commentcontainer">
         <div class="commentsdiv">
-            <p class="commentsowner">@<a class="postownerlink" href="/account/<%- comments[i].owner %>"
-                    id="comment_<%- i %>_<%- comments[i].owner %>">View
+            <p class="commentsowner">@<a class="postownerlink" href="/account/<%= comments[i].owner %>"
+                    id="comment_<%= i %>_<%= comments[i].owner %>">View
                     Poster</a>
             </p>
             <p class="commentsbody"><%= comments[i].body %></p>
@@ -27,7 +31,7 @@
         <hr>
     </div>
     <script>
-        getusername("comment_<%- i %>_<%- comments[i].owner %>", "<%- comments[i].owner %>")
+        getusername("comment_<%= i %>_<%= comments[i].owner %>", "<%= comments[i].owner %>")
     </script>
     <% } %>
 </div>
