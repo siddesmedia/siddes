@@ -42,7 +42,7 @@ const User = new mongoose.Schema({
         type: Array,
         unique: false,
         required: true,
-        default: ["orbit"]
+        default: ["5f878ebc9b39e38585777498"]
     },
     date: {
         type: Date,

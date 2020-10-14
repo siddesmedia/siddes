@@ -7,14 +7,21 @@ const Comment = require('../models/Comment');
 const User = require('../models/User');
 
 router.get('/api/get/username/:id', async function (req, res, next) {
-    const user = await User.findOne({
-        _id: req.params.id
-    })
+    try {
+        const user = await User.findOne({
+            _id: req.params.id
+        })
 
-    res.json({
-        username: user.username,
-        displayname: user.displayname
-    })
+        res.json({
+            username: user.username,
+            displayname: user.displayname
+        })
+    } catch (err) {
+        res.json({
+            username: "[banned]",
+            displayname: ""
+        })
+    }
 });
 
 module.exports = router;

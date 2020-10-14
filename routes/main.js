@@ -305,7 +305,7 @@ router.get('/:username', async function (req, res, next) {
         var currentUser;
         var followingbool;
         var followercount = await User.find({
-            following: user._id.toString()
+            following: user._id
         })
 
         var follows;
