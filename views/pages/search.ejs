@@ -6,7 +6,10 @@
     <div class="postcontainer">
         <div class="postdiv" style="cursor: pointer;" onclick="window.location='/s/<%= posts[i]._id %>'">
             <p class="postowner">@<a class="postownerlink" href="/account/<%= posts[i].owner %>"
-                    id='post_<%= i.toString() %>_<%= posts[i]._id %>'><%= posts[i].owner %></a></p>
+                    id='post_<%= i.toString() %>_<%= posts[i]._id %>'><%= posts[i].owner %></a>
+                <% if(posts[i].repost == 'true') { %>
+                <span class="repostalert">(repost)</span>
+                <% } else {} %></p>
             <p class="postbody" id="post_<%= posts[i]._id %>"><%= posts[i].body %></p>
             <p class="postmeta"><%= posts[i].date.toLocaleString() %></p>
         </div>

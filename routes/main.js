@@ -147,6 +147,27 @@ router.get('/account/search', async function (req, res, next) {
     return res.render('base', about);
 });
 
+router.get('/account/new', async function (req, res, next) {
+    console.log('/account/new?text=' + req.query.text + '&repost=' + req.query.repost)
+    if (!req.user) {
+        return res.redirect('/login')
+    }
+
+    var repost;
+
+    const about = {
+        title: req.query.q + ' - ' + Name,
+        template: 'pages/account/new',
+        name: Name,
+        loggedin: loggedin(req.user),
+        navbar: true,
+        footer: true,
+        repost: req.query.repost,
+        text: req.query.text
+    };
+    return res.render('base', about);
+});
+
 router.get('/account/clear', async function (req, res, next) {
     console.log('/account/clear')
     if (!req.user) {
@@ -374,6 +395,7 @@ router.post('/post/new', async function (req, res, next) {
     if (!req.user) {
         res.redirect('/login')
     } else {
+        console.log(req.body.repost + ' true or not')
         var body = req.body.body;
         var owner = req.user._id;
         var media = false;
@@ -383,7 +405,8 @@ router.post('/post/new', async function (req, res, next) {
             body: body,
             owner: owner,
             media: media,
-            date: date
+            date: date,
+            repost: req.body.repost
         })
 
         newPost
