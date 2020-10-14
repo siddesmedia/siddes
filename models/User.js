@@ -55,6 +55,12 @@ const User = new mongoose.Schema({
         unique: false,
         required: false,
         default: "retro"
+    },
+    premium: {
+        type: Boolean,
+        unique: false,
+        required: true,
+        default: false
     }
 });
 

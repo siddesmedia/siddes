@@ -153,14 +153,14 @@ router.get('/account/search', async function (req, res, next) {
     return res.render('base', about);
 });
 
-router.get('/account/delete', async function (req, res, next) {
-    console.log('/account/delete')
+router.get('/account/clear', async function (req, res, next) {
+    console.log('/account/clear')
     if (!req.user) {
         res.redirect('/login')
     } else {
         const about = {
-            title: 'Delete Account - ' + Name,
-            template: 'pages/account/delete',
+            title: 'Clear Account - ' + Name,
+            template: 'pages/account/clear',
             name: Name,
             loggedin: loggedin(req.user),
             navbar: true,
@@ -170,30 +170,40 @@ router.get('/account/delete', async function (req, res, next) {
     }
 })
 
-router.get('/account/delete/confirm', async function (req, res, next) {
-    console.log('/account/delete/confirm')
+router.get('/account/clear/confirm', async function (req, res, next) {
+    console.log('/account/clear/confirm')
     if (!req.user) {
         res.redirect('/login')
     } else {
         const userid = req.user._id;
-        const deleteuser = await User.findByIdAndRemove({
+        const clearuser = await User.findOneAndUpdate({
             _id: req.user._id
-        })
-        const transfercomments = await Comment.find({
-            owner: userid
         }, {
-            owner: "5f81236001eff9e796b8a39f"
+            following: ["orbit"],
+            displayname: "",
+            description: "This is a description.",
+            moderator: false,
+            admin: false,
+            premium: false,
+            theme: 'retro'
         })
-        const transferposts = await Post.find({
+        const deletecomments = await Comment.find({
             owner: userid
-        }, {
-            owner: "5f81236001eff9e796b8a39f"
         })
-
-        transfercomments;
-        transferposts;
-        deleteuser;
-        res.redirect('/login')
+        const deleteposts = await Post.find({
+            owner: userid
+        })
+        var i;
+        for (i = 0; i < deletecomments.length; i++) {
+            const deletecomment = await Comment.findByIdAndDelete(deletecomments[i]._id)
+            deletecomment;
+        }
+        for (i = 0; i < deleteposts.length; i++) {
+            const deletepost = await Post.findByIdAndDelete(deleteposts[i]._id)
+            deletepost;
+        }
+        clearuser;
+        res.redirect('/account')
     }
 })
 
