@@ -130,15 +130,9 @@ router.get('/tag/:hashtag', async function (req, res, next) {
 router.get('/account/search', async function (req, res, next) {
     console.log('/account/search?q=' + req.query.q)
 
-    var usersthatwerefound = await User.find({
-        $text: {
-            $search: req.query.q
-        }
+    var users = await User.find({
+        username: req.query.q
     })
-
-    console.log(req.query.q)
-
-    console.log(usersthatwerefound)
 
     const about = {
         title: req.query.q + ' - ' + Name,
@@ -147,7 +141,7 @@ router.get('/account/search', async function (req, res, next) {
         loggedin: loggedin(req.user),
         navbar: true,
         footer: true,
-        users: usersthatwerefound,
+        users: users,
         searchterm: req.query.q
     };
     return res.render('base', about);
