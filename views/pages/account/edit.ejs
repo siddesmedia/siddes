@@ -2,7 +2,7 @@
 <form action="/account/edit" method="POST">
     <label for="username">Username (no spaces or " or '):</label><br>
     <input type="text" name="username" value="<%= user.username %>" style="width: 50%;" id="usernamefield" required
-        pattern="[^'\x32\x22]">
+        pattern="\S+">
     <br><br>
     <label for="displayname">Display name (optional):</label><br>
     <input type="text" name="displayname" value="<%= user.displayname %>" style="width: 50%;">
