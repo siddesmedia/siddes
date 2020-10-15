@@ -18,6 +18,7 @@ router.get('/signup', forwardAuthenticated, function (req, res, next) {
         template: 'pages/signup',
         name: Name,
         loggedin: loggedin(req.user),
+        moderator: moderator(req.user),
         navbar: true,
         footer: true
     };
@@ -99,6 +100,7 @@ router.get('/login', forwardAuthenticated, function (req, res, next) {
         template: 'pages/login',
         name: Name,
         loggedin: loggedin(req.user),
+        moderator: moderator(req.user),
         navbar: true,
         footer: true
     };
@@ -122,6 +124,18 @@ router.get('/logout', (req, res) => {
 function loggedin(user) {
     if (user) {
         return true;
+    } else {
+        return false;
+    }
+}
+
+function moderator(user) {
+    if (user) {
+        if (user.moderator == false) {
+            return false;
+        } else {
+            return true;
+        }
     } else {
         return false;
     }

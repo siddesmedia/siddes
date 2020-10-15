@@ -17,6 +17,7 @@ router.get('/', function (req, res, next) {
             template: 'pages/newuser',
             name: Name,
             loggedin: loggedin(req.user),
+            moderator: moderator(req.user),
             navbar: true,
             footer: true
         };
@@ -33,6 +34,7 @@ router.get('/home', function (req, res, next) {
         template: 'pages/home',
         name: Name,
         loggedin: loggedin(req.user),
+        moderator: moderator(req.user),
         navbar: true,
         footer: true
     };
@@ -53,6 +55,7 @@ router.get('/account/edit', async function (req, res, next) {
             template: 'pages/account/edit',
             name: Name,
             loggedin: loggedin(req.user),
+            moderator: moderator(req.user),
             navbar: true,
             footer: true,
             user: user
@@ -77,6 +80,7 @@ router.get('/about', function (req, res, next) {
         template: 'pages/about',
         name: Name,
         loggedin: loggedin(req.user),
+        moderator: moderator(req.user),
         navbar: true,
         footer: true
     };
@@ -94,6 +98,7 @@ router.get('/report', async function (req, res, next) {
             template: 'errors/400',
             name: Name,
             loggedin: loggedin(req.user),
+            moderator: moderator(req.user),
             navbar: true,
             footer: true,
         };
@@ -104,6 +109,7 @@ router.get('/report', async function (req, res, next) {
             template: 'pages/report',
             name: Name,
             loggedin: loggedin(req.user),
+            moderator: moderator(req.user),
             navbar: true,
             footer: true,
             postid: req.query.post
@@ -131,6 +137,7 @@ router.get('/mod/reports', async function (req, res, next) {
         template: 'pages/mod/reports',
         name: Name,
         loggedin: loggedin(req.user),
+        moderator: moderator(req.user),
         navbar: true,
         footer: true,
         posts: reportedposts
@@ -172,7 +179,8 @@ router.post('/report', async function (req, res, next) {
     } else {
         const reportpost = await Post.findByIdAndUpdate(req.body.post, {
             reported: true,
-            approved: false
+            approved: false,
+            reportreason: req.body.reason
         })
         reportpost;
         res.redirect('/')
@@ -193,6 +201,7 @@ router.get('/search', async function (req, res, next) {
         template: 'pages/search',
         name: Name,
         loggedin: loggedin(req.user),
+        moderator: moderator(req.user),
         navbar: true,
         footer: true,
         posts: posts,
@@ -215,6 +224,7 @@ router.get('/tag/:hashtag', async function (req, res, next) {
         template: 'pages/hashtag',
         name: Name,
         loggedin: loggedin(req.user),
+        moderator: moderator(req.user),
         navbar: true,
         footer: true,
         posts: posts,
@@ -235,6 +245,7 @@ router.get('/account/search', async function (req, res, next) {
         template: 'pages/account/search',
         name: Name,
         loggedin: loggedin(req.user),
+        moderator: moderator(req.user),
         navbar: true,
         footer: true,
         users: users,
@@ -256,6 +267,7 @@ router.get('/account/new', async function (req, res, next) {
         template: 'pages/account/new',
         name: Name,
         loggedin: loggedin(req.user),
+        moderator: moderator(req.user),
         navbar: true,
         footer: true,
         repost: req.query.repost,
@@ -274,6 +286,7 @@ router.get('/account/clear', async function (req, res, next) {
             template: 'pages/account/clear',
             name: Name,
             loggedin: loggedin(req.user),
+            moderator: moderator(req.user),
             navbar: true,
             footer: true,
         };
@@ -346,6 +359,7 @@ router.get('/:username/following', async function (req, res, next) {
             template: "errors/400",
             name: Name,
             loggedin: loggedin(req.user),
+            moderator: moderator(req.user),
             navbar: true,
             footer: true
         });
@@ -362,6 +376,7 @@ router.get('/:username/following', async function (req, res, next) {
             template: 'pages/following',
             name: Name,
             loggedin: loggedin(req.user),
+            moderator: moderator(req.user),
             navbar: true,
             footer: true,
 
@@ -386,6 +401,7 @@ router.get('/:username', async function (req, res, next) {
             template: "errors/400",
             name: Name,
             loggedin: loggedin(req.user),
+            moderator: moderator(req.user),
             navbar: true,
             footer: true
         });
@@ -427,6 +443,7 @@ router.get('/:username', async function (req, res, next) {
             template: 'pages/user',
             name: Name,
             loggedin: loggedin(req.user),
+            moderator: moderator(req.user),
             navbar: true,
             footer: true,
 
@@ -455,6 +472,7 @@ router.get('/s/:postid', async function (req, res, next) {
             template: "errors/400",
             name: Name,
             loggedin: loggedin(req.user),
+            moderator: moderator(req.user),
             navbar: true,
             footer: true
         });
@@ -474,6 +492,7 @@ router.get('/s/:postid', async function (req, res, next) {
             template: 'pages/post',
             name: Name,
             loggedin: loggedin(req.user),
+            moderator: moderator(req.user),
             navbar: true,
             footer: true,
 
@@ -625,6 +644,18 @@ router.post('/follow/remove', async function (req, res, next) {
 function loggedin(user) {
     if (user) {
         return true;
+    } else {
+        return false;
+    }
+}
+
+function moderator(user) {
+    if (user) {
+        if (user.moderator == false) {
+            return false;
+        } else {
+            return true;
+        }
     } else {
         return false;
     }

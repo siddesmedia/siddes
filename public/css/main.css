@@ -307,9 +307,17 @@ body {
 }
 
 .headerred:hover {
-    color: white;
+    color: white !important;
 }
 
 .headerred:hover::after {
     height: 100%;
+}
+
+.noheader {
+    position: relative;
+    text-decoration: none;
+    display: inline-block;
+    padding: 0 1px;
+    margin-left: 25px;
 }

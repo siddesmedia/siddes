@@ -48,6 +48,11 @@ const Post = new mongoose.Schema({
         unique: false,
         required: true,
         default: false
+    },
+    reportreason: {
+        type: String,
+        unique: false,
+        required: false
     }
 });
 

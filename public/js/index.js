@@ -31,6 +31,9 @@ function approvepost(id) {
             location.reload()
         }
     );
+    setTimeout(function () {
+        location.reload()
+    }, 500);
 }
 
 function removepost(id) {
@@ -42,4 +45,7 @@ function removepost(id) {
             location.reload()
         }
     );
+    setTimeout(function () {
+        location.reload()
+    }, 100);
 }
