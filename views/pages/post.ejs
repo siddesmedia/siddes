@@ -1,7 +1,19 @@
 <div class="postdiv dotted">
+    <% if (post.approved == true) { %>
+    <span class="commentsmeta right">
+        <a>Approved</a>
+    </span>
+    <% } else { %>
+    <% if (post.reported == true) { %>
+    <span class="commentsmeta right">
+        <a>Under Review</a>
+    </span>
+    <% } else { %>
     <span class="commentsmeta right">
         <a href="/report?post=<%= post._id %>">Report</a>
     </span>
+    <% } %>
+    <% } %>
     <% if(owner.displayname == "") { %>
     <h2><a href="/<%= owner.username %>"><%= owner.displayname %></a>
         <% if(post.repost == 'true') { %>
@@ -10,9 +22,7 @@
     <h3>@<a href="/<%= owner.username %>"><%= owner.username %></a></h3>
     <% } else { %>
     <h2>@<a href="/<%= owner.username %>"><%= owner.username %></a>
-        <% if(post.repost == 'true') { %>
-        <span class="repostbadge">Repost</span>
-        <% } else {} %></h2>
+    </h2>
     <% } %>
     <h6>
         <% if(owner.premium == true) { %><span>Premium</span><% } %>

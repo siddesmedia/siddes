@@ -9,9 +9,21 @@
     <div class="postcontainer">
         <div class="postdiv dotted">
             <div style="cursor: pointer;" onclick="window.location='/s/<%= posts[i]._id %>'">
+                <% if (posts[i].approved == true) { %>
+                <span class="commentsmeta right">
+                    <a>Approved</a>
+                </span>
+                <% } else { %>
+                <% if (posts[i].reported == true) { %>
+                <span class="commentsmeta right">
+                    <a>Under Review</a>
+                </span>
+                <% } else { %>
                 <span class="commentsmeta right">
                     <a href="/report?post=<%= posts[i]._id %>">Report</a>
                 </span>
+                <% } %>
+                <% } %>
                 <p class="postowner">@<a class="postownerlink" href="/account/<%= posts[i].owner %>"
                         id='post_<%= i.toString() %>_<%= posts[i]._id %>'><%= posts[i].owner %></a>
                     <% if(posts[i].repost == 'true') { %>

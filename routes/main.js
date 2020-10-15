@@ -83,6 +83,102 @@ router.get('/about', function (req, res, next) {
     return res.render('base', about);
 });
 
+router.get('/report', async function (req, res, next) {
+    console.log('/report?post=' + req.query.post)
+    const postexists = await Post.exists({
+        _id: req.query.post
+    })
+    if (postexists == false) {
+        const about = {
+            title: '404 - ' + Name,
+            template: 'errors/400',
+            name: Name,
+            loggedin: loggedin(req.user),
+            navbar: true,
+            footer: true,
+        };
+        return res.render('base', about);
+    } else {
+        const about = {
+            title: 'Report a Post - ' + Name,
+            template: 'pages/report',
+            name: Name,
+            loggedin: loggedin(req.user),
+            navbar: true,
+            footer: true,
+            postid: req.query.post
+        };
+        return res.render('base', about);
+    }
+});
+
+router.get('/mod/reports', async function (req, res, next) {
+    console.log('/mod/reports')
+    if (!req.user) {
+        return res.redirect('/login')
+    }
+    if (req.user.admin == false) {
+        if (req.user.moderator == false) {
+            return res.redirect('/account')
+        }
+    }
+    const reportedposts = await Post.find({
+        reported: true,
+        approved: false
+    })
+    const about = {
+        title: 'Current Reports - ' + Name,
+        template: 'pages/mod/reports',
+        name: Name,
+        loggedin: loggedin(req.user),
+        navbar: true,
+        footer: true,
+        posts: reportedposts
+    };
+    return res.render('base', about);
+});
+
+router.post('/mod/reports', async function (req, res, next) {
+    console.log('/mod/reports POST')
+    if (!req.user) {
+        return res.redirect('/login')
+    }
+    if (req.user.admin == false) {
+        if (req.user.moderator == false) {
+            return res.redirect('/account')
+        }
+    }
+    const postid = req.body.id;
+    const approved = req.body.approved;
+    if (approved == 'true') {
+        const updateapprovedpost = await Post.findByIdAndUpdate(postid, {
+            reported: false,
+            approved: true,
+        })
+        return updateapprovedpost;
+    } else {
+        const removebadpost = await Post.findByIdAndDelete(postid)
+        return removebadpost;
+    }
+});
+
+router.post('/report', async function (req, res, next) {
+    console.log('/report POST')
+    const postexists = await Post.exists({
+        _id: req.body.post
+    })
+    if (postexists == false) {
+        return res.redirect('/mod/reports')
+    } else {
+        const reportpost = await Post.findByIdAndUpdate(req.body.post, {
+            reported: true,
+            approved: false
+        })
+        reportpost;
+        res.redirect('/')
+    }
+});
+
 router.get('/search', async function (req, res, next) {
     console.log('/search?q=' + req.query.q)
 

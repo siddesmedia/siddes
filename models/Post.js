@@ -36,6 +36,18 @@ const Post = new mongoose.Schema({
         type: Array,
         unique: false,
         required: true
+    },
+    reported: {
+        type: Boolean,
+        unique: false,
+        required: true,
+        default: false
+    },
+    approved: {
+        type: Boolean,
+        unique: false,
+        required: true,
+        default: false
     }
 });
 
