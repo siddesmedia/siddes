@@ -5,7 +5,7 @@
 */
 
 function replacepostlinks(id) {
-    return document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#(\S*)/g, "<a href='/tag/$1'>#$1</a>").replace(/@(\S*)/g, "<a href='/$1'>@$1</a>")
+    return document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#(\S*)/g, "<a href='/tag/$1' class='hashtag'>#$1</a>").replace(/@(\S*)/g, "<a href='/$1' class='mention'>@$1</a>")
 }
 
 function newPost(toggle) {

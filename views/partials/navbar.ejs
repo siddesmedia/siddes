@@ -1,10 +1,12 @@
-<a href="/">Home</a>
-<% if(loggedin == true) { %>
-<a href="/account">Account</a> <a href="/account/edit">Edit Account</a> <a href="javascript:newPost('show')">New</a>
-<% } else { %>
-<a href="/login">Login</a> <a href="/signup">Register</a>
-<% } %>
-<form action="/search" method="GET" class="right">
-    <input name="q" type="text" placeholder="Search...">
-    <button type="submit">Search</button>
-</form>
+<div class="navbar">
+    <a href="/">Home</a>
+    <% if(loggedin == true) { %>
+    <a href="/account">Account</a> <a href="/account/edit">Edit Account</a> <a href="javascript:newPost('show')">New</a>
+    <% } else { %>
+    <a href="/login">Login</a> <a href="/signup">Register</a>
+    <% } %>
+    <form action="/search" method="GET" class="right">
+        <input name="q" type="text" placeholder="Search...">
+        <button type="submit">Search</button>
+    </form>
+</div>

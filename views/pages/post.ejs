@@ -1,39 +1,52 @@
-<% if(owner.displayname == "") { %>
-<h2><a href="/<%= owner.username %>"><%= owner.displayname %></a>
-    <% if(post.repost == 'true') { %>
-    <span class="repostalert">(repost)</span>
-    <% } else {} %></h2>
-<h3>@<a href="/<%= owner.username %>"><%= owner.username %></a></h3>
-<% } else { %>
-<h2>@<a href="/<%= owner.username %>"><%= owner.username %></a>
-    <% if(post.repost == 'true') { %>
-    <span class="repostalert">(repost)</span>
-    <% } else {} %></h2>
-<% } %>
-<h6>
-    <% if(owner.premium == true) { %><span>Premium</span><% } %>
-    <% if(owner.developer == true) { %><span><%= name %> Developer</span><% } %>
-    <% if(owner.staff == true) { %><span><%= name %> Staff</span><% } %>
-    <% if(owner.betatester == true) { %><span>Beta Tester</span><% } %>
-    <% if(owner.bot == true) { %><span>Bot Account</span><% } %>
-</h6>
-<div>
-    <p class="postbody" id="postbody">
-        <%= post.body.toString() %>
-    </p>
-    <p class="postmeta"><%= post.date.toLocaleString() %></p>
+<div class="postdiv dotted">
+    <span class="commentsmeta right">
+        <a href="/report?post=<%= post._id %>">Report</a>
+    </span>
+    <% if(owner.displayname == "") { %>
+    <h2><a href="/<%= owner.username %>"><%= owner.displayname %></a>
+        <% if(post.repost == 'true') { %>
+        <span class="repostbadge">Repost</span>
+        <% } else {} %></h2>
+    <h3>@<a href="/<%= owner.username %>"><%= owner.username %></a></h3>
+    <% } else { %>
+    <h2>@<a href="/<%= owner.username %>"><%= owner.username %></a>
+        <% if(post.repost == 'true') { %>
+        <span class="repostbadge">Repost</span>
+        <% } else {} %></h2>
+    <% } %>
+    <h6>
+        <% if(owner.premium == true) { %><span>Premium</span><% } %>
+        <% if(owner.developer == true) { %><span><%= name %> Developer</span><% } %>
+        <% if(owner.staff == true) { %><span><%= name %> Staff</span><% } %>
+        <% if(owner.betatester == true) { %><span>Beta Tester</span><% } %>
+        <% if(owner.bot == true) { %><span>Bot Account</span><% } %>
+    </h6>
+    <div>
+        <p class="postbody" id="postbody">
+            <%= post.body.toString() %>
+        </p>
+        <p class="postmeta"><%= post.date.toLocaleString() %></p>
+    </div>
+    <a href="/account/new?text=<%- encodeURIComponent(post.body) %>&repost=true"><button>Repost</button></a>
+    <button class="marleft10" onclick="like('<%= post._id %>')">Like - <%= post.likes.length %></button>
+    <br><br>
 </div>
-<form action="/comment/new" method="POST">
-    <input name="body" type="text" style="width:30%" autocomplete="off" required>
-    <input name="parentid" type="text" style="width:0%" class="hidden" value="<%= post._id %>" required>
-    <button type="submit">Comment</button>
-</form>
-<h2>Comments:</h2>
+<h2 class="header">Comments:</h2>
+<div class="postdiv dotted">
+    <form action="/comment/new" method="POST">
+        <input name="body" type="text" style="width:30%" autocomplete="off" required>
+        <input name="parentid" type="text" style="width:0%" class="hidden" value="<%= post._id %>" required>
+        <button type="submit">Post Comment</button>
+    </form>
+</div>
 <div id="comments">
-    <hr>
+    <% if(comments.length == 0) { %>
+    <p class="headerred">There are no comments :(</p>
+    <% } else { %>
     <% for(var i = 0; i < comments.length; i++) { %>
+    <br>
     <div class="commentcontainer">
-        <div class="commentsdiv">
+        <div class="postdiv dotted">
             <p class="commentsowner">@<a class="postownerlink" href="/account/<%= comments[i].owner %>"
                     id="comment_<%= i %>_<%= comments[i].owner %>">View
                     Poster</a>
@@ -41,11 +54,11 @@
             <p class="commentsbody"><%= comments[i].body %></p>
             <p class="commentsmeta"><%= comments[i].date.toLocaleString() %></p>
         </div>
-        <hr>
     </div>
     <script>
         getusername("comment_<%= i %>_<%= comments[i].owner %>", "<%= comments[i].owner %>")
     </script>
+    <% } %>
     <% } %>
 </div>
 <script>

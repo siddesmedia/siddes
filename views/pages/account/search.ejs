@@ -1,10 +1,16 @@
-<h1><%= searchterm %></h1>
-<a href="/search?q=<%= searchterm %>">Search posts for <i><%= searchterm %></i></a>
+<h1 class="header"><%= searchterm %></h1><br>
+<a href="/search?q=<%= searchterm %>" class="header">Search posts for <i><%= searchterm %></i></a>
+<br><br>
 <div id="users">
-    <hr>
+    <% if(users.length == 0) { %>
+    <p class="headerred">No users found for <i><%= searchterm %></i></p>
+    <% } else { %>
     <% for(var i = 0; i < users.length; i++) { %>
     <div class="postcontainer">
-        <div class="postdiv" style="cursor: pointer;" onclick="window.location='/account/<%= users[i]._id %>'">
+        <div class="postdiv dotted" style="cursor: pointer;" onclick="window.location='/account/<%= users[i]._id %>'">
+            <span class="commentsmeta right">
+                <a href="/account/report?user=<%= users[i]._id %>">Report</a>
+            </span>
             <% if(users[i].displayname == "") { %>
             <h2>@<a href="/account/<%= users[i]._id %>"><%= users[i].username %></a></h2>
             <% } else { %>
@@ -21,7 +27,7 @@
             <p><%= users[i].description %></p>
             <p>Following: <span><%= users[i].following.length %></span></p>
         </div>
-        <hr>
     </div>
+    <% } %>
     <% } %>
 </div>

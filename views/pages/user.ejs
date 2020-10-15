@@ -1,21 +1,35 @@
 <h3>
     <% if(user.displayname == "") { %>
-    <h2>@<span><%= user.username %></span></h2>
+    <h2 class="headerred">@<span><%= user.username %></span></h2>
     <% } else { %>
 </h3>
-<h2><span><%= user.displayname %></span></h2>
-<h3>
+<span class="header"><%= user.displayname %></span><br>
+<h3 class="headerred">
     @<span><%= user.username %></span>
     <% } %>
     <h6>
-        <% if(user.premium == true) { %><span>Premium</span><% } %>
-        <% if(user.developer == true) { %><span><img width=15px src="/img/icons/dev_badge_2.svg"></span><% } %>
-        <% if(user.staff == true) { %><span><%= name %> Staff</span><% } %>
-        <% if(user.betatester == true) { %><span>Beta Tester</span><% } %>
-        <% if(user.bot == true) { %><span>Bot Account</span><% } %>
+        <% if(user.premium == true) { %>
+        <span>Premium</span>
+        <% } %>
+        <% if(user.developer == true) { %>
+        <span class="devbadge"><img width="15px" style="padding: 0;padding-top:5px;"
+                src="/img/icons/dev_badge_2.svg"></span>
+        <% } %>
+        <% if(user.staff == true) { %>
+        <span><%= name %>
+            Staff</span>
+        <% } %>
+        <% if(user.betatester == true) { %>
+        <span>Beta Tester</span>
+        <% } %>
+        <% if(user.bot == true) { %>
+        <span>Bot Account</span>
+        <% } %>
     </h6>
 </h3>
-<p><a href="<%= user.username %>/following">Following: <span><%= user.following.length %></span></a> - Followers:
+<p>
+    <a href="<%= user.username %>/following">Following:
+        <span><%= user.following.length %></span></a> - Followers:
     <span><%= followers %></span></p>
 <% if (sameuser == true) { %>
 <a href="/account/edit">Edit Account</a>
@@ -32,39 +46,69 @@
     <button type="submit">Unfollow</button>
 </form>
 <% }} %>
-<p><b>Bio: </b><span><%= user.description %></span></p>
+<p>
+    <b>Bio:
+    </b>
+    <span><%= user.description %></span>
+</p>
 <h2>Posts:</h2>
 <div id="posts">
     <hr>
     <% for(var i = 0; i < posts.length; i++) { %>
     <div class="postcontainer">
-        <div class="postdiv" style="cursor: pointer;" onclick="window.location='/s/<%= posts[i]._id %>'">
-            <p class="postowner">@<a class="postownerlink" href="/<%= user.username %>"><%= user.username %></a>
-                <% if(posts[i].repost == 'true') { %>
-                <span class="repostalert">(repost)</span>
-                <% } else {} %>
-                <h6>
-                    <% if(user.premium == true) { %><span>Premium</span><% } %>
-                    <% if(user.developer == true) { %><span><%= name %> Developer</span><% } %>
-                    <% if(user.staff == true) { %><span><%= name %> Staff</span><% } %>
-                    <% if(user.betatester == true) { %><span>Beta Tester</span><% } %>
-                    <% if(user.bot == true) { %><span>Bot Account</span><% } %>
-                </h6>
-            </p>
-            <p class="postbody" id="post_<%= posts[i]._id %>"><%= posts[i].body %></p>
-            <p class="postmeta"><%= posts[i].date.toLocaleString() %></p>
+        <div class="postdiv dotted">
+            <div style="cursor: pointer;" onclick="window.location='/s/<%= posts[i]._id %>'">
+                <span class="commentsmeta right">
+                    <a href="/report?post=<%= posts[i]._id %>">Report</a>
+                </span>
+                <p class="postowner">@
+                    <a class="postownerlink" href="/<%= user.username %>">
+                        <%= user.username %>
+                    </a>
+                    <% if(posts[i].repost == 'true') { %>
+                    <span class="repostbadge">Repost</span>
+                    <% } else {} %>
+                    <h6>
+                        <% if(user.premium == true) { %>
+                        <span>Premium</span>
+                        <% } %>
+                        <% if(user.developer == true) { %>
+                        <span><img width="15px" src="/img/icons/dev_badge_2.svg"></span>
+                        <% } %>
+                        <% if(user.staff == true) { %>
+                        <span><%= name %>
+                            Staff</span>
+                        <% } %>
+                        <% if(user.betatester == true) { %>
+                        <span>Beta Tester</span>
+                        <% } %>
+                        <% if(user.bot == true) { %>
+                        <span>Bot Account</span>
+                        <% } %>
+                    </h6>
+                </p>
+                <p class="postbody" id="post_<%= posts[i]._id %>">
+                    <%= posts[i].body %>
+                </p>
+                <p class="postmeta">
+                    <%= posts[i].date.toLocaleString() %>
+                </p>
+            </div>
+            <a href="/account/new?text=<%- encodeURIComponent(posts[i].body) %>&repost=true"><button>Repost</button></a>
+            <button class="marleft10" onclick="like('<%= posts[i]._id %>')">Like</button>
+            <br><br>
+            <form action="/comment/new" method="POST">
+                <input name="body" type="text" style="width:30%" autocomplete="off" required="required"
+                    placeholder="Thoughts...">
+                <input name="parentid" type="text" style="width:0%" class="hidden" value="<%= posts[i]._id %>"
+                    required="required">
+                <button type="submit">Comment</button>
+                <button type="button" onclick="window.location='/s/<%= posts[i]._id %>#comments'">See All
+                    Comments</button>
+            </form>
         </div>
-        <a href="/account/new?text=<%- encodeURIComponent(posts[i].body) %>&repost=true"><img
-                src="/img/icons/resend.png" width="15px"></a>
-        <br>
-        <form action="/comment/new" method="POST">
-            <input name="body" type="text" style="width:30%" autocomplete="off" required>
-            <input name="parentid" type="text" style="width:0%" class="hidden" value="<%= posts[i]._id %>" required>
-            <button type="submit">Comment</button> <button type="button"
-                onclick="window.location='/s/<%= posts[i]._id %>#comments'">Show Comments</button>
-        </form>
-        <hr>
     </div>
+    <br>
     <script>
         replacepostlinks('post_<%= posts[i]._id %>')
     </script>
