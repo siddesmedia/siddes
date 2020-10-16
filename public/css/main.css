@@ -7,16 +7,29 @@
 body {
     margin: 0;
     padding: 0;
+    width: 80%;
 }
 
 :root {
     --main-bg: black;
     --red: rgb(218, 0, 0);
     --blue: rgb(0, 145, 255);
+    --green: rgb(0, 136, 73);
 }
 
 .hidden {
     display: none;
+}
+
+.nostyle {
+    color: grey;
+    text-decoration: none;
+}
+
+.badge {
+    font-size: 10px;
+    border: 1px black solid;
+    padding: 2px;
 }
 
 .newposttext {
@@ -39,6 +52,35 @@ body {
 
 .dotted {
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABZJREFUeNpi2r9//38gYGAEESAAEGAAasgJOgzOKCoAAAAASUVORK5CYII=);
+}
+
+.sidebar {
+    height: 100%;
+    width: 20%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    background-color: transparent;
+    overflow-x: hidden;
+    padding-top: 20px;
+    border-left: 1px gray solid;
+}
+
+.sidebar a {
+    padding: 10px;
+}
+
+.rounddiv {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    border: none;
+    border-radius: 25px;
+    margin-top: 30px;
+    background-color: var(--red);
+    padding-bottom: 20px;
 }
 
 .repostbadge {
@@ -71,8 +113,23 @@ body {
 }
 
 /* post classes */
+.reportstatus {
+    float: right;
+}
+
 .postdiv {
-    margin: 10px;
+    padding: 5px;
+    border-bottom: 2px rgb(236, 236, 236) solid;
+    transition: 1s;
+}
+
+div.postdiv:hover {
+    padding: 5px;
+    border-bottom: 2px rgb(218, 218, 218) solid;
+}
+
+.roundpostdiv {
+    margin: 15px;
     border: 2px var(--red) solid;
     padding: 10px;
     transition: 1s;
@@ -81,14 +138,17 @@ body {
     box-shadow: 10px 10px 0px 0px rgba(0, 0, 0, 0.75);
 }
 
-.postdiv:hover {
-    animation: boxshadow 0.5s;
-    -webkit-box-shadow: 10px 10px 0px 0px var(--red);
-    -moz-box-shadow: 10px 10px 0px 0px var(--red);
-    box-shadow: 10px 10px 0px 0px var(--red);
+.postownerlink {
+    font-weight: bolder;
+    color: black !important;
+    text-decoration: none;
 }
 
-.postowner {}
+.postownerlink:hover {
+    font-weight: bolder;
+    color: black;
+    text-decoration: underline;
+}
 
 .postownerlink {}
 
@@ -97,30 +157,41 @@ body {
 .postmeta {}
 
 .postdiv button {
-    background-color: white;
-    border-radius: 0px;
-    border: 2px var(--red) solid;
-    color: var(--red);
-    padding: 7px;
+    background-color: rgb(236, 236, 236);
+    border-radius: 100px;
+    border: none;
+    color: grey;
+    padding: 4px;
     animation: 2s;
     transition: 0.3s;
 }
 
-.postdiv button:hover {
-    background-color: white;
-    border-radius: 0px;
-    border: 2px var(--red) solid;
-    color: var(--red);
-    padding: 10px;
+.postcomment:hover {
+    background-color: rgb(196, 232, 255);
+    transition: 0.3s;
+}
+
+.postlike:hover {
+    background-color: rgb(255, 196, 196);
+    transition: 0.3s;
+}
+
+.postrepost:hover {
+    background-color: rgb(196, 255, 201);
+    transition: 0.3s;
+}
+
+.postcommentinput:hover {
+    background-color: rgb(246, 212, 255);
     transition: 0.3s;
 }
 
 .postdiv input {
-    background-color: white;
-    border-radius: 0px;
-    border: 2px var(--red) solid;
-    color: rgb(0, 0, 0);
-    padding: 7px;
+    background-color: rgb(236, 236, 236);
+    border-radius: 100px;
+    border: none;
+    color: grey;
+    padding: 4px;
 }
 
 /* hashtag and metions in text */
@@ -182,6 +253,35 @@ body {
     height: 100%;
 }
 
+.link {
+    position: relative;
+    text-decoration: none;
+    display: inline-block;
+    color: black;
+    padding: 0 1px;
+    transition: color ease 0.3s;
+}
+
+.link::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    height: 5%;
+    left: 0;
+    bottom: 0;
+    background-color: var(--green);
+    transition: all ease 0.3s;
+}
+
+.link:hover {
+    color: white;
+}
+
+.link:hover::after {
+    height: 100%;
+}
+
 /* badges */
 .devbadge {
     background-color: var(--blue);
@@ -213,45 +313,6 @@ body {
 }
 
 /* keyframes */
-@keyframes boxshadow {
-    0% {
-        -webkit-box-shadow: 10px 10px 0px 0px rgba(0, 0, 0, 0.75);
-        -moz-box-shadow: 10px 10px 0px 0px rgba(0, 0, 0, 0.75);
-        box-shadow: 10px 10px 0px 0px rgba(0, 0, 0, 0.75);
-    }
-
-    50% {
-        -webkit-box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.75);
-        -moz-box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.75);
-        box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.75);
-    }
-
-    100% {
-        -webkit-box-shadow: 10px 10px 0px 0px var(--red);
-        -moz-box-shadow: 10px 10px 0px 0px var(--red);
-        box-shadow: 10px 10px 0px 0px var(--red);
-    }
-}
-
-@keyframes reverseboxshadow {
-    0% {
-        -webkit-box-shadow: 10px 10px 0px 0px var(--red);
-        -moz-box-shadow: 10px 10px 0px 0px var(--red);
-        box-shadow: 10px 10px 0px 0px var(--red);
-    }
-
-    50% {
-        -webkit-box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.75);
-        -moz-box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.75);
-        box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.75);
-    }
-
-    100% {
-        -webkit-box-shadow: 10px 10px 0px 0px rgba(0, 0, 0, 0.75);
-        -moz-box-shadow: 10px 10px 0px 0px rgba(0, 0, 0, 0.75);
-        box-shadow: 10px 10px 0px 0px rgba(0, 0, 0, 0.75);
-    }
-}
 
 /* other */
 .header {
@@ -320,4 +381,22 @@ body {
     display: inline-block;
     padding: 0 1px;
     margin-left: 25px;
+}
+
+.smallheader {
+    position: relative;
+    text-decoration: none;
+    display: inline-block;
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.borderbottom {
+    border-bottom: 1px gray solid;
+}
+
+.trendingitem {
+    padding: 10px;
+    border-bottom: 1px grey solid;
 }
