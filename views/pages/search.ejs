@@ -48,6 +48,13 @@
                 <button type="button" onclick="window.location='/s/<%= posts[i]._id %>#comments'">See All
                     Comments</button>
                 <span class="right">
+                    <% if(moderator == true) { if(posts[i].approved == true) { %>
+                    <button onclick="removepost('<%= posts[i]._id %>')" type="button">Mod: Remove Post</button>
+                    <% } else { %>
+                    <button onclick=" removepost('<%= posts[i]._id %>')" type="button">Mod: Remove Post</button>
+                    <button onclick=" approvepost('<%= posts[i]._id %>')" type="button">Mod: Approve Post</button>
+
+                    <% }} %>
                     <button
                         onclick="window.location='/account/new?text=<%- encodeURIComponent(posts[i].body) %>&repost=true'"
                         type="button" class="postrepost">Repost</button>

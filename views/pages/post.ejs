@@ -1,4 +1,11 @@
 <div class="postdiv">
+    <% if(moderator == true) { if(post.approved == true) { %>
+    <button onclick="removepost('<%= post._id %>')" type="button">Mod: Remove Post</button>
+    <% } else { %>
+    <button onclick=" removepost('<%= post._id %>')" type="button">Mod: Remove Post</button>
+    <button onclick=" approvepost('<%= post._id %>')" type="button">Mod: Approve Post</button>
+
+    <% }} %>
     <% if (post.approved == true) { %>
     <span class="commentsmeta right">
         <button type="button" class="postreport">Approved</button>

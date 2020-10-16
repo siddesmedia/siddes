@@ -83,6 +83,55 @@ router.post('/mod/reports', async function (req, res, next) {
     }
 });
 
+router.get('/report', async function (req, res, next) {
+    console.log('/report?post=' + req.query.post)
+    const postexists = await Post.exists({
+        _id: req.query.post
+    })
+    if (postexists == false) {
+        const about = {
+            title: '404 - ' + Name,
+            template: 'errors/400',
+            name: Name,
+            loggedin: loggedin(req.user),
+            moderator: moderator(req.user),
+            navbar: true,
+            footer: true,
+        };
+        return res.render('base', about);
+    } else {
+        const about = {
+            title: 'Report a Post - ' + Name,
+            template: 'pages/report',
+            name: Name,
+            loggedin: loggedin(req.user),
+            moderator: moderator(req.user),
+            navbar: true,
+            footer: true,
+            postid: req.query.post
+        };
+        return res.render('base', about);
+    }
+});
+
+router.post('/report', async function (req, res, next) {
+    console.log('/report POST')
+    const postexists = await Post.exists({
+        _id: req.body.post
+    })
+    if (postexists == false) {
+        return res.redirect('/mod/reports')
+    } else {
+        const reportpost = await Post.findByIdAndUpdate(req.body.post, {
+            reported: true,
+            approved: false,
+            reportreason: req.body.reason
+        })
+        reportpost;
+        res.redirect('/')
+    }
+});
+
 function loggedin(user) {
     if (user) {
         return true;

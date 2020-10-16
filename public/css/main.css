@@ -93,8 +93,8 @@ body {
     border: 1px var(--red) solid;
     border-radius: 2px;
     color: var(--red);
-    font-size: 10px;
-    padding: 2px;
+    font-size: 6px;
+    padding: 1px;
 }
 
 .post-box {
