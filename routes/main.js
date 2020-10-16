@@ -263,7 +263,7 @@ router.get('/account/new', async function (req, res, next) {
     var repost;
 
     const about = {
-        title: req.query.q + ' - ' + Name,
+        title: 'New Post ' + ' - ' + Name,
         template: 'pages/account/new',
         name: Name,
         loggedin: loggedin(req.user),

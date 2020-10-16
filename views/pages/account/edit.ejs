@@ -1,4 +1,4 @@
-<br>
+<h3 class="header">Edit Account</h3>
 <form action="/account/edit" method="POST">
     <label for="username">Username (no spaces or " or '):</label><br>
     <input type="text" name="username" value="<%= user.username %>" style="width: 50%;" id="usernamefield" required
@@ -16,5 +16,5 @@
     <button type="submit">Save</button>
 </form>
 <br>
-<a href="/account/clear">Clear Account</a>
+<a href="/account/clear" class="headerred">Clear Account</a>
 <br>

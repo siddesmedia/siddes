@@ -18,7 +18,12 @@ function newPost(toggle) {
 
 async function getusername(id, userid) {
     $.getJSON("/api/get/username/" + userid, function (json) {
-        return (document.getElementById(id).innerHTML = json.username);
+        if (json.username == '[banned]') {
+            document.getElementById(id).innerHTML = '@' + json.username;
+            $('#' + id).replaceTag('span')
+        } else {
+            return document.getElementById(id).innerHTML = '@' + json.username;
+        }
     });
 }
 
@@ -49,3 +54,18 @@ function removepost(id) {
         location.reload()
     }, 100);
 }
+
+(function ($) {
+    $.fn.replaceTag = function (newTag) {
+        var originalElement = this[0],
+            originalTag = originalElement.tagName,
+            startRX = new RegExp('^<' + originalTag, 'i'),
+            endRX = new RegExp(originalTag + '>$', 'i'),
+            startSubst = '<' + newTag,
+            endSubst = newTag + '>',
+            newHTML = originalElement.outerHTML
+            .replace(startRX, startSubst)
+            .replace(endRX, endSubst);
+        this.replaceWith(newHTML);
+    };
+})(jQuery);

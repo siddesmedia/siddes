@@ -25,6 +25,8 @@ app.use(passport.session());
 
 const user = require('./routes/user')
 app.use('/', user);
+const mod = require('./routes/mod')
+app.use('/', mod);
 const api = require('./routes/api')
 app.use('/', api);
 const main = require('./routes/main')
