@@ -27,6 +27,12 @@ async function getusername(id, userid) {
     });
 }
 
+async function version(id) {
+    $.getJSON("/api/version", function (json) {
+        return document.getElementById(id).innerHTML = json.version;
+    });
+}
+
 function approvepost(id) {
     $.post("/mod/reports", {
             id: id,
