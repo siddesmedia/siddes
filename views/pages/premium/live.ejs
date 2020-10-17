@@ -1,29 +1,28 @@
 <style>
     #chatForm {
         background: #fff;
-        padding: 3px;
         position: fixed;
         bottom: 0;
         width: 100%;
-        border-color: #000;
-        border-top-style: solid;
-        border-top-width: 1px;
     }
 
     #chatForm input {
-        border-style: solid;
-        border-width: 1px;
+        border: 1px rgb(219, 219, 219) solid;
+        border-radius: 2000px;
         padding: 10px;
-        width: 85%;
         margin-right: 0.5%;
     }
 
-    #chatForm button {
-        width: 9%;
-        background: rgb(130, 224, 255);
-        border: none;
-        padding: 10px;
-        margin-left: 2%;
+    @media only screen and (max-width: 840px) {
+        #chatForm input {
+            width: 100%;
+        }
+    }
+
+    @media only screen and (min-width: 841px) {
+        #chatForm input {
+            width: 80%;
+        }
     }
 
     #messages {
@@ -44,8 +43,7 @@
 <ul id="messages"></ul>
 <div class="hidden" id="latestmessage"></div>
 <form action="/" method="POST" id="chatForm">
-    <input id="txt" autocomplete="off" autofocus="on" placeholder="type your message here..." />
-    <button>Send</button>
+    <input id="txt" autocomplete="off" autofocus="on" placeholder="Thoughts..." />
 </form>
 <script>
     var socket = io.connect('http://localhost:3000');
@@ -59,12 +57,12 @@
 
     socket.on('chat_message', function (msg) {
         $('#messages').append($('<li>').html(msg));
-        window.scrollBy(0, 50);
+        window.scrollBy(0, 500000000);
     });
 
     socket.on('is_online', function (username) {
         $('#messages').append($('<li>').html(username));
-        window.scrollBy(0, 50);
+        window.scrollBy(0, 500000000);
     });
 
     socket.emit('username', '<%= username %>');
