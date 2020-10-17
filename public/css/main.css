@@ -7,7 +7,6 @@
 body {
     margin: 0;
     padding: 0;
-    width: 100%;
 }
 
 :root {
@@ -66,7 +65,7 @@ body {
     z-index: 1;
     top: 0;
     right: 0;
-    background-color: transparent;
+    background-color: white;
     overflow-x: hidden;
     padding-top: 20px;
     border-left: 1px gray solid;
@@ -414,4 +413,20 @@ div.postdiv:hover {
 .trendingitem {
     padding: 10px;
     border-bottom: 1px grey solid;
+}
+
+@media only screen and (max-width: 840px) {
+    .sidebar {
+        display: none;
+    }
+
+    body {
+        width: 100%;
+    }
+}
+
+@media only screen and (min-width: 841px) {
+    body {
+        width: 80%;
+    }
 }

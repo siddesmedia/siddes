@@ -1,8 +1,30 @@
-<div class="navbar sidebarleft">
+<div class="sidebar">
+    <form action="/search" method="GET" style="width: 90%;margin-left: auto;margin-right: auto;display: block;">
+        <input name="q" type="text" placeholder="Search <%= name %>" style="width: 95%;">
+    </form>
+    <span>
+        <a href="/">Home</a><br>
+        <a href="#">Jobs</a><br>
+        <a href="/about">About</a><br>
+        <% if(loggedin == true) { %>
+        <a href="/logout">Logout</a><br>
+        <% } else if(loggedin == false) { %>
+        <a href="/login">Login</a><br>
+        <a href="/signup">Register</a><br>
+        <% } %>
+        <% if(moderator == true) { %>
+        <a href="/mod">Moderators</a><br>
+        <% } else {} %>
+        <br>
+        <a>&copy; 2020 to Present <%= name %></a>
+    </span>
+</div>
+<div class="navbar">
     <a href="/">Home</a>
     <% if(loggedin == true) { %>
     <a href="/account">Account</a> <a href="/account/edit">Edit Account</a> <a href="javascript:newPost('show')">New</a>
     <% } else { %>
-    <a href="/login">Login</a> <a href="/signup">Register</a>
+    <a href="/login">Login</a>
+    <a href="/signup">Register</a>
     <% } %>
 </div>
