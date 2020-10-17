@@ -1,15 +1,17 @@
-<h1 class="header">Report a Post</h1>
-<form action="/report" method="POST">
-    <select name="reason" id="reason" required>
-        <optgroup label="Reason For Report">
-            <option value="childporn">Child Porn</option>
-            <option value="porn">Porn</option>
-            <option value="gore">Extreme Gore</option>
-            <option value="illegal">Illegal Activity Portrayed</option>
-            <option value="other">Other</option>
-        </optgroup>
-    </select>
-    <input required="required" class="hidden" type="text" value="<%= postid %>" name="post">
-    <br><br>
-    <button type="submit">Submit Report</button>
-</form>
+<div class="section">
+    <h1 class="header">Report a Post</h1>
+    <form action="/report" method="POST">
+        <select name="reason" id="reason" required>
+            <optgroup label="Reason For Report">
+                <option value="childporn">Child Porn</option>
+                <option value="porn">Porn</option>
+                <option value="gore">Extreme Gore</option>
+                <option value="illegal">Illegal Activity Portrayed</option>
+                <option value="other">Other</option>
+            </optgroup>
+        </select>
+        <input required="required" class="hidden" type="text" value="<%= postid %>" name="post">
+        <br><br>
+        <button type="submit">Submit Report</button>
+    </form>
+</div>

@@ -27,31 +27,34 @@
         <% } %>
     </h6>
 </h3>
-<p>
-    <a href="<%= user.username %>/following">Following:
-        <span><%= user.following.length %></span></a> - Followers:
-    <span><%= followers %></span></p>
-<% if (sameuser == true) { %>
-<a href="/account/edit">Edit Account</a>
-<% } %>
-<% if (sameuser == false) { %>
-<% if(follows == false) { %>
-<form action="/follow/new" method="POST">
-    <input type="text" name="username" value="<%= user._id %>" class="hidden">
-    <button type="submit">Follow</button>
-</form>
-<% } else { %>
-<form action="/follow/remove" method="POST">
-    <input type="text" name="username" value="<%= user._id %>" class="hidden">
-    <button type="submit">Unfollow</button>
-</form>
-<% }} %>
-<p>
-    <b>Bio:
-    </b>
-    <span><%= user.description %></span>
-</p>
-<h2>Posts:</h2>
+<div class="section">
+    <p>
+        <a href="<%= user.username %>/following">Following:
+            <span><%= user.following.length %></span></a> - Followers:
+        <span><%= followers %></span>
+    </p>
+    <% if (sameuser == true) { %>
+    <a href="/account/edit">Edit Account</a>
+    <% } %>
+    <% if (sameuser == false) { %>
+    <% if(follows == false) { %>
+    <form action="/follow/new" method="POST">
+        <input type="text" name="username" value="<%= user._id %>" class="hidden">
+        <button type="submit">Follow</button>
+    </form>
+    <% } else { %>
+    <form action="/follow/remove" method="POST">
+        <input type="text" name="username" value="<%= user._id %>" class="hidden">
+        <button type="submit">Unfollow</button>
+    </form>
+    <% }} %>
+    <p>
+        <b>Bio:
+        </b>
+        <span><%= user.description %></span>
+    </p>
+</div>
+<h2 class="noheader">Posts:</h2>
 <div id="posts">
     <hr>
     <% for(var i = 0; i < posts.length; i++) { %>

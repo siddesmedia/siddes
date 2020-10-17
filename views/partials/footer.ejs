@@ -1,13 +1,18 @@
-<a href="/">Home</a>
-<a href="#">Jobs</a>
-<a href="/about">About</a>
-<% if(loggedin == true) { %>
-<a href="/logout">Logout</a>
-<% } else {} %>
-<% if(moderator == true) { %>
-<a href="/mod">Moderators</a>
-<% } else {} %>
-<p>&copy; 2020 to Present, <a href="/about"><%= name %></a> | V<span id="version"></span></p>
-<script>
-    version('version')
-</script>
+<div class="footer">
+    <br>
+    <div class="section">
+        <a href="/">Home</a>
+        <a href="#">Jobs</a>
+        <a href="/about">About</a>
+        <% if(loggedin == true) { %>
+        <a href="/logout">Logout</a>
+        <% } else {} %>
+        <% if(moderator == true) { %>
+        <a href="/mod">Moderators</a>
+        <% } else {} %>
+        <p>&copy; 2020 to Present, <a href="/about"><%= name %></a> | V<span id="version"></span></p>
+        <script>
+            version('version')
+        </script>
+    </div>
+</div>

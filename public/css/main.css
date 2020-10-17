@@ -406,6 +406,10 @@ div.postdiv:hover {
     margin-bottom: 5px;
 }
 
+.section {
+    margin-left: 25px;
+}
+
 .borderbottom {
     border-bottom: 1px gray solid;
 }
@@ -413,6 +417,10 @@ div.postdiv:hover {
 .trendingitem {
     padding: 10px;
     border-bottom: 1px grey solid;
+}
+
+.footer {
+    border-top: 1px grey solid;
 }
 
 @media only screen and (max-width: 840px) {
