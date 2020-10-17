@@ -33,6 +33,18 @@ async function version(id) {
     });
 }
 
+async function premium(id) {
+    $.getJSON("/api/premium", function (json) {
+        console.log(json.premium)
+        if (json.premium == 'true') {
+            return document.getElementById(id).innerHTML = '<a href="/premium">Premium</a>';
+        } else {
+            return;
+        }
+    });
+}
+
+
 function approvepost(id) {
     $.post("/mod/reports", {
             id: id,

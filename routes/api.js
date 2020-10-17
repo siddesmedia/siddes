@@ -37,4 +37,26 @@ router.get('/api/version', async function (req, res, next) {
     }
 });
 
+router.get('/api/premium', async function (req, res, next) {
+    try {
+        if (!req.user) {
+            res.json({
+                premium: 'false'
+            })
+        } else if (req.user.premium == true) {
+            res.json({
+                premium: 'true'
+            })
+        } else if (req.user.premium == false) {
+            res.json({
+                premium: 'false'
+            })
+        }
+    } catch (err) {
+        res.json({
+            premium: 'false'
+        })
+    }
+});
+
 module.exports = router;

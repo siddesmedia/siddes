@@ -31,6 +31,28 @@ router.get('/premium/live', async function (req, res, next) {
     return res.render('base', about);
 });
 
+router.get('/premium', async function (req, res, next) {
+    console.log('/mod/reports')
+    if (!req.user) {
+        return res.redirect('/login')
+    }
+    if (req.user.premium == false) {
+        return res.redirect('/account')
+    }
+
+    const about = {
+        title: 'Premium Live Chat - ' + Name,
+        template: 'pages/premium/premium',
+        name: Name,
+        loggedin: loggedin(req.user),
+        moderator: moderator(req.user),
+        navbar: true,
+        footer: true,
+        username: req.user.username
+    };
+    return res.render('base', about);
+});
+
 function loggedin(user) {
     if (user) {
         return true;

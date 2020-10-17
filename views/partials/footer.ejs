@@ -10,9 +10,11 @@
         <% if(moderator == true) { %>
         <a href="/mod">Moderators</a>
         <% } else {} %>
+        <span id="premium"></span>
         <p>&copy; 2020 to Present, <a href="/about"><%= name %></a> | V<span id="version"></span></p>
         <script>
             version('version')
+            premium('premium')
         </script>
     </div>
 </div>

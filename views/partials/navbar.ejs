@@ -15,7 +15,7 @@
         <% if(moderator == true) { %>
         <a href="/mod">Moderators</a><br>
         <% } else {} %>
-        <br>
+        <span id="premiumsidebar"></span><br><br>
         <a>&copy; 2020 to Present <%= name %></a>
     </span>
 </div>
@@ -28,3 +28,6 @@
     <a href="/signup">Register</a>
     <% } %>
 </div>
+<script>
+    premium('premiumsidebar')
+</script>
