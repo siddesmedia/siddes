@@ -32,9 +32,6 @@ router.get('/', function (req, res, next) {
 router.get('/home', async function (req, res, next) {
     console.log('/home')
     if (req.user) {
-
-        const userownerfeed = await User.findById(req.user._id)
-
         const about = {
             title: 'Home - ' + Name,
             template: 'pages/home',
@@ -43,9 +40,9 @@ router.get('/home', async function (req, res, next) {
             moderator: moderator(req.user),
             navbar: true,
             footer: true,
-            feed: userownerfeed.feed.reverse(),
-            feedlinks: userownerfeed.feedlinks.reverse(),
-            feedtype: userownerfeed.feedtype.reverse(),
+            feed: await getfeed(req.user._id),
+            feedlinks: await getfeedlinks(req.user._id),
+            feedtype: await getfeedtype(req.user._id)
         };
         return res.render('base', about);
     } else {
@@ -235,12 +232,8 @@ router.get('/account/clear/confirm', async function (req, res, next) {
             premium: false,
             theme: 'retro'
         })
-        const deletecomments = await Comment.find({
-            owner: userid
-        })
-        const deleteposts = await Post.find({
-            owner: userid
-        })
+        const deletecomments = await findcomments(userid)
+        const deleteposts = await findposts(userid)
         var i;
         for (i = 0; i < deletecomments.length; i++) {
             const deletecomment = await Comment.findByIdAndDelete(deletecomments[i]._id)
@@ -506,23 +499,21 @@ router.post('/comment/new', async function (req, res, next) {
     if (!req.user) {
         res.redirect('/login')
     } else {
-        var post;
         var postowner;
         var updateownersfeed;
         var body = req.body.body;
         var parentid = req.body.parentid;
         var owner = req.user._id;
         var date = Date.now()
+        postowner = getpostowner(parentid)
 
-        post = await Post.findById(req.body.parentid)
-        postowner = post.owner.toString()
         console.log(postowner)
-        var postownerobject = await User.findById(postowner);
-        var oldfeed = postownerobject.feed
-        var oldfeedlinks = postownerobject.feedlinks
-        var oldfeedtype = postownerobject.feedtype
 
-        if (postownerobject.feed.length < 40) {
+        var oldfeed = await getfeed(postowner)
+        var oldfeedlinks = await getfeedlinks(postowner)
+        var oldfeedtype = await getfeedtype(postowner)
+
+        if (oldfeed.length < 40) {
             oldfeed.push(req.body.body)
             oldfeedlinks.push('/s/' + req.body.parentid)
             oldfeedtype.push('Someone commented on your post...')
@@ -661,6 +652,40 @@ function loggedin(user) {
     } else {
         return false;
     }
+}
+
+async function getpostowner(postid) {
+    const postowner = await Post.findById(postid)
+    return postowner.owner.toString()
+}
+
+async function getfeed(ownerid) {
+    const userfeed = await User.findById(ownerid);
+    return userfeed.feed
+}
+
+async function getfeedlinks(ownerid) {
+    const userfeed = await User.findById(ownerid);
+    return userfeed.feedlinks
+}
+
+async function getfeedtype(ownerid) {
+    const userfeed = await User.findById(ownerid);
+    return userfeed.feedtype
+}
+
+async function findposts(ownerid) {
+    const postobjects = await Post.find({
+        owner: ownerid
+    });
+    return postobjects
+}
+
+async function findcomments(ownerid) {
+    const commentobjects = await Comment.find({
+        owner: ownerid
+    });
+    return commentobjects
 }
 
 function moderator(user) {
