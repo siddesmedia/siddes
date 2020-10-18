@@ -29,18 +29,67 @@ router.get('/', function (req, res, next) {
     }
 });
 
-router.get('/home', function (req, res, next) {
+router.get('/home', async function (req, res, next) {
     console.log('/home')
-    const about = {
-        title: 'Home - ' + Name,
-        template: 'pages/home',
-        name: Name,
-        loggedin: loggedin(req.user),
-        moderator: moderator(req.user),
-        navbar: true,
-        footer: true
-    };
-    return res.render('base', about);
+    if (req.user) {
+        var posts;
+        var commentarray = [];
+        var postsids = [];
+        var i;
+        posts = await Post.find({
+            owner: req.user._id
+        })
+
+        if (posts.length < 40) {
+            for (i = 0; i < posts.length; i++) {
+                var comment = await Comment.findOne({
+                    parentid: posts[i]._id.toString()
+                })
+
+                if (comment == null) {
+                    var nullcommentobject;
+                } else {
+                    postsids.push(posts[i]._id.toString())
+                    commentarray.push(comment.body)
+                }
+
+                console.log(comment)
+            }
+        } else {
+            for (i = 0; i < 40; i++) {
+                var comment = await Comment.findOne({
+                    parentid: posts[i]._id.toString()
+                })
+
+                if (comment == null) {
+                    var nullcommentobject;
+                } else {
+                    postsids.push(posts[i]._id.toString())
+                    commentarray.push(comment.body)
+                }
+
+                console.log(comment)
+            }
+        }
+
+        console.log(postsids)
+        console.log(commentarray)
+
+        const about = {
+            title: 'Home - ' + Name,
+            template: 'pages/home',
+            name: Name,
+            loggedin: loggedin(req.user),
+            moderator: moderator(req.user),
+            navbar: true,
+            footer: true,
+            comments: commentarray.reverse(),
+            postlink: postsids.reverse()
+        };
+        return res.render('base', about);
+    } else {
+        res.redirect('/')
+    }
 });
 
 router.get('/account/edit', async function (req, res, next) {

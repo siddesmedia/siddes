@@ -44,6 +44,18 @@ const User = new mongoose.Schema({
         required: true,
         default: ["5f878ebc9b39e38585777498"]
     },
+    feed: {
+        type: Array,
+        unique: false,
+        required: true,
+        default: []
+    },
+    feedlinks: {
+        type: Array,
+        unique: false,
+        required: true,
+        default: []
+    },
     date: {
         type: Date,
         unique: false,
