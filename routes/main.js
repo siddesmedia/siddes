@@ -12,8 +12,8 @@ const redis = require('../config/redis')
 const JSON5 = require('json5')
 
 router.get('/', function (req, res, next) {
+    console.log('/')
     if (!req.user) {
-        console.log('/')
         const about = {
             title: 'New User - ' + Name,
             template: 'pages/newuser',
@@ -161,8 +161,6 @@ router.get('/account/new', async function (req, res, next) {
     if (!req.user) {
         return res.redirect('/login')
     }
-
-    var repost;
 
     const about = {
         title: 'New Post ' + ' - ' + Name,

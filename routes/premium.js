@@ -10,7 +10,7 @@ const {
 const User = require('../models/User');
 
 router.get('/premium/live', async function (req, res, next) {
-    console.log('/mod/reports')
+    console.log('/premium/live')
     if (!req.user) {
         return res.redirect('/login')
     }
@@ -32,7 +32,7 @@ router.get('/premium/live', async function (req, res, next) {
 });
 
 router.get('/premium', async function (req, res, next) {
-    console.log('/mod/reports')
+    console.log('/premium')
     if (!req.user) {
         return res.redirect('/login')
     }
