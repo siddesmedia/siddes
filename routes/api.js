@@ -6,6 +6,9 @@ const Post = require('../models/Post');
 const Comment = require('../models/Comment');
 const User = require('../models/User');
 const version = process.env.VERSION
+const {
+    countCommits
+} = require("count-commits");
 
 router.get('/api/get/username/:id', async function (req, res, next) {
     try {
@@ -26,9 +29,11 @@ router.get('/api/get/username/:id', async function (req, res, next) {
 });
 
 router.get('/api/version', async function (req, res, next) {
+    const commitCount = await countCommits("./");
+
     try {
         res.json({
-            version: version
+            version: commitCount
         })
     } catch (err) {
         res.json({
