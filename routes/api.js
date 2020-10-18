@@ -8,6 +8,7 @@ const User = require('../models/User');
 const {
     countCommits
 } = require("count-commits");
+const redis = require('../config/redis')
 
 router.get('/api/get/username/:id', async function (req, res, next) {
     try {
@@ -68,6 +69,24 @@ router.get('/api/premium', async function (req, res, next) {
         res.json({
             premium: false
         })
+    }
+});
+
+router.get('/api/redis/flush', async function (req, res, next) {
+    if (req.user) {
+        if (req.user.admin == true) {
+            try {
+                redis.flushdb(function (err, succeeded) {
+                    res.send('did the flush succeed: ' + succeeded);
+                });
+            } catch (err) {
+                res.send('their was an error');
+            }
+        } else {
+            res.redirect('/account')
+        }
+    } else {
+        res.redirect('/account')
     }
 });
 

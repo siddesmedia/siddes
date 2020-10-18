@@ -31,6 +31,8 @@ const premium = require('./routes/premium')
 app.use('/', premium);
 const mod = require('./routes/mod')
 app.use('/', mod);
+const admin = require('./routes/admin')
+app.use('/', admin);
 const api = require('./routes/api')
 app.use('/', api);
 const main = require('./routes/main')
