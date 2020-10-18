@@ -233,16 +233,22 @@ router.get('/account/clear/confirm', async function (req, res, next) {
 
 router.get('/account/:id', async function (req, res, next) {
     console.log('/account/' + req.params.id)
-    const userexists = await User.exists({
-        _id: req.params.id
-    })
-    if (userexists == false) {
-        return;
-    } else {
+    try {
         const username = await User.findOne({
             _id: req.params.id
         })
         res.redirect('/' + username.username)
+    } catch (err) {
+        res.status(404)
+        res.status(404).render('base', {
+            title: "404 Not Found" + Name,
+            template: "errors/400",
+            name: Name,
+            loggedin: loggedin(req.user),
+            moderator: moderator(req.user),
+            navbar: true,
+            footer: true
+        });
     }
 });
 
