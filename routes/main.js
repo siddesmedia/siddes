@@ -335,9 +335,26 @@ router.get('/:username', async function (req, res, next) {
             footer: true
         });
     } else {
+        var followers;
 
         var user = await User.findOne({
             username: req.params.username
+        })
+
+        redis.get('user_follow_count_' + req.params.username, async (err, value) => {
+            if (value) {
+                console.log('cached')
+                followers = value
+            } else {
+                console.log('not cached')
+                var followercount = await User.find({
+                    following: user._id
+                })
+
+                followers = followercount.length.toString()
+                redis.set('user_follow_count_' + req.params.username, followers)
+
+            }
         })
         var posts = await Post.find({
             owner: user._id
@@ -345,9 +362,6 @@ router.get('/:username', async function (req, res, next) {
 
         var currentUser;
         var followingbool;
-        var followercount = await User.find({
-            following: user._id
-        })
 
         var follows;
         if (!req.user) {
@@ -381,7 +395,7 @@ router.get('/:username', async function (req, res, next) {
             posts: posts.reverse(),
             sameuser: currentUser,
             follows: followingbool,
-            followers: followercount.length.toString()
+            followers: followers
         };
         return res.render('base', about);
     }
