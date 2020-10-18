@@ -8,6 +8,8 @@ const {
     forwardAuthenticated
 } = require('../config/auth');
 const User = require('../models/User');
+const redis = require('../config/redis')
+const JSON5 = require('json5')
 
 router.get('/', function (req, res, next) {
     if (!req.user) {
@@ -264,27 +266,54 @@ router.get('/:username/following', async function (req, res, next) {
             footer: true
         });
     } else {
+        var about;
+        var username;
 
-        var user = await User.findOne({
-            username: req.params.username
+        redis.get('user_following_list_' + req.params.username, async (err, value) => {
+            if (value) {
+                username = req.params.username
+
+                about = {
+                    title: username + ' Following - ' + Name,
+                    template: 'pages/following',
+                    name: Name,
+                    loggedin: loggedin(req.user),
+                    moderator: moderator(req.user),
+                    navbar: true,
+                    footer: true,
+
+                    // user data being loaded through cache
+                    username: username,
+                    user: JSON5.parse(value)
+                };
+                return res.render('base', about);
+            } else {
+                console.log("not cached")
+
+                var user = await User.findOne({
+                    username: req.params.username
+                })
+
+                redis.set('user_following_list_' + req.params.username, JSON.stringify(user))
+
+                username = req.params.username
+
+                about = {
+                    title: username + ' Following - ' + Name,
+                    template: 'pages/following',
+                    name: Name,
+                    loggedin: loggedin(req.user),
+                    moderator: moderator(req.user),
+                    navbar: true,
+                    footer: true,
+
+                    // user data being loaded
+                    username: username,
+                    user: user
+                };
+                return res.render('base', about);
+            }
         })
-
-        const username = req.params.username
-
-        const about = {
-            title: username + ' Following - ' + Name,
-            template: 'pages/following',
-            name: Name,
-            loggedin: loggedin(req.user),
-            moderator: moderator(req.user),
-            navbar: true,
-            footer: true,
-
-            // user data being loaded
-            username: username,
-            user: user
-        };
-        return res.render('base', about);
     }
 });
 
