@@ -434,6 +434,28 @@ div.postdiv:hover {
     }
 }
 
+@media only screen and (max-width: 995px) {
+    .modbuttons {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 445px) {
+    .seeallcommentsbutton {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 350px) {
+    .commentform {
+        display: none;
+    }
+
+    .seeallcommentsbutton {
+        display: block;
+    }
+}
+
 @media only screen and (min-width: 841px) {
     body {
         width: 80%;
