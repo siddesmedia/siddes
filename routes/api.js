@@ -29,11 +29,19 @@ router.get('/api/get/username/:id', async function (req, res, next) {
 });
 
 router.get('/api/version', async function (req, res, next) {
-    const commitCount = await countCommits("./");
+    const commitCount = await (await countCommits("./")).toString();
+    const commitCountLength = commitCount.length
+    var finalCommitCount;
+
+    if (commitCountLength < 3) {
+        finalCommitCount = "0." + commitCount.charAt(0) + "." + commitCount.charAt(1);
+    } else {
+        finalCommitCount = commitCount.charAt(0) + commitCount.charAt(1) + "." + commitCount.charAt(2);
+    }
 
     try {
         res.json({
-            version: commitCount
+            version: finalCommitCount
         })
     } catch (err) {
         res.json({
