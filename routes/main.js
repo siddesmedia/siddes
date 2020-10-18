@@ -505,9 +505,7 @@ router.post('/comment/new', async function (req, res, next) {
         var parentid = req.body.parentid;
         var owner = req.user._id;
         var date = Date.now()
-        postowner = getpostowner(parentid)
-
-        console.log(postowner)
+        postowner = await getpostowner(parentid)
 
         var oldfeed = await getfeed(postowner)
         var oldfeedlinks = await getfeedlinks(postowner)
