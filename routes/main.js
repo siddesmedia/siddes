@@ -343,10 +343,8 @@ router.get('/:username', async function (req, res, next) {
 
         redis.get('user_follow_count_' + req.params.username, async (err, value) => {
             if (value) {
-                console.log('cached')
                 followers = value
             } else {
-                console.log('not cached')
                 var followercount = await User.find({
                     following: user._id
                 })
