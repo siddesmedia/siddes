@@ -75,11 +75,25 @@ router.get('/account', function (req, res, next) {
     }
 });
 
-router.get('/about', function (req, res, next) {
-    console.log('/about')
+router.get('/company/about', function (req, res, next) {
+    console.log('/company/about')
     const about = {
         title: 'About - ' + Name,
-        template: 'pages/about',
+        template: 'pages/company/about',
+        name: Name,
+        loggedin: loggedin(req.user),
+        moderator: moderator(req.user),
+        navbar: true,
+        footer: true
+    };
+    return res.render('base', about);
+});
+
+router.get('/company/releases', function (req, res, next) {
+    console.log('/company/releases')
+    const about = {
+        title: 'Releases - ' + Name,
+        template: 'pages/company/releases',
         name: Name,
         loggedin: loggedin(req.user),
         moderator: moderator(req.user),
