@@ -41,20 +41,20 @@ router.get('/api/premium', async function (req, res, next) {
     try {
         if (!req.user) {
             res.json({
-                premium: 'false'
+                premium: false
             })
         } else if (req.user.premium == true) {
             res.json({
-                premium: 'true'
+                premium: true
             })
         } else if (req.user.premium == false) {
             res.json({
-                premium: 'false'
+                premium: false
             })
         }
     } catch (err) {
         res.json({
-            premium: 'false'
+            premium: false
         })
     }
 });
