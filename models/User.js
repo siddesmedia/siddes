@@ -56,6 +56,12 @@ const User = new mongoose.Schema({
         required: true,
         default: []
     },
+    feedtype: {
+        type: Array,
+        unique: false,
+        required: true,
+        default: []
+    },
     date: {
         type: Date,
         unique: false,

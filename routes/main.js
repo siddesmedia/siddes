@@ -32,48 +32,8 @@ router.get('/', function (req, res, next) {
 router.get('/home', async function (req, res, next) {
     console.log('/home')
     if (req.user) {
-        var posts;
-        var commentarray = [];
-        var postsids = [];
-        var i;
-        posts = await Post.find({
-            owner: req.user._id
-        })
 
-        if (posts.length < 40) {
-            for (i = 0; i < posts.length; i++) {
-                var comment = await Comment.findOne({
-                    parentid: posts[i]._id.toString()
-                })
-
-                if (comment == null) {
-                    var nullcommentobject;
-                } else {
-                    postsids.push(posts[i]._id.toString())
-                    commentarray.push(comment.body)
-                }
-
-                console.log(comment)
-            }
-        } else {
-            for (i = 0; i < 40; i++) {
-                var comment = await Comment.findOne({
-                    parentid: posts[i]._id.toString()
-                })
-
-                if (comment == null) {
-                    var nullcommentobject;
-                } else {
-                    postsids.push(posts[i]._id.toString())
-                    commentarray.push(comment.body)
-                }
-
-                console.log(comment)
-            }
-        }
-
-        console.log(postsids)
-        console.log(commentarray)
+        const userownerfeed = await User.findById(req.user._id)
 
         const about = {
             title: 'Home - ' + Name,
@@ -83,8 +43,9 @@ router.get('/home', async function (req, res, next) {
             moderator: moderator(req.user),
             navbar: true,
             footer: true,
-            comments: commentarray.reverse(),
-            postlink: postsids.reverse()
+            feed: userownerfeed.feed.reverse(),
+            feedlinks: userownerfeed.feedlinks.reverse(),
+            feedtype: userownerfeed.feedtype.reverse(),
         };
         return res.render('base', about);
     } else {
@@ -545,10 +506,55 @@ router.post('/comment/new', async function (req, res, next) {
     if (!req.user) {
         res.redirect('/login')
     } else {
+        var post;
+        var postowner;
+        var updateownersfeed;
         var body = req.body.body;
         var parentid = req.body.parentid;
         var owner = req.user._id;
         var date = Date.now()
+
+        post = await Post.findById(req.body.parentid)
+        postowner = post.owner.toString()
+        console.log(postowner)
+        var postownerobject = await User.findById(postowner);
+        var oldfeed = postownerobject.feed
+        var oldfeedlinks = postownerobject.feedlinks
+        var oldfeedtype = postownerobject.feedtype
+
+        if (postownerobject.feed.length < 40) {
+            oldfeed.push(req.body.body)
+            oldfeedlinks.push('/s/' + req.body.parentid)
+            oldfeedtype.push('Someone commented on your post...')
+
+            updateownersfeed = await User.findByIdAndUpdate({
+                _id: postowner
+            }, {
+                feed: oldfeed,
+                feedlinks: oldfeedlinks,
+                feedtype: oldfeedtype
+            })
+        } else {
+            oldfeed.push(req.body.body)
+            oldfeedlinks.push('/s/' + req.body.parentid)
+            oldfeedtype.push('Someone commented on your post...')
+            oldfeed.reverse().pop()
+            oldfeedlinks.reverse().pop()
+            oldfeedtype.reverse().pop()
+            oldfeed.reverse()
+            oldfeedlinks.reverse()
+            oldfeedtype.reverse()
+
+            updateownersfeed = await User.findOneAndUpdate({
+                _id: postowner
+            }, {
+                feed: oldfeed,
+                feedlinks: oldfeedlinks,
+                feedtype: oldfeedtype
+            })
+        }
+
+        updateownersfeed;
 
         const newComment = new Comment({
             body: body,

@@ -1,14 +1,14 @@
 <h3 class="header">Home Feed</h3>
-<% for(i=0;i < comments.length;i++) { %>
+<% for(i=0;i < feed.length;i++) { %>
 <div class="postdiv">
-    <div style="cursor: pointer;" onclick="window.location='/s/<%= postlink[i] %>'">
+    <div style="cursor: pointer;" onclick="window.location='<%= feedlinks[i] %>'">
         <p class="postowner">
             <a class="postownerlink">
-                Someone commented on your posts...
+                <%= feedtype[i] %>
             </a>
         </p>
         <p class="postbody">
-            "<%= comments[i] %>"
+            "<%= feed[i] %>"
         </p>
     </div>
 </div>
