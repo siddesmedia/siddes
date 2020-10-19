@@ -392,6 +392,15 @@ div.postdiv:hover {
     height: 100%;
 }
 
+
+.sensitivepost {
+    padding: 20px;
+    border: 2px rgb(236, 236, 236) solid;
+    border-radius: 25px;
+    margin: 10px;
+    margin-bottom: 2px;
+}
+
 .noheader {
     position: relative;
     text-decoration: none;

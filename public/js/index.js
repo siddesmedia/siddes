@@ -95,7 +95,24 @@ function copytext(elemid) {
 function approvepost(id) {
     $.post("/mod/reports", {
             id: id,
-            approved: 'true'
+            approved: true,
+            sensitive: false
+        },
+        function (data, status, jqXHR) {
+            window.location = window.location
+        }
+    );
+    setTimeout(function () {
+        location.reload()
+    }, 500);
+}
+
+
+function approvesensitivepost(id) {
+    $.post("/mod/reports", {
+            id: id,
+            approved: true,
+            sensitive: true
         },
         function (data, status, jqXHR) {
             window.location = window.location
@@ -109,7 +126,8 @@ function approvepost(id) {
 function removepost(id) {
     $.post("/mod/reports", {
             id: id,
-            approved: 'false'
+            approved: false,
+            sensitive: true
         },
         function (data, status, jqXHR) {
             location.reload()

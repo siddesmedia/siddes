@@ -72,10 +72,12 @@ router.post('/mod/reports', async function (req, res, next) {
     }
     const postid = req.body.id;
     const approved = req.body.approved;
+    const sensitive = req.body.sensitive;
     if (approved == 'true') {
         const updateapprovedpost = await Post.findByIdAndUpdate(postid, {
             reported: false,
-            approved: true,
+            approved: approved,
+            sensitive: sensitive,
         })
         return updateapprovedpost;
     } else {

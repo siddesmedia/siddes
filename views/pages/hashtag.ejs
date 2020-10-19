@@ -7,6 +7,12 @@
     <% if(posts[i].body.includes("#" + hashtag) == false) {  } else { %>
     <div class="postcontainer">
         <div class="postdiv">
+            <% if(posts[i].sensitive == true) { %>
+            <div class="sensitivepost" style="cursor: pointer;" onclick="window.location='/s/<%= posts[i]._id %>'">
+                <span class="postownerlink">This post contains edgy material, click to view at your own
+                    risk. A moderator has approved it.</span>
+            </div>
+            <% } else { %>
             <div style="cursor: pointer;" onclick="window.location='/s/<%= posts[i]._id %>'">
                 <% if (posts[i].approved == true) { %>
                 <span class="commentsmeta right">
@@ -49,7 +55,8 @@
                         <button onclick="removepost('<%= posts[i]._id %>')" type="button">Mod: Remove Post</button>
                         <% } else { %>
                         <button onclick=" removepost('<%= posts[i]._id %>')" type="button">Mod: Remove Post</button>
-                        <button onclick=" approvepost('<%= posts[i]._id %>')" type="button">Mod: Approve Post</button>
+                        <button onclick=" approvepost('<%= posts[i]._id %>')" type="button">Mod: Approve
+                            Post</button>
 
                         <% }} %>
                     </span>
@@ -68,6 +75,7 @@
                     <button type="submit" class="postcomment">Comment</button>
                 </form>
             </div>
+            <% } %>
         </div>
     </div>
     <script>

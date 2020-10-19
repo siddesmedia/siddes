@@ -49,6 +49,12 @@ const Post = new mongoose.Schema({
         required: true,
         default: false
     },
+    sensitive: {
+        type: Boolean,
+        unique: false,
+        required: true,
+        default: false
+    },
     reportreason: {
         type: String,
         unique: false,
