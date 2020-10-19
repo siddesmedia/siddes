@@ -522,39 +522,7 @@ router.post('/comment/new', async function (req, res, next) {
         var date = Date.now()
         postowner = await funcs.getpostowner(parentid)
 
-
-        var oldfeed = await funcs.getfeed(postowner)
-        var oldfeedlinks = await funcs.getfeedlinks(postowner)
-        var oldfeedtype = await funcs.getfeedtype(postowner)
-
-        if (oldfeed.length < 40) {
-            oldfeed.unshift(req.body.body)
-            oldfeedlinks.unshift('/s/' + req.body.parentid)
-            oldfeedtype.unshift('Someone commented on your post...')
-
-            updateownersfeed = await User.findByIdAndUpdate({
-                _id: postowner
-            }, {
-                feed: oldfeed,
-                feedlinks: oldfeedlinks,
-                feedtype: oldfeedtype
-            })
-        } else {
-            oldfeed.unshift(req.body.body)
-            oldfeedlinks.unshift('/s/' + req.body.parentid)
-            oldfeedtype.unshift('Someone commented on your post...')
-            oldfeed.pop()
-            oldfeedlinks.pop()
-            oldfeedtype.pop()
-
-            updateownersfeed = await User.findOneAndUpdate({
-                _id: postowner
-            }, {
-                feed: oldfeed,
-                feedlinks: oldfeedlinks,
-                feedtype: oldfeedtype
-            })
-        }
+        funcs.addtofeed(postowner, "Someone commented on your post!", '/s/' + req.body.parentid, body)
 
         updateownersfeed;
 
@@ -673,7 +641,7 @@ router.post('/like/new', async function (req, res, next) {
             if (posttoedit.tenlikes == true) {
                 var tenlikes;
             } else {
-                addtofeed(posttoedit.owner, "Your post hit 10 likes!", '/s/' + posttoedit._id, posttoedit.body)
+                funcs.addtofeed(posttoedit.owner, "Your post hit 10 likes!", '/s/' + posttoedit._id, posttoedit.body)
                 var updatepostlikecountstatus = await Post.findOneAndUpdate({
                     _id: posttoedit._id
                 }, {
