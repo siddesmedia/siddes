@@ -8,6 +8,7 @@ const {
     forwardAuthenticated
 } = require('../config/auth');
 const User = require('../models/User');
+const funcs = require('../config/functions');
 
 router.get('/admin/redis/flush', async function (req, res, next) {
     console.log('/admin/redis/flush')
@@ -21,32 +22,12 @@ router.get('/admin/redis/flush', async function (req, res, next) {
         title: 'Flush Redis - ' + Name,
         template: 'pages/admin/flushredis',
         name: Name,
-        loggedin: loggedin(req.user),
-        moderator: moderator(req.user),
+        loggedin: funcs.loggedin(req.user),
+        moderator: funcs.moderator(req.user),
         navbar: true,
         footer: true,
     };
     return res.render('base', about);
 });
-
-function loggedin(user) {
-    if (user) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-function moderator(user) {
-    if (user) {
-        if (user.moderator == false) {
-            return false;
-        } else {
-            return true;
-        }
-    } else {
-        return false;
-    }
-}
 
 module.exports = router;

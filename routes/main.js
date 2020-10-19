@@ -10,6 +10,7 @@ const {
 const User = require('../models/User');
 const redis = require('../config/redis')
 const JSON5 = require('json5')
+const funcs = require('../config/functions');
 
 router.get('/', function (req, res, next) {
     console.log('/')
@@ -18,8 +19,8 @@ router.get('/', function (req, res, next) {
             title: 'New User - ' + Name,
             template: 'pages/newuser',
             name: Name,
-            loggedin: loggedin(req.user),
-            moderator: moderator(req.user),
+            loggedin: funcs.loggedin(req.user),
+            moderator: funcs.moderator(req.user),
             navbar: true,
             footer: true
         };
@@ -36,13 +37,13 @@ router.get('/home', async function (req, res, next) {
             title: 'Home - ' + Name,
             template: 'pages/home',
             name: Name,
-            loggedin: loggedin(req.user),
-            moderator: moderator(req.user),
+            loggedin: funcs.loggedin(req.user),
+            moderator: funcs.moderator(req.user),
             navbar: true,
             footer: true,
-            feed: await getfeed(req.user._id),
-            feedlinks: await getfeedlinks(req.user._id),
-            feedtype: await getfeedtype(req.user._id)
+            feed: await funcs.getfeed(req.user._id),
+            feedlinks: await funcs.getfeedlinks(req.user._id),
+            feedtype: await funcs.getfeedtype(req.user._id)
         };
         return res.render('base', about);
     } else {
@@ -63,8 +64,8 @@ router.get('/account/edit', async function (req, res, next) {
             title: 'Edit Account - ' + Name,
             template: 'pages/account/edit',
             name: Name,
-            loggedin: loggedin(req.user),
-            moderator: moderator(req.user),
+            loggedin: funcs.loggedin(req.user),
+            moderator: funcs.moderator(req.user),
             navbar: true,
             footer: true,
             user: user
@@ -88,8 +89,8 @@ router.get('/company/about', function (req, res, next) {
         title: 'About - ' + Name,
         template: 'pages/company/about',
         name: Name,
-        loggedin: loggedin(req.user),
-        moderator: moderator(req.user),
+        loggedin: funcs.loggedin(req.user),
+        moderator: funcs.moderator(req.user),
         navbar: true,
         footer: true
     };
@@ -102,8 +103,8 @@ router.get('/company/releases', function (req, res, next) {
         title: 'Releases - ' + Name,
         template: 'pages/company/releases',
         name: Name,
-        loggedin: loggedin(req.user),
-        moderator: moderator(req.user),
+        loggedin: funcs.loggedin(req.user),
+        moderator: funcs.moderator(req.user),
         navbar: true,
         footer: true
     };
@@ -123,8 +124,8 @@ router.get('/search', async function (req, res, next) {
         title: req.query.q + ' - ' + Name,
         template: 'pages/search',
         name: Name,
-        loggedin: loggedin(req.user),
-        moderator: moderator(req.user),
+        loggedin: funcs.loggedin(req.user),
+        moderator: funcs.moderator(req.user),
         navbar: true,
         footer: true,
         posts: posts,
@@ -146,8 +147,8 @@ router.get('/tag/:hashtag', async function (req, res, next) {
         title: '#' + req.params.hashtag + ' - ' + Name,
         template: 'pages/hashtag',
         name: Name,
-        loggedin: loggedin(req.user),
-        moderator: moderator(req.user),
+        loggedin: funcs.loggedin(req.user),
+        moderator: funcs.moderator(req.user),
         navbar: true,
         footer: true,
         posts: posts,
@@ -167,8 +168,8 @@ router.get('/account/search', async function (req, res, next) {
         title: req.query.q + ' - ' + Name,
         template: 'pages/account/search',
         name: Name,
-        loggedin: loggedin(req.user),
-        moderator: moderator(req.user),
+        loggedin: funcs.loggedin(req.user),
+        moderator: funcs.moderator(req.user),
         navbar: true,
         footer: true,
         users: users,
@@ -187,8 +188,8 @@ router.get('/account/new', async function (req, res, next) {
         title: 'New Post ' + ' - ' + Name,
         template: 'pages/account/new',
         name: Name,
-        loggedin: loggedin(req.user),
-        moderator: moderator(req.user),
+        loggedin: funcs.loggedin(req.user),
+        moderator: funcs.moderator(req.user),
         navbar: true,
         footer: true,
         repost: req.query.repost,
@@ -206,8 +207,8 @@ router.get('/account/clear', async function (req, res, next) {
             title: 'Clear Account - ' + Name,
             template: 'pages/account/clear',
             name: Name,
-            loggedin: loggedin(req.user),
-            moderator: moderator(req.user),
+            loggedin: funcs.loggedin(req.user),
+            moderator: funcs.moderator(req.user),
             navbar: true,
             footer: true,
         };
@@ -232,8 +233,8 @@ router.get('/account/clear/confirm', async function (req, res, next) {
             premium: false,
             theme: 'retro'
         })
-        const deletecomments = await findcomments(userid)
-        const deleteposts = await findposts(userid)
+        const deletecomments = await funcs.findcomments(userid)
+        const deleteposts = await funcs.findposts(userid)
         var i;
         for (i = 0; i < deletecomments.length; i++) {
             const deletecomment = await Comment.findByIdAndDelete(deletecomments[i]._id)
@@ -261,8 +262,8 @@ router.get('/account/:id', async function (req, res, next) {
             title: "404 Not Found" + Name,
             template: "errors/400",
             name: Name,
-            loggedin: loggedin(req.user),
-            moderator: moderator(req.user),
+            loggedin: funcs.loggedin(req.user),
+            moderator: funcs.moderator(req.user),
             navbar: true,
             footer: true
         });
@@ -281,8 +282,8 @@ router.get('/:username/following', async function (req, res, next) {
             title: "404 Not Found" + Name,
             template: "errors/400",
             name: Name,
-            loggedin: loggedin(req.user),
-            moderator: moderator(req.user),
+            loggedin: funcs.loggedin(req.user),
+            moderator: funcs.moderator(req.user),
             navbar: true,
             footer: true
         });
@@ -298,8 +299,8 @@ router.get('/:username/following', async function (req, res, next) {
                     title: username + ' Following - ' + Name,
                     template: 'pages/following',
                     name: Name,
-                    loggedin: loggedin(req.user),
-                    moderator: moderator(req.user),
+                    loggedin: funcs.loggedin(req.user),
+                    moderator: funcs.moderator(req.user),
                     navbar: true,
                     footer: true,
 
@@ -321,8 +322,8 @@ router.get('/:username/following', async function (req, res, next) {
                     title: username + ' Following - ' + Name,
                     template: 'pages/following',
                     name: Name,
-                    loggedin: loggedin(req.user),
-                    moderator: moderator(req.user),
+                    loggedin: funcs.loggedin(req.user),
+                    moderator: funcs.moderator(req.user),
                     navbar: true,
                     footer: true,
 
@@ -348,8 +349,8 @@ router.get('/:username', async function (req, res, next) {
             title: "404 Not Found" + Name,
             template: "errors/400",
             name: Name,
-            loggedin: loggedin(req.user),
-            moderator: moderator(req.user),
+            loggedin: funcs.loggedin(req.user),
+            moderator: funcs.moderator(req.user),
             navbar: true,
             footer: true
         });
@@ -402,8 +403,8 @@ router.get('/:username', async function (req, res, next) {
             title: username + ' - ' + Name,
             template: 'pages/user',
             name: Name,
-            loggedin: loggedin(req.user),
-            moderator: moderator(req.user),
+            loggedin: funcs.loggedin(req.user),
+            moderator: funcs.moderator(req.user),
             navbar: true,
             footer: true,
 
@@ -431,8 +432,8 @@ router.get('/s/:postid', async function (req, res, next) {
             title: "404 Not Found" + Name,
             template: "errors/400",
             name: Name,
-            loggedin: loggedin(req.user),
-            moderator: moderator(req.user),
+            loggedin: funcs.loggedin(req.user),
+            moderator: funcs.moderator(req.user),
             navbar: true,
             footer: true
         });
@@ -449,7 +450,7 @@ router.get('/s/:postid', async function (req, res, next) {
 
         var liked;
 
-        if (loggedin(req.user) == true) {
+        if (funcs.loggedin(req.user) == true) {
             var post = await Post.findById(req.params.postid)
             if (post.likes.includes(req.user._id) == true) {
                 liked = true
@@ -466,8 +467,8 @@ router.get('/s/:postid', async function (req, res, next) {
             title: 'Post - ' + Name,
             template: 'pages/post',
             name: Name,
-            loggedin: loggedin(req.user),
-            moderator: moderator(req.user),
+            loggedin: funcs.loggedin(req.user),
+            moderator: funcs.moderator(req.user),
             navbar: true,
             footer: true,
 
@@ -519,12 +520,12 @@ router.post('/comment/new', async function (req, res, next) {
         var parentid = req.body.parentid;
         var owner = req.user._id;
         var date = Date.now()
-        postowner = await getpostowner(parentid)
+        postowner = await funcs.getpostowner(parentid)
 
 
-        var oldfeed = await getfeed(postowner)
-        var oldfeedlinks = await getfeedlinks(postowner)
-        var oldfeedtype = await getfeedtype(postowner)
+        var oldfeed = await funcs.getfeed(postowner)
+        var oldfeedlinks = await funcs.getfeedlinks(postowner)
+        var oldfeedtype = await funcs.getfeedtype(postowner)
 
         if (oldfeed.length < 40) {
             oldfeed.unshift(req.body.body)
@@ -793,96 +794,5 @@ router.post('/like/remove', async function (req, res, next) {
         }
     }
 })
-
-function loggedin(user) {
-    if (user) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-async function getpostowner(postid) {
-    const postowner = await Post.findById(postid)
-    return postowner.owner.toString()
-}
-
-async function addtofeed(feedowner, type, link, feed) {
-    var oldfeed = await getfeed(feedowner)
-    var oldfeedlinks = await getfeedlinks(feedowner)
-    var oldfeedtype = await getfeedtype(feedowner)
-
-    if (oldfeed.length < 40) {
-        oldfeed.unshift(feed)
-        oldfeedlinks.unshift(link)
-        oldfeedtype.unshift(type)
-
-        updateownersfeed = await User.findByIdAndUpdate({
-            _id: feedowner
-        }, {
-            feed: oldfeed,
-            feedlinks: oldfeedlinks,
-            feedtype: oldfeedtype
-        })
-    } else {
-        oldfeed.unshift(feed)
-        oldfeedlinks.unshift(link)
-        oldfeedtype.unshift(type)
-        oldfeed.pop()
-        oldfeedlinks.pop()
-        oldfeedtype.pop()
-
-        updateownersfeed = await User.findOneAndUpdate({
-            _id: feedowner
-        }, {
-            feed: oldfeed,
-            feedlinks: oldfeedlinks,
-            feedtype: oldfeedtype
-        })
-    }
-
-    updateownersfeed;
-}
-
-async function getfeed(ownerid) {
-    const userfeed = await User.findById(ownerid);
-    return userfeed.feed
-}
-
-async function getfeedlinks(ownerid) {
-    const userfeed = await User.findById(ownerid);
-    return userfeed.feedlinks
-}
-
-async function getfeedtype(ownerid) {
-    const userfeed = await User.findById(ownerid);
-    return userfeed.feedtype
-}
-
-async function findposts(ownerid) {
-    const postobjects = await Post.find({
-        owner: ownerid
-    });
-    return postobjects
-}
-
-async function findcomments(ownerid) {
-    const commentobjects = await Comment.find({
-        owner: ownerid
-    });
-    return commentobjects
-}
-
-function moderator(user) {
-    if (user) {
-        if (user.moderator == false) {
-            return false;
-        } else {
-            return true;
-        }
-    } else {
-        return false;
-    }
-}
 
 module.exports = router;

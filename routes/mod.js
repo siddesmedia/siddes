@@ -8,6 +8,7 @@ const {
     forwardAuthenticated
 } = require('../config/auth');
 const User = require('../models/User');
+const funcs = require('../config/functions');
 
 router.get('/mod/reports', async function (req, res, next) {
     console.log('/mod/reports')
@@ -27,8 +28,8 @@ router.get('/mod/reports', async function (req, res, next) {
         title: 'Current Reports - ' + Name,
         template: 'pages/mod/reports',
         name: Name,
-        loggedin: loggedin(req.user),
-        moderator: moderator(req.user),
+        loggedin: funcs.loggedin(req.user),
+        moderator: funcs.moderator(req.user),
         navbar: true,
         footer: true,
         posts: reportedposts
@@ -51,8 +52,8 @@ router.get('/mod', async function (req, res, next) {
         title: 'Current Reports - ' + Name,
         template: 'pages/mod/mod',
         name: Name,
-        loggedin: loggedin(req.user),
-        moderator: moderator(req.user),
+        loggedin: funcs.loggedin(req.user),
+        moderator: funcs.moderator(req.user),
         navbar: true,
         footer: true,
     };
@@ -93,8 +94,8 @@ router.get('/report', async function (req, res, next) {
             title: '404 - ' + Name,
             template: 'errors/400',
             name: Name,
-            loggedin: loggedin(req.user),
-            moderator: moderator(req.user),
+            loggedin: funcs.loggedin(req.user),
+            moderator: funcs.moderator(req.user),
             navbar: true,
             footer: true,
         };
@@ -104,8 +105,8 @@ router.get('/report', async function (req, res, next) {
             title: 'Report a Post - ' + Name,
             template: 'pages/report',
             name: Name,
-            loggedin: loggedin(req.user),
-            moderator: moderator(req.user),
+            loggedin: funcs.loggedin(req.user),
+            moderator: funcs.moderator(req.user),
             navbar: true,
             footer: true,
             postid: req.query.post
@@ -131,25 +132,5 @@ router.post('/report', async function (req, res, next) {
         res.redirect('/')
     }
 });
-
-function loggedin(user) {
-    if (user) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-function moderator(user) {
-    if (user) {
-        if (user.moderator == false) {
-            return false;
-        } else {
-            return true;
-        }
-    } else {
-        return false;
-    }
-}
 
 module.exports = router;

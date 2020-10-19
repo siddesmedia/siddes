@@ -10,6 +10,7 @@ const Name = process.env.NAME
 const {
     forwardAuthenticated
 } = require('../config/auth');
+const funcs = require('../config/functions');
 
 router.get('/signup', forwardAuthenticated, function (req, res, next) {
     console.log('/signup')
@@ -17,8 +18,8 @@ router.get('/signup', forwardAuthenticated, function (req, res, next) {
         title: 'Signup - ' + Name,
         template: 'pages/signup',
         name: Name,
-        loggedin: loggedin(req.user),
-        moderator: moderator(req.user),
+        loggedin: funcs.loggedin(req.user),
+        moderator: funcs.moderator(req.user),
         navbar: true,
         footer: true
     };
@@ -99,8 +100,8 @@ router.get('/login', forwardAuthenticated, function (req, res, next) {
         title: 'Login - ' + Name,
         template: 'pages/login',
         name: Name,
-        loggedin: loggedin(req.user),
-        moderator: moderator(req.user),
+        loggedin: funcs.loggedin(req.user),
+        moderator: funcs.moderator(req.user),
         navbar: true,
         footer: true
     };
