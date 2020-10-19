@@ -59,7 +59,7 @@ router.get('/embed/:postid', async function (req, res, next) {
     console.log('/home')
     const embeddedpost = await Post.findById(req.params.postid)
     const about = {
-        title: 'Home - ' + Name,
+        title: 'Embed - ' + Name,
         template: 'pages/embed',
         name: Name,
         navbar: false,
