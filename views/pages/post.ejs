@@ -84,7 +84,7 @@
     </div>
     <script>
         getusername("comment_<%= i %>_<%= comments[i].owner %>", "<%= comments[i].owner %>")
-        haveiliked('likebutton_<%= post._id %>', '<%= post.likes.length %>', '<%= post._id %>')
+        haveiliked('likebutton_<%= post._id %>', '<%= post.likes.length %>', '<%= post._id %>', '<%= loggedin %>')
     </script>
     <% } %>
     <% } %>

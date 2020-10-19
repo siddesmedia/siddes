@@ -125,7 +125,8 @@
     </div>
     <script>
         replacepostlinks('post_<%= posts[i]._id %>')
-        haveiliked('likebutton_<%= posts[i]._id %>', '<%= posts[i].likes.length %>', '<%= posts[i]._id %>')
+        haveiliked('likebutton_<%= posts[i]._id %>', '<%= posts[i].likes.length %>', '<%= posts[i]._id %>',
+            '<%= loggedin %>')
     </script>
     <% } %>
 </div>

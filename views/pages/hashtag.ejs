@@ -73,7 +73,8 @@
     <script>
         replacepostlinks('post_<%= posts[i]._id %>')
         getusername('user_<%= i.toString() %>_<%= posts[i]._id %>', '<%= posts[i].owner %>')
-        haveiliked('likebutton_<%= posts[i]._id %>', '<%= posts[i].likes.length %>', '<%= posts[i]._id %>')
+        haveiliked('likebutton_<%= posts[i]._id %>', '<%= posts[i].likes.length %>', '<%= posts[i]._id %>',
+            '<%= loggedin %>')
     </script>
     <% } %>
     <% } %>

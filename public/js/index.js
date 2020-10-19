@@ -4,6 +4,8 @@
     All other use is prohibited without permission.
 */
 
+var loggedinbool;
+
 function replacepostlinks(id) {
     return (document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#(\S*)/g, "<a href='/tag/$1' class='hashtag'>#$1</a>").replace(/@(\S*)/g, "<a href='/$1' class='mention'>@$1</a>").replace(/http:\/\/(\S*)/g, "<a href='http://$1' class='link'>http://$1</a>").replace(/https:\/\/(\S*)/g, "<a href='https://$1' class='link'>https://$1</a>"))
 }
@@ -33,7 +35,8 @@ async function version(id) {
     });
 }
 
-async function haveiliked(elemid, likecount, postid) {
+async function haveiliked(elemid, likecount, postid, loggedin) {
+    loggedinbool = loggedin
     $.getJSON("/api/liked/" + postid, function (json) {
         if (json.liked == true) {
             return document.getElementById(elemid).innerHTML = '<button onclick=\'unlike("' + postid + '", "' + elemid + '", "' + eval(likecount) + '")\' "type="button" class="postlike red" id="i_' + elemid + '">Unlike - ' + eval(likecount) + '</button>';
@@ -44,23 +47,31 @@ async function haveiliked(elemid, likecount, postid) {
 }
 
 async function like(postid, elemid, likecount) {
-    $.post("/like/new", {
-            postid: postid
-        },
-        function (data, status, jqXHR) {
-            return document.getElementById(elemid).innerHTML = '<button onclick=\'unlike("' + postid + '", "' + elemid + '", "' + eval(likecount + 1) + '")\' "type="button" class="postlike red" id="i_' + elemid + '">Unlike - ' + eval(eval(likecount) + 1) + '</button>';
-        }
-    );
+    if (loggedinbool == 'true') {
+        $.post("/like/new", {
+                postid: postid
+            },
+            function (data, status, jqXHR) {
+                return document.getElementById(elemid).innerHTML = '<button onclick=\'unlike("' + postid + '", "' + elemid + '", "' + eval(likecount + 1) + '")\' "type="button" class="postlike red" id="i_' + elemid + '">Unlike - ' + eval(eval(likecount) + 1) + '</button>';
+            }
+        );
+    } else {
+        window.location = '/login'
+    }
 }
 
 async function unlike(postid, elemid, likecount) {
-    $.post("/like/remove", {
-            postid: postid
-        },
-        function (data, status, jqXHR) {
-            return document.getElementById(elemid).innerHTML = '<button onclick=\'like("' + postid + '", "' + elemid + '", "' + eval(likecount - 1) + '")\' "type="button" class="postlike" id="i_' + elemid + '">Like - ' + eval(eval(likecount) - 1) + '</button>';
-        }
-    );
+    if (loggedinbool == 'true') {
+        $.post("/like/remove", {
+                postid: postid
+            },
+            function (data, status, jqXHR) {
+                return document.getElementById(elemid).innerHTML = '<button onclick=\'like("' + postid + '", "' + elemid + '", "' + eval(likecount - 1) + '")\' "type="button" class="postlike" id="i_' + elemid + '">Like - ' + eval(eval(likecount) - 1) + '</button>';
+            }
+        );
+    } else {
+        window.location = '/login'
+    }
 }
 
 async function premium(id) {
