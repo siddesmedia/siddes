@@ -53,6 +53,36 @@ const Post = new mongoose.Schema({
         type: String,
         unique: false,
         required: false
+    },
+    tenlikes: {
+        type: Boolean,
+        unique: false,
+        required: false
+    },
+    hundredlikes: {
+        type: Boolean,
+        unique: false,
+        required: false
+    },
+    thousandlikes: {
+        type: Boolean,
+        unique: false,
+        required: false
+    },
+    tenthousandlikes: {
+        type: Boolean,
+        unique: false,
+        required: false
+    },
+    hundredthousandlikes: {
+        type: Boolean,
+        unique: false,
+        required: false
+    },
+    millionlikes: {
+        type: Boolean,
+        unique: false,
+        required: false
     }
 });
 

@@ -668,7 +668,86 @@ router.post('/like/new', async function (req, res, next) {
         var posttoedit = await Post.findById(req.body.postid.toString())
 
         var newLikes = posttoedit.likes
-
+        var likeCount = posttoedit.likes.length + 1
+        // tenlikes hundredlikes thousandlikes tenthousandlikes hundredthousandlikes millionlikes
+        if (likeCount == 10) {
+            if (posttoedit.tenlikes == true) {
+                var tenlikes;
+            } else {
+                addtofeed(posttoedit.owner, "Your post hit 10 likes!", '/s/' + posttoedit._id, posttoedit.body)
+                var updatepostlikecountstatus = await Post.findOneAndUpdate({
+                    _id: posttoedit._id
+                }, {
+                    tenlikes: true
+                })
+                updatepostlikecountstatus
+            }
+        }
+        if (likeCount == 100) {
+            if (posttoedit.hundredlikes == true) {
+                var hundredlikes;
+            } else {
+                addtofeed(posttoedit.owner, "Your post hit 100 likes!", '/s/' + posttoedit._id, posttoedit.body)
+                var updatepostlikecountstatus = await Post.findOneAndUpdate({
+                    _id: posttoedit._id
+                }, {
+                    hundredlikes: true
+                })
+                updatepostlikecountstatus
+            }
+        }
+        if (likeCount == 1000) {
+            if (posttoedit.thousandlikes == true) {
+                var thousandlikes;
+            } else {
+                addtofeed(posttoedit.owner, "Your post hit 1,000 likes!", '/s/' + posttoedit._id, posttoedit.body)
+                var updatepostlikecountstatus = await Post.findOneAndUpdate({
+                    _id: posttoedit._id
+                }, {
+                    thousandlikes: true
+                })
+                updatepostlikecountstatus
+            }
+        }
+        if (likeCount == 10000) {
+            if (posttoedit.tenthousandlikes == true) {
+                var tenthousandlikes;
+            } else {
+                addtofeed(posttoedit.owner, "Your post hit 10,000 likes!", '/s/' + posttoedit._id, posttoedit.body)
+                var updatepostlikecountstatus = await Post.findOneAndUpdate({
+                    _id: posttoedit._id
+                }, {
+                    tenthousandlikes: true
+                })
+                updatepostlikecountstatus
+            }
+        }
+        if (likeCount == 100000) {
+            if (posttoedit.hundredthousandlikes == true) {
+                var hundredthousandlikes;
+            } else {
+                addtofeed(posttoedit.owner, "Your post hit 100,000 likes! That's something to celebrate about!", '/s/' + posttoedit._id, posttoedit.body)
+                var updatepostlikecountstatus = await Post.findOneAndUpdate({
+                    _id: posttoedit._id
+                }, {
+                    hundredthousandlikes: true
+                })
+                updatepostlikecountstatus
+            }
+        }
+        if (likeCount == 1000000) {
+            if (posttoedit.millionlikes == true) {
+                var millionlikes;
+            } else {
+                addtofeed(posttoedit.owner, "Wow, your post hit 1,000,000 likes. That's insane!", '/s/' + posttoedit._id, posttoedit.body)
+                var updatepostlikecountstatus = await Post.findOneAndUpdate({
+                    _id: posttoedit._id
+                }, {
+                    millionlikes: true
+                })
+                updatepostlikecountstatus
+            }
+        }
         if (newLikes.includes(username)) {
             return res.redirect('/s/' + req.body.postid);
         } else {
@@ -728,6 +807,43 @@ function loggedin(user) {
 async function getpostowner(postid) {
     const postowner = await Post.findById(postid)
     return postowner.owner.toString()
+}
+
+async function addtofeed(feedowner, type, link, feed) {
+    var oldfeed = await getfeed(feedowner)
+    var oldfeedlinks = await getfeedlinks(feedowner)
+    var oldfeedtype = await getfeedtype(feedowner)
+
+    if (oldfeed.length < 40) {
+        oldfeed.unshift(feed)
+        oldfeedlinks.unshift(link)
+        oldfeedtype.unshift(type)
+
+        updateownersfeed = await User.findByIdAndUpdate({
+            _id: feedowner
+        }, {
+            feed: oldfeed,
+            feedlinks: oldfeedlinks,
+            feedtype: oldfeedtype
+        })
+    } else {
+        oldfeed.unshift(feed)
+        oldfeedlinks.unshift(link)
+        oldfeedtype.unshift(type)
+        oldfeed.pop()
+        oldfeedlinks.pop()
+        oldfeedtype.pop()
+
+        updateownersfeed = await User.findOneAndUpdate({
+            _id: feedowner
+        }, {
+            feed: oldfeed,
+            feedlinks: oldfeedlinks,
+            feedtype: oldfeedtype
+        })
+    }
+
+    updateownersfeed;
 }
 
 async function getfeed(ownerid) {
