@@ -50,9 +50,9 @@
     <% } else { %>
     <form action="/like/new" method="POST" class="right">
         <input name="postid" class="hidden" value="<%= post._id %>">
-        <button class="postlike" onclick="like('<%= post._id %>')">
-            <!--♥️-->Like -
-            <%= post.likes.length %></button>
+        <span id="likebutton_<%= post._id %>">
+
+        </span>
     </form>
     <% } %>
     <button><%= post.date.toLocaleString() %></button>
@@ -84,6 +84,7 @@
     </div>
     <script>
         getusername("comment_<%= i %>_<%= comments[i].owner %>", "<%= comments[i].owner %>")
+        haveiliked('likebutton_<%= post._id %>', '<%= post.likes.length %>', '<%= post._id %>')
     </script>
     <% } %>
     <% } %>
