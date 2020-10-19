@@ -401,6 +401,12 @@ div.postdiv:hover {
     margin-bottom: 2px;
 }
 
+.embed {
+    padding: 15px;
+    border: 2px rgb(236, 236, 236) solid;
+    border-radius: 25px;
+}
+
 .noheader {
     position: relative;
     text-decoration: none;

@@ -55,6 +55,22 @@ router.get('/home', async function (req, res, next) {
     }
 });
 
+router.get('/embed/:postid', async function (req, res, next) {
+    console.log('/home')
+    const embeddedpost = await Post.findById(req.params.postid)
+    const about = {
+        title: 'Home - ' + Name,
+        template: 'pages/embed',
+        name: Name,
+        navbar: false,
+        footer: false,
+        loggedin: funcs.loggedin(req.user),
+        moderator: funcs.moderator(req.user),
+        post: embeddedpost
+    };
+    return res.render('base', about);
+});
+
 router.get('/account/edit', async function (req, res, next) {
     console.log('/account/edit')
     if (!req.user) {
