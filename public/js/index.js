@@ -36,29 +36,29 @@ async function version(id) {
 async function haveiliked(elemid, likecount, postid) {
     $.getJSON("/api/liked/" + postid, function (json) {
         if (json.liked == true) {
-            return document.getElementById(elemid).innerHTML = '<button onclick="unlike(\'' + postid + '\')"type="button" class="postlike red">Unlike - ' + likecount + '</button>';
+            return document.getElementById(elemid).innerHTML = '<button onclick=\'unlike("' + postid + '", "' + elemid + '", "' + eval(likecount) + '")\' "type="button" class="postlike red" id="i_' + elemid + '">Unlike - ' + eval(likecount) + '</button>';
         } else {
-            return document.getElementById(elemid).innerHTML = '<button onclick="like(\'' + postid + '\')"type="button" class="postlike">Like - ' + likecount + '</button>';
+            return document.getElementById(elemid).innerHTML = '<button onclick=\'like("' + postid + '", "' + elemid + '", "' + eval(likecount) + '")\' "type="button" class="postlike" id="i_' + elemid + '">Like - ' + eval(likecount) + '</button>';
         }
     });
 }
 
-async function like(postid) {
+async function like(postid, elemid, likecount) {
     $.post("/like/new", {
             postid: postid
         },
         function (data, status, jqXHR) {
-            location.reload()
+            return document.getElementById(elemid).innerHTML = '<button onclick=\'unlike("' + postid + '", "' + elemid + '", "' + eval(likecount + 1) + '")\' "type="button" class="postlike red" id="i_' + elemid + '">Unlike - ' + eval(eval(likecount) + 1) + '</button>';
         }
     );
 }
 
-async function unlike(postid) {
+async function unlike(postid, elemid, likecount) {
     $.post("/like/remove", {
             postid: postid
         },
         function (data, status, jqXHR) {
-            location.reload()
+            return document.getElementById(elemid).innerHTML = '<button onclick=\'like("' + postid + '", "' + elemid + '", "' + eval(likecount - 1) + '")\' "type="button" class="postlike" id="i_' + elemid + '">Like - ' + eval(eval(likecount) - 1) + '</button>';
         }
     );
 }
