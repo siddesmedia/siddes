@@ -449,6 +449,21 @@ router.get('/s/:postid', async function (req, res, next) {
             _id: post.owner
         })
 
+        var liked;
+
+        if (loggedin(req.user) == true) {
+            var post = await Post.findById(req.params.postid)
+            if (post.likes.includes(req.user._id) == true) {
+                liked = true
+            } else {
+                liked = false
+            }
+        } else {
+            liked = false
+        }
+
+
+
         const about = {
             title: 'Post - ' + Name,
             template: 'pages/post',
@@ -461,6 +476,7 @@ router.get('/s/:postid', async function (req, res, next) {
             // post data being loaded
             post: post,
             owner: owner,
+            liked: liked,
             comments: comments.reverse()
         };
         return res.render('base', about);
@@ -507,14 +523,15 @@ router.post('/comment/new', async function (req, res, next) {
         var date = Date.now()
         postowner = await getpostowner(parentid)
 
+
         var oldfeed = await getfeed(postowner)
         var oldfeedlinks = await getfeedlinks(postowner)
         var oldfeedtype = await getfeedtype(postowner)
 
         if (oldfeed.length < 40) {
-            oldfeed.push(req.body.body)
-            oldfeedlinks.push('/s/' + req.body.parentid)
-            oldfeedtype.push('Someone commented on your post...')
+            oldfeed.unshift(req.body.body)
+            oldfeedlinks.unshift('/s/' + req.body.parentid)
+            oldfeedtype.unshift('Someone commented on your post...')
 
             updateownersfeed = await User.findByIdAndUpdate({
                 _id: postowner
@@ -524,15 +541,12 @@ router.post('/comment/new', async function (req, res, next) {
                 feedtype: oldfeedtype
             })
         } else {
-            oldfeed.push(req.body.body)
-            oldfeedlinks.push('/s/' + req.body.parentid)
-            oldfeedtype.push('Someone commented on your post...')
-            oldfeed.reverse().pop()
-            oldfeedlinks.reverse().pop()
-            oldfeedtype.reverse().pop()
-            oldfeed.reverse()
-            oldfeedlinks.reverse()
-            oldfeedtype.reverse()
+            oldfeed.unshift(req.body.body)
+            oldfeedlinks.unshift('/s/' + req.body.parentid)
+            oldfeedtype.unshift('Someone commented on your post...')
+            oldfeed.pop()
+            oldfeedlinks.pop()
+            oldfeedtype.pop()
 
             updateownersfeed = await User.findOneAndUpdate({
                 _id: postowner
@@ -640,6 +654,65 @@ router.post('/follow/remove', async function (req, res, next) {
             update;
 
             res.redirect('/account/' + username)
+        }
+    }
+})
+
+router.post('/like/new', async function (req, res, next) {
+    console.log('/like/new POST')
+    if (!req.user) {
+        res.redirect('/login')
+    } else {
+        var username = req.user._id
+
+        var posttoedit = await Post.findById(req.body.postid.toString())
+
+        var newLikes = posttoedit.likes
+
+        if (newLikes.includes(username)) {
+            return res.redirect('/s/' + req.body.postid);
+        } else {
+            newLikes.push(username.toString())
+
+            var update = await Post.findOneAndUpdate({
+                _id: req.body.postid
+            }, {
+                likes: newLikes
+            });
+
+            update;
+
+            res.redirect('/s/' + req.body.postid)
+        }
+    }
+})
+
+router.post('/like/remove', async function (req, res, next) {
+    console.log('/like/remove POST')
+    if (!req.user) {
+        res.redirect('/login')
+    } else {
+        var username = req.user._id;
+
+        var posttoedit = await Post.findById(req.body.postid)
+
+        var newLikes = posttoedit.likes
+
+        if (newLikes.includes(username) == false) {
+            return res.redirect('/s/' + req.body.postid);
+        } else {
+
+            newLikes.splice(newLikes.indexOf(req.user._id), 1)
+
+            var update = await Post.findOneAndUpdate({
+                _id: req.body.postid
+            }, {
+                likes: newLikes
+            });
+
+            update;
+
+            res.redirect('/s/' + req.body.postid)
         }
     }
 })

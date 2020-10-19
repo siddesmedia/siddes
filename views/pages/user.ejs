@@ -116,13 +116,16 @@
                     <button
                         onclick="window.location='/account/new?text=<%- encodeURIComponent(posts[i].body) %>&repost=true'"
                         type="button" class="postrepost">Repost</button>
-                    <button onclick="like('<%= posts[i]._id %>')" type="button" class="postlike">Like</button>
+                    <span id="likebutton_<%= posts[i]._id %>">
+
+                    </span>
                 </span>
             </form>
         </div>
     </div>
     <script>
         replacepostlinks('post_<%= posts[i]._id %>')
+        haveiliked('likebutton_<%= posts[i]._id %>', '<%= posts[i].likes.length %>', '<%= posts[i]._id %>')
     </script>
     <% } %>
 </div>

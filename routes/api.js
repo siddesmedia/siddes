@@ -72,6 +72,25 @@ router.get('/api/premium', async function (req, res, next) {
     }
 });
 
+router.get('/api/liked/:postid', async function (req, res, next) {
+    try {
+        const postobject = await Post.findById(req.params.postid)
+        if (postobject.likes.includes(req.user._id) == true) {
+            res.json({
+                liked: true
+            })
+        } else {
+            res.json({
+                liked: false
+            })
+        }
+    } catch (err) {
+        res.json({
+            liked: false
+        })
+    }
+});
+
 router.get('/api/redis/flush', async function (req, res, next) {
     if (req.user) {
         if (req.user.admin == true) {

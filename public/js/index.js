@@ -33,9 +33,38 @@ async function version(id) {
     });
 }
 
+async function haveiliked(elemid, likecount, postid) {
+    $.getJSON("/api/liked/" + postid, function (json) {
+        if (json.liked == true) {
+            return document.getElementById(elemid).innerHTML = '<button onclick="unlike(\'' + postid + '\')"type="button" class="postlike red">Unlike - ' + likecount + '</button>';
+        } else {
+            return document.getElementById(elemid).innerHTML = '<button onclick="like(\'' + postid + '\')"type="button" class="postlike">Like - ' + likecount + '</button>';
+        }
+    });
+}
+
+async function like(postid) {
+    $.post("/like/new", {
+            postid: postid
+        },
+        function (data, status, jqXHR) {
+            location.reload()
+        }
+    );
+}
+
+async function unlike(postid) {
+    $.post("/like/remove", {
+            postid: postid
+        },
+        function (data, status, jqXHR) {
+            location.reload()
+        }
+    );
+}
+
 async function premium(id) {
     $.getJSON("/api/premium", function (json) {
-        console.log(json.premium)
         if (json.premium == true) {
             return document.getElementById(id).innerHTML = '<a href="/premium">Premium</a>';
         } else {
@@ -51,7 +80,7 @@ function approvepost(id) {
             approved: 'true'
         },
         function (data, status, jqXHR) {
-            location.reload()
+            window.location = window.location
         }
     );
     setTimeout(function () {

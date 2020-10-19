@@ -40,8 +40,21 @@
     </div>
     <button onclick="window.location='/account/new?text=<%- encodeURIComponent(post.body) %>&repost=true'" type="button"
         class="postrepost">Repost</button>
-    <button class="postlike" onclick="like('<%= post._id %>')">Like -
-        <%= post.likes.length %></button>
+    <% if(liked == true) { %>
+    <form action="/like/remove" method="POST" class="right">
+        <input name="postid" class="hidden" value="<%= post._id %>">
+        <button class="postlike red" onclick="like('<%= post._id %>')">
+            <!--♥️-->Unlike -
+            <%= post.likes.length %></button>
+    </form>
+    <% } else { %>
+    <form action="/like/new" method="POST" class="right">
+        <input name="postid" class="hidden" value="<%= post._id %>">
+        <button class="postlike" onclick="like('<%= post._id %>')">
+            <!--♥️-->Like -
+            <%= post.likes.length %></button>
+    </form>
+    <% } %>
     <button><%= post.date.toLocaleString() %></button>
 </div>
 <h2 class="header" id="comments">Comments:</h2>

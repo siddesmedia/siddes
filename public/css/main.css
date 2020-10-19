@@ -171,7 +171,6 @@ div.postdiv:hover {
 
 .postdiv button,
 .postdiv input {
-    background-color: rgb(236, 236, 236);
     border-radius: 100px;
     border: none;
     color: grey;
@@ -294,6 +293,10 @@ div.postdiv:hover {
 
 .link:hover::after {
     height: 100%;
+}
+
+.red {
+    background-color: rgb(255, 196, 196);
 }
 
 /* badges */
@@ -434,7 +437,7 @@ div.postdiv:hover {
     }
 }
 
-@media only screen and (max-width: 995px) {
+@media only screen and (max-width: 1030px) {
     .modbuttons {
         display: none;
     }
