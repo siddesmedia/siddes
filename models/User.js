@@ -38,6 +38,11 @@ const User = new mongoose.Schema({
         required: true,
         default: false
     },
+    apikey: {
+        type: String,
+        unique: true,
+        required: true,
+    },
     following: {
         type: Array,
         unique: false,

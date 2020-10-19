@@ -84,6 +84,13 @@ async function premium(id) {
     });
 }
 
+function copytext(elemid) {
+    var copyText = document.getElementById(elemid);
+    copyText.select();
+    copyText.setSelectionRange(0, 99999)
+    document.execCommand("copy");
+}
+
 
 function approvepost(id) {
     $.post("/mod/reports", {

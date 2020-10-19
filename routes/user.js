@@ -11,6 +11,9 @@ const {
     forwardAuthenticated
 } = require('../config/auth');
 const funcs = require('../config/functions');
+const {
+    v4: uuidv4
+} = require('uuid');
 
 router.get('/signup', forwardAuthenticated, function (req, res, next) {
     console.log('/signup')
@@ -66,9 +69,10 @@ router.post('/signup', (req, res) => {
                     username,
                     email,
                     password,
-                    "description": "This is a description. Click 'Edit Account to change me!",
-                    "moderator": false,
-                    "admin": false
+                    description: "This is a description. Click 'Edit Account to change me!",
+                    moderator: false,
+                    admin: false,
+                    apikey: uuidv4()
                 });
 
                 bcrypt.genSalt(10, (err, salt) => {

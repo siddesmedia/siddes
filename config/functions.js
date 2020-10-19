@@ -15,6 +15,11 @@ async function getpostowner(postid) {
     return postowner.owner.toString()
 }
 
+async function getuser(userid) {
+    const user = await User.findById(userid)
+    return user
+}
+
 async function addtofeed(feedowner, type, link, feed) {
     var oldfeed = await getfeed(feedowner)
     var oldfeedlinks = await getfeedlinks(feedowner)
@@ -102,5 +107,6 @@ module.exports = {
     getfeedtype,
     findposts,
     findcomments,
+    getuser,
     moderator
 }

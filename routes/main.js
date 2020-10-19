@@ -74,6 +74,28 @@ router.get('/account/edit', async function (req, res, next) {
     }
 });
 
+router.get('/account/developer', async function (req, res, next) {
+    console.log('/account/developer')
+    if (!req.user) {
+        res.redirect('/login')
+    } else {
+        var user = await funcs.getuser(req.user._id)
+        var apikey = user.apikey;
+
+        const about = {
+            title: 'New User - ' + Name,
+            template: 'pages/account/developer',
+            name: Name,
+            loggedin: funcs.loggedin(req.user),
+            moderator: funcs.moderator(req.user),
+            navbar: true,
+            footer: true,
+            apikey: apikey
+        };
+        return res.render('base', about);
+    }
+})
+
 router.get('/account', function (req, res, next) {
     console.log('/account')
     if (!req.user) {
@@ -522,7 +544,12 @@ router.post('/comment/new', async function (req, res, next) {
         var date = Date.now()
         postowner = await funcs.getpostowner(parentid)
 
-        funcs.addtofeed(postowner, "Someone commented on your post!", '/s/' + req.body.parentid, body)
+        if (body.length == 0) {
+            var car;
+        } else {
+            funcs.addtofeed(postowner, "Someone commented on your post!", '/s/' + req.body.parentid, body)
+        }
+
 
         updateownersfeed;
 
