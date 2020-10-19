@@ -309,8 +309,6 @@ router.get('/:username/following', async function (req, res, next) {
                 };
                 return res.render('base', about);
             } else {
-                console.log("not cached")
-
                 var user = await User.findOne({
                     username: req.params.username
                 })
