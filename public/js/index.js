@@ -134,3 +134,12 @@ function removepost(id) {
         this.replaceWith(newHTML);
     };
 })(jQuery);
+
+function opentab(tabname) {
+    var i;
+    var x = document.getElementsByClassName("tab");
+    for (i = 0; i < x.length; i++) {
+        x[i].classList.add("hidden");
+    }
+    document.getElementById(tabname).classList.remove("hidden");
+}

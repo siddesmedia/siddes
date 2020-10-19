@@ -20,6 +20,22 @@ async function getuser(userid) {
     return user
 }
 
+async function getlatestusers() {
+    const latestusers = await User.find().sort({
+        _id: -1
+    }).limit(10)
+
+    return latestusers
+}
+
+async function getlatestposts() {
+    const latestposts = await Post.find().sort({
+        _id: -1
+    }).limit(40)
+
+    return latestposts
+}
+
 async function addtofeed(feedowner, type, link, feed) {
     var oldfeed = await getfeed(feedowner)
     var oldfeedlinks = await getfeedlinks(feedowner)
@@ -108,5 +124,7 @@ module.exports = {
     findposts,
     findcomments,
     getuser,
+    getlatestusers,
+    getlatestposts,
     moderator
 }

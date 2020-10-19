@@ -1,0 +1,96 @@
+<h3 class="header">The Latest</h3>
+<div class="postdiv" style="border-bottom: none;">
+    <button onclick="opentab('posts')">Posts</button>
+    <button onclick="opentab('users')">Users</button>
+</div>
+<div id="posts" class="tab">
+    <h4 class="headerred">Posts</h4>
+    <% for(var i = 0; i < posts.length; i++) { %>
+    <div class="postcontainer">
+        <div class="postdiv">
+            <div style="cursor: pointer;" onclick="window.location='/s/<%= posts[i]._id %>'">
+                <% if (posts[i].approved == true) { %>
+                <span class="commentsmeta right">
+                    <button type="button" class="postreport">Approved</button>
+                </span>
+                <% } else { if (posts[i].reported == true) { %>
+                <span class="commentsmeta right">
+                    <button type="button" class="postreport">Under Review</button>
+                </span>
+                <% } else { %>
+                <span class="commentsmeta right">
+                    <button onclick="window.location='/report?post=<%= posts[i]._id %>'" type="button"
+                        class="postreport"><a class="nostyle"
+                            href="/report?post=<%= posts[i]._id %>">Report</a></button>
+                </span>
+                <% }} %>
+                <p class="postowner">
+                    <a class="postownerlink" href="/account/<%= posts[i].owner %>"
+                        id="user_<%= i.toString() %>_<%= posts[i]._id %>">
+                        <%= posts[i].owner %>
+                    </a>
+                    <% if(posts[i].repost == 'true') { %>
+                    <span class="repostbadge">Repost</span>
+                    <% } else {} %>
+                </p>
+                <p class="postbody" id="post_<%= posts[i]._id %>">
+                    <%= posts[i].body %>
+                </p>
+            </div>
+        </div>
+    </div>
+    <script>
+        replacepostlinks('post_<%= posts[i]._id %>')
+        getusername('user_<%= i.toString() %>_<%= posts[i]._id %>', '<%= posts[i].owner %>')
+    </script>
+    <% } %>
+</div>
+<div id="users" class="tab hidden">
+    <% for(var i = 0; i < users.length; i++) { %>
+    <div class="postcontainer">
+        <div class="postdiv">
+            <div style="cursor: pointer;" onclick="window.location='/account/<%= users[i]._id %>'">
+                <p class="postowner">
+                    <% if(users[i].displayname == "" || users[i].displayname == null || !users[i].displayname) { %>
+                    <a class="postownerlink" href="/account/<%= users[i]._id %>">
+                        @<%= users[i].username %>
+                    </a>
+                    <% } else { %>
+                    <a class="postownerlink" href="/account/<%= users[i]._id %>" style="font-size: large;">
+                        <%= users[i].displayname %>
+                    </a><br>
+                    <a class="postownerlink" href="/account/<%= users[i]._id %>">
+                        @<%= users[i].username %>
+                    </a>
+                    <% }%>
+                    <span>
+                        <% if(users[i].premium == true) { %>
+                        <span>Premium</span>
+                        <% } %>
+                        <% if(users[i].developer == true) { %>
+                        <span class="devbadge"><img width="15px" style="padding: 0;padding-top:5px;"
+                                src="/img/icons/dev_badge_2.svg"></span>
+                        <% } %>
+                        <% if(users[i].staff == true) { %>
+                        <span><%= name %>
+                            Staff</span>
+                        <% } %>
+                        <% if(users[i].betatester == true) { %>
+                        <span>Beta Tester</span>
+                        <% } %>
+                        <% if(users[i].bot == true) { %>
+                        <span>Bot Account</span>
+                        <% } %>
+                    </span>
+                    <p>
+                        <a href="/<%= users[i].username %>/following">Following: <%= users[i].following.length %></a>
+                    </p>
+                </p>
+                <p>
+                    <%= users[i].description %>
+                </p>
+            </div>
+        </div>
+    </div>
+    <% } %>
+</div>

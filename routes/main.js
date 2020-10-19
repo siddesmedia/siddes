@@ -12,17 +12,21 @@ const redis = require('../config/redis')
 const JSON5 = require('json5')
 const funcs = require('../config/functions');
 
-router.get('/', function (req, res, next) {
+router.get('/', async function (req, res, next) {
     console.log('/')
     if (!req.user) {
+        const getlatestusers = await funcs.getlatestusers()
+        const getlatestposts = await funcs.getlatestposts()
         const about = {
             title: 'New User - ' + Name,
-            template: 'pages/newuser',
+            template: 'pages/latest',
             name: Name,
             loggedin: funcs.loggedin(req.user),
             moderator: funcs.moderator(req.user),
             navbar: true,
-            footer: true
+            footer: true,
+            posts: getlatestposts,
+            users: getlatestusers
         };
         return res.render('base', about);
     } else {
