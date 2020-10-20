@@ -5,7 +5,7 @@
     <a href="/account/developer" class="headerred nopadmar smalltext">Developer</a>
 </span>
 <br><br>
-<form action="/account/edit" method="POST" class="section">
+<form action="/account/edit" method="POST" class="section" enctype="multipart/form-data">
     <label for="username">Username (no spaces or " or '):</label><br>
     <input type="text" class="input" name="username" value="<%= user.username %>" style="width: 50%;" id="usernamefield"
         required pattern="\S+">
@@ -18,6 +18,12 @@
     <br><br>
     <label for="email">Email:</label><br>
     <input type="email" class="input" name="email" value="<%= user.email %>" style="width: 50%;" required>
+    <br><br>
+    <label for="image">Profile Picture (optional):</label><br>
+    <input type="file" accept="image/*" class="input" name="image" style="width: 50%;" value="Upload Profile Picture">
+    <br><br>
+    <label for="image">Banner (optional):</label><br>
+    <input type="file" accept="image/*" class="input" name="banner" style="width: 50%;" value="Upload Banner">
     <br><br>
     <button type="submit" class="button">Save</button>
 </form>

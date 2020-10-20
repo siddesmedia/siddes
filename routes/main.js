@@ -15,7 +15,16 @@ const funcs = require('../config/functions');
 const multer = require('multer');
 const path = require('path');
 const uploadimage = multer({
-    dest: './usergenerated/images'
+    dest: './usergenerated/images',
+    limits: {
+        fileSize: 4000000
+    }
+});
+const uploadpfp = multer({
+    dest: './usergenerated/user',
+    limits: {
+        fileSize: 4000000
+    }
 });
 
 router.get('/', async function (req, res, next) {
@@ -479,6 +488,15 @@ router.get('/usergenerated/images/:parentid', async function (req, res, next) {
     }
 })
 
+router.get('/usergenerated/user/:parentid', async function (req, res, next) {
+    console.log(req.originalUrl)
+    try {
+        res.sendFile(path.join(__dirname, '../usergenerated/user/', req.params.parentid))
+    } catch (err) {
+        res.sendFile(path.join(__dirname, '../usergenerated/images/notfound.jpeg'))
+    }
+})
+
 router.get('/s/:postid', async function (req, res, next) {
     console.log('/s/' + req.params.postid)
 
@@ -560,8 +578,6 @@ router.post('/post/new', uploadimage.single('image'), async function (req, res, 
             media = true
         }
 
-        console.log('media: ' + media)
-
         var newPost = new Post({
             body: body,
             owner: owner,
@@ -626,7 +642,7 @@ router.post('/comment/new', async function (req, res, next) {
     }
 })
 
-router.post('/account/edit', async function (req, res, next) {
+router.post('/account/edit', uploadpfp.any(), async function (req, res, next) {
     console.log('/account/edit POST')
     if (!req.user) {
         res.redirect('/login')
@@ -646,6 +662,38 @@ router.post('/account/edit', async function (req, res, next) {
         });
 
         update
+
+        console.log(req.files)
+
+        try {
+            if (req.files) {
+                if (req.files.length == 1) {
+                    if (req.files[0].fieldname == 'banner') {
+                        var updatepfp = await User.findOneAndUpdate({
+                            _id: req.user._id
+                        }, {
+                            banner: req.files[0].path
+                        });
+                    } else {
+                        var updatepfp = await User.findOneAndUpdate({
+                            _id: req.user._id
+                        }, {
+                            pfp: req.files[0].path
+                        });
+                    }
+                } else if (req.files.length == 2) {
+                    var updatepfp = await User.findOneAndUpdate({
+                        _id: req.user._id
+                    }, {
+                        pfp: req.files[0].path,
+                        banner: req.files[1].path
+                    });
+                }
+            }
+            updatepfp
+        } catch (err) {
+            var dog
+        }
 
         res.redirect('/account/' + req.user._id)
     }

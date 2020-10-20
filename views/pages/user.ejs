@@ -1,32 +1,41 @@
-<h3>
-    <% if(user.displayname == "" || user.displayname == null || !user.displayname) { %>
-    <h2 class="headerred"><span>@<%= user.username %></span></h2>
-    <% } else { %>
-</h3>
-<h2 class="header nobottompadmar"><%= user.displayname %></h2><br>
-<h4>
-    <span class="headerred">@<%= user.username %></span>
-    <% } %>
-    <span>
-        <% if(user.premium == true) { %>
-        <span>Premium</span>
+<div class="bannerimg">
+    <img class="banner" src="<%= user.banner %>" loading="lazy" style="width:100%;height: auto">
+</div>
+<div class="pfpimage">
+    <img class="pfp" src="<%= user.pfp %>" loading="lazy">
+</div>
+<br>
+<div>
+    <h3>
+        <% if(user.displayname == "" || user.displayname == null || !user.displayname) { %>
+        <h2 class="headerred"><span>@<%= user.username %></span></h2>
+        <% } else { %>
+    </h3>
+    <h2 class="header nobottompadmar"><%= user.displayname %></h2><br>
+    <h4>
+        <span class="headerred">@<%= user.username %></span>
         <% } %>
-        <% if(user.developer == true) { %>
-        <span class="devbadge"><img width="15px" style="padding: 0;padding-top:5px;"
-                src="/img/icons/dev_badge_2.svg"></span>
-        <% } %>
-        <% if(user.staff == true) { %>
-        <span><%= name %>
-            Staff</span>
-        <% } %>
-        <% if(user.betatester == true) { %>
-        <span>Beta Tester</span>
-        <% } %>
-        <% if(user.bot == true) { %>
-        <span>Bot Account</span>
-        <% } %>
-    </span>
-</h4>
+        <span>
+            <% if(user.premium == true) { %>
+            <span>Premium</span>
+            <% } %>
+            <% if(user.developer == true) { %>
+            <span class="devbadge"><img width="15px" style="padding: 0;padding-top:5px;"
+                    src="/img/icons/dev_badge_2.svg"></span>
+            <% } %>
+            <% if(user.staff == true) { %>
+            <span><%= name %>
+                Staff</span>
+            <% } %>
+            <% if(user.betatester == true) { %>
+            <span>Beta Tester</span>
+            <% } %>
+            <% if(user.bot == true) { %>
+            <span>Bot Account</span>
+            <% } %>
+        </span>
+    </h4>
+</div>
 <div class="section">
     <p>
         <a href="<%= user.username %>/following">Following:
@@ -115,9 +124,11 @@
                         <button onclick="removepost('<%= posts[i]._id %>')" type="button" class="button">Mod: Remove
                             Post</button>
                         <% } else { %>
-                        <button onclick=" removepost('<%= posts[i]._id %>')" type="button" class="button">Mod: Remove
+                        <button onclick=" removepost('<%= posts[i]._id %>')" type="button" class="button">Mod:
+                            Remove
                             Post</button>
-                        <button onclick=" approvepost('<%= posts[i]._id %>')" type="button" class="button">Mod: Approve
+                        <button onclick=" approvepost('<%= posts[i]._id %>')" type="button" class="button">Mod:
+                            Approve
                             Post</button>
 
                         <% }} %>

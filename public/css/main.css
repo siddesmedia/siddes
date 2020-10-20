@@ -118,6 +118,27 @@ body {
     border-radius: 25px;
 }
 
+.pfpimage {
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    margin-left: 25px;
+    border-radius: 20000px;
+    border: 2px rgb(236, 236, 236) solid;
+    top: 175px;
+    position: absolute;
+}
+
+.bannerimg {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+}
+
+.pfp {
+    height: 100px;
+}
+
 .right {
     float: right;
 }

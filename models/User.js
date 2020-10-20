@@ -43,6 +43,16 @@ const User = new mongoose.Schema({
         unique: true,
         required: true,
     },
+    pfp: {
+        type: String,
+        unique: true,
+        required: false,
+    },
+    banner: {
+        type: String,
+        unique: true,
+        required: false,
+    },
     following: {
         type: Array,
         unique: false,
