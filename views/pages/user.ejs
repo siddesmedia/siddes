@@ -1,13 +1,13 @@
 <h3>
-    <% if(user.displayname == "") { %>
+    <% if(user.displayname == "" || user.displayname == null || !user.displayname) { %>
     <h2 class="headerred"><span>@<%= user.username %></span></h2>
     <% } else { %>
 </h3>
-<span class="header"><%= user.displayname %></span><br>
-<h3 class="headerred">
-    @<span><%= user.username %></span>
+<h2 class="header nobottompadmar"><%= user.displayname %></h2><br>
+<h4>
+    <span class="headerred">@<%= user.username %></span>
     <% } %>
-    <h6>
+    <span>
         <% if(user.premium == true) { %>
         <span>Premium</span>
         <% } %>
@@ -25,8 +25,8 @@
         <% if(user.bot == true) { %>
         <span>Bot Account</span>
         <% } %>
-    </h6>
-</h3>
+    </span>
+</h4>
 <div class="section">
     <p>
         <a href="<%= user.username %>/following">Following:
@@ -40,12 +40,12 @@
     <% if(follows == false) { %>
     <form action="/follow/new" method="POST">
         <input type="text" name="username" value="<%= user._id %>" class="hidden">
-        <button type="submit">Follow</button>
+        <button type="submit" class="button">Follow</button>
     </form>
     <% } else { %>
     <form action="/follow/remove" method="POST">
         <input type="text" name="username" value="<%= user._id %>" class="hidden">
-        <button type="submit">Unfollow</button>
+        <button class="button" type="submit">Unfollow</button>
     </form>
     <% }} %>
     <p>
@@ -54,9 +54,8 @@
         <span><%= user.description %></span>
     </p>
 </div>
-<h2 class="noheader">Posts:</h2>
+<h2 class="noheader nobottompadmar">Posts:</h2>
 <div id="posts">
-    <hr>
     <% for(var i = 0; i < posts.length; i++) { %>
     <div class="postcontainer">
         <div class="postdiv">
@@ -69,16 +68,16 @@
             <div style="cursor: pointer;" onclick="window.location='/s/<%= posts[i]._id %>'">
                 <% if (posts[i].approved == true) { %>
                 <span class="commentsmeta right">
-                    <button type="button" class="postreport">Approved</button>
+                    <button type="button" class="postreport button">Approved</button>
                 </span>
                 <% } else { if (posts[i].reported == true) { %>
                 <span class="commentsmeta right">
-                    <button type="button" class="postreport">Under Review</button>
+                    <button type="button" class="postreportbutton">Under Review</button>
                 </span>
                 <% } else { %>
                 <span class="commentsmeta right">
                     <button onclick="window.location='/report?post=<%= posts[i]._id %>'" type="button"
-                        class="postreport"><a class="nostyle"
+                        class="postreport button"><a class="nostyle"
                             href="/report?post=<%= posts[i]._id %>">Report</a></button>
                 </span>
                 <% }} %>
@@ -99,23 +98,26 @@
             </div>
             <div class="post_bottom_buttons">
                 <span class="seeallcommentsbutton">
-                    <button type="button" onclick="window.location='/s/<%= posts[i]._id %>#comments'">See All
+                    <button type="button" onclick="window.location='/s/<%= posts[i]._id %>#comments'" class="button">See
+                        All
                         Comments</button>
                 </span>
                 <span class="right">
                     <span class="modbuttons">
                         <% if(moderator == true) { if(posts[i].approved == true) { %>
-                        <button onclick="removepost('<%= posts[i]._id %>')" type="button">Mod: Remove Post</button>
+                        <button onclick="removepost('<%= posts[i]._id %>')" type="button" class="button">Mod: Remove
+                            Post</button>
                         <% } else { %>
-                        <button onclick=" removepost('<%= posts[i]._id %>')" type="button">Mod: Remove Post</button>
-                        <button onclick=" approvepost('<%= posts[i]._id %>')" type="button">Mod: Approve
+                        <button onclick=" removepost('<%= posts[i]._id %>')" type="button" class="button">Mod: Remove
+                            Post</button>
+                        <button onclick=" approvepost('<%= posts[i]._id %>')" type="button" class="button">Mod: Approve
                             Post</button>
 
                         <% }} %>
                     </span>
                     <button
                         onclick="window.location='/account/new?text=<%- encodeURIComponent(posts[i].body) %>&repost=true'"
-                        type="button" class="postrepost">Repost</button>
+                        type="button" class="postrepost button">Repost</button>
                     <span id="likebutton_<%= posts[i]._id %>">
 
                     </span>
@@ -125,7 +127,7 @@
                         required placeholder="Thoughts...">
                     <input name="parentid" type="text" style="width:0%" class="hidden" value="<%= posts[i]._id %>"
                         required="required">
-                    <button type="submit" class="postcomment">Comment</button>
+                    <button type="submit" class="postcomment button">Comment</button>
                 </form>
             </div>
             <% } %>

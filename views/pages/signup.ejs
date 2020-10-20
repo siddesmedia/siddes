@@ -1,34 +1,36 @@
+<h3 class="header">Signup</h3>
 <div class="section">
     <form action="/signup" method="POST">
-        <h1>Signup</h1>
         <div>
             <label for="username">Username (no space ' or "):</label>
-            <input type="username" id="username" name="username" placeholder="username" value="" required
+            <input type="username" class="input" id="username" name="username" placeholder="username" value="" required
                 pattern="\S+" />
         </div>
         <br>
         <div>
             <label for="email">Email:</label>
-            <input type="email" id="email" name="email" placeholder="email" value="" required />
+            <input type="email" class="input" id="email" name="email" placeholder="email" value="" required />
         </div>
         <br>
         <div>
             <label for="password">Password:</label>
-            <input type="password" id="password" name="password" placeholder="password" value="" required />
+            <input type="password" class="input" id="password" name="password" placeholder="password" value=""
+                required />
         </div>
         <br>
         <div>
             <label for="password2">Confirm Password:</label>
-            <input type="password" id="password2" name="password2" placeholder="password" value="" required />
+            <input type="password" class="input" id="password2" name="password2" placeholder="password" value=""
+                required />
         </div>
         <div>
             <p>
-                <input type="checkbox" required checked>
+                <input type="checkbox" class="input" required checked>
                 I am over 13 years old and agree to the <a>Terms of
                     Service</a> and <a>Privacy Policy</a>.
             </p>
         </div>
-        <button type="submit">Register</button>
+        <button type="submit" class="button">Register</button>
 
         <p>Have an account? <a href="/login">Login</a></p>
     </form>

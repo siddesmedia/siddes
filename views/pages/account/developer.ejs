@@ -1,14 +1,12 @@
 <h3 class="header">Developer</h3>
 <div class="section">
-    <p>You can find the developer documentation <a href="/account/developer/docs" class="link">here.</a></p>
+    <p>You can find the developer documentation <a href="/account/developer/docs" class="link">here</a>.</p>
     <p>Your API key (partially hidden for secrecy):</p>
     <button
         onclick="document.getElementById('apikey').classList.remove('hidden');document.getElementById('showbutton').classList.add('hidden');document.getElementById('hidebutton').classList.remove('hidden');"
-        id="showbutton">Click To
-        Show</button>
+        id="showbutton" class="button">Click To Show</button>
     <button
         onclick="document.getElementById('apikey').classList.add('hidden');document.getElementById('showbutton').classList.remove('hidden');document.getElementById('hidebutton').classList.add('hidden');"
-        id="hidebutton" class="hidden">Click
-        To Hide</button>
+        id="hidebutton" class="hidden button">Click To Hide</button>
     <input disabled value="<%= apikey %>" class="apikey hidden" style="width:35%" id="apikey">
 </div>

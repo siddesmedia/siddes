@@ -39,9 +39,9 @@ async function haveiliked(elemid, likecount, postid, loggedin) {
     loggedinbool = loggedin
     $.getJSON("/api/liked/" + postid, function (json) {
         if (json.liked == true) {
-            return document.getElementById(elemid).innerHTML = '<button onclick=\'unlike("' + postid + '", "' + elemid + '", "' + eval(likecount) + '")\' "type="button" class="postlike red" id="i_' + elemid + '">Unlike - ' + eval(likecount) + '</button>';
+            return document.getElementById(elemid).innerHTML = '<button onclick=\'unlike("' + postid + '", "' + elemid + '", "' + eval(likecount) + '")\' "type="button" class="postlike red button" id="i_' + elemid + '">Unlike - ' + eval(likecount) + '</button>';
         } else {
-            return document.getElementById(elemid).innerHTML = '<button onclick=\'like("' + postid + '", "' + elemid + '", "' + eval(likecount) + '")\' "type="button" class="postlike" id="i_' + elemid + '">Like - ' + eval(likecount) + '</button>';
+            return document.getElementById(elemid).innerHTML = '<button onclick=\'like("' + postid + '", "' + elemid + '", "' + eval(likecount) + '")\' "type="button" class="postlike button" id="i_' + elemid + '">Like - ' + eval(likecount) + '</button>';
         }
     });
 }
@@ -52,7 +52,7 @@ async function like(postid, elemid, likecount) {
                 postid: postid
             },
             function (data, status, jqXHR) {
-                return document.getElementById(elemid).innerHTML = '<button onclick=\'unlike("' + postid + '", "' + elemid + '", "' + eval(likecount + 1) + '")\' "type="button" class="postlike red" id="i_' + elemid + '">Unlike - ' + eval(eval(likecount) + 1) + '</button>';
+                return document.getElementById(elemid).innerHTML = '<button onclick=\'unlike("' + postid + '", "' + elemid + '", "' + eval(likecount + 1) + '")\' "type="button" class="postlike red button" id="i_' + elemid + '">Unlike - ' + eval(eval(likecount) + 1) + '</button>';
             }
         );
     } else {
@@ -66,7 +66,7 @@ async function unlike(postid, elemid, likecount) {
                 postid: postid
             },
             function (data, status, jqXHR) {
-                return document.getElementById(elemid).innerHTML = '<button onclick=\'like("' + postid + '", "' + elemid + '", "' + eval(likecount - 1) + '")\' "type="button" class="postlike" id="i_' + elemid + '">Like - ' + eval(eval(likecount) - 1) + '</button>';
+                return document.getElementById(elemid).innerHTML = '<button onclick=\'like("' + postid + '", "' + elemid + '", "' + eval(likecount - 1) + '")\' "type="button" class="postlike button" id="i_' + elemid + '">Like - ' + eval(eval(likecount) - 1) + '</button>';
             }
         );
     } else {

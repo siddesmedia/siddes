@@ -7,25 +7,48 @@
     <% } else { %>
     <% for(var i = 0; i < users.length; i++) { %>
     <div class="postcontainer">
-        <div class="postdiv dotted" style="cursor: pointer;" onclick="window.location='/account/<%= users[i]._id %>'">
-            <span class="commentsmeta right">
-                <a href="/account/report?user=<%= users[i]._id %>">Report</a>
-            </span>
-            <% if(users[i].displayname == "") { %>
-            <h2>@<a href="/account/<%= users[i]._id %>"><%= users[i].username %></a></h2>
-            <% } else { %>
-            <h2><span><%= users[i].displayname %></span></h2>
-            <h3>@<a href="/account/<%= users[i]._id %>"><%= users[i].username %></a></h3>
-            <% } %>
-            <h6>
-                <% if(users[i].premium == true) { %><span>Premium</span><% } %>
-                <% if(users[i].developer == true) { %><span><%= name %> Developer</span><% } %>
-                <% if(users[i].staff == true) { %><span><%= name %> Staff</span><% } %>
-                <% if(users[i].betatester == true) { %><span>Beta Tester</span><% } %>
-                <% if(users[i].bot == true) { %><span>Bot Account</span><% } %>
-            </h6>
-            <p><%= users[i].description %></p>
-            <p>Following: <span><%= users[i].following.length %></span></p>
+        <div class="postdiv">
+            <div style="cursor: pointer;" onclick="window.location='/account/<%= users[i]._id %>'">
+                <p class="postowner">
+                    <% if(users[i].displayname == "" || users[i].displayname == null || !users[i].displayname) { %>
+                    <a class="postownerlink" href="/account/<%= users[i]._id %>">
+                        @<%= users[i].username %>
+                    </a>
+                    <% } else { %>
+                    <a class="postownerlink" href="/account/<%= users[i]._id %>" style="font-size: large;">
+                        <%= users[i].displayname %>
+                    </a><br>
+                    <a class="postownerlink" href="/account/<%= users[i]._id %>">
+                        @<%= users[i].username %>
+                    </a>
+                    <% }%>
+                    <span>
+                        <% if(users[i].premium == true) { %>
+                        <span>Premium</span>
+                        <% } %>
+                        <% if(users[i].developer == true) { %>
+                        <span class="devbadge"><img width="15px" style="padding: 0;padding-top:5px;"
+                                src="/img/icons/dev_badge_2.svg"></span>
+                        <% } %>
+                        <% if(users[i].staff == true) { %>
+                        <span><%= name %>
+                            Staff</span>
+                        <% } %>
+                        <% if(users[i].betatester == true) { %>
+                        <span>Beta Tester</span>
+                        <% } %>
+                        <% if(users[i].bot == true) { %>
+                        <span>Bot Account</span>
+                        <% } %>
+                    </span>
+                    <p>
+                        <a href="/<%= users[i].username %>/following">Following: <%= users[i].following.length %></a>
+                    </p>
+                </p>
+                <p>
+                    <%= users[i].description %>
+                </p>
+            </div>
         </div>
     </div>
     <% } %>

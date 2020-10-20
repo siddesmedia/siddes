@@ -1,21 +1,23 @@
-<h3 class="header">Edit Account</h3>
+<h3 class="header nobottompadmar">Edit Account</h3>
+<br>
+<span>
+    <a href="/account/clear" class="headerred smalltext">Clear Account</a>
+    <a href="/account/developer" class="headerred nopadmar smalltext">Developer</a>
+</span>
+<br><br>
 <form action="/account/edit" method="POST" class="section">
     <label for="username">Username (no spaces or " or '):</label><br>
-    <input type="text" name="username" value="<%= user.username %>" style="width: 50%;" id="usernamefield" required
-        pattern="\S+">
+    <input type="text" class="input" name="username" value="<%= user.username %>" style="width: 50%;" id="usernamefield"
+        required pattern="\S+">
     <br><br>
     <label for="displayname">Display name (optional):</label><br>
-    <input type="text" name="displayname" value="<%= user.displayname %>" style="width: 50%;">
+    <input type="text" class="input" name="displayname" value="<%= user.displayname %>" style="width: 50%;">
     <br><br>
     <label for="description">Bio:</label><br>
-    <input type="text" name="description" value="<%= user.description %>" style="width: 50%;" required>
+    <input type="text" class="input" name="description" value="<%= user.description %>" style="width: 50%;" required>
     <br><br>
     <label for="email">Email:</label><br>
-    <input type="email" name="email" value="<%= user.email %>" style="width: 50%;" required>
+    <input type="email" class="input" name="email" value="<%= user.email %>" style="width: 50%;" required>
     <br><br>
-    <button type="submit">Save</button>
+    <button type="submit" class="button">Save</button>
 </form>
-<br>
-<a href="/account/clear" class="headerred">Clear Account</a><br><br>
-<a href="/account/developer" class="headerred">Developer</a>
-<br>

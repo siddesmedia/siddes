@@ -1,10 +1,10 @@
-<form action="/post/new" method="POST">
-    <textarea name="body" required><%= text %></textarea>
+<form action="/post/new" method="POST" class="section">
+    <textarea name="body" required class="input"><%= text %></textarea>
     <% if(repost == 'true') { %>
     <input type="text" class="hidden" name="repost" value="true">
     <% } else { %>
     <input type="text" class="hidden" name="repost" value="false">
     <% } %>
     <br>
-    <button type="submit">Post</button>
+    <button type="submit" class="button">Post</button>
 </form>
