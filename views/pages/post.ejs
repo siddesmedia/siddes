@@ -1,4 +1,5 @@
 <div class="postdiv">
+    <br>
     <% if(moderator == true) { if(post.approved == true) { %>
     <button class="button" onclick="removepost('<%= post._id %>')" type="button">Mod: Remove Post</button>
     <% } else { %>
@@ -49,11 +50,13 @@
     haveiliked('likebutton_<%= post._id %>', '<%= post.likes.length %>', '<%= post._id %>',
         '<%= loggedin %>')
 </script>
-<h2 class="header" id="comments">Comments:</h2>
 <div class="postdiv">
+    <h2 class="header" id="comments">Comments:</h2>
+</div>
+<div>
     <form action="/comment/new" method="POST">
-        <input name="body" type="text" style="width:30%" autocomplete="off" class="postcommentinput" required="required"
-            placeholder="Thoughts...">
+        <input name="body" type="text" style="width:30%" autocomplete="off" class="postcommentinput input section"
+            required="required" placeholder="Thoughts...">
         <input name="parentid" type="text" style="width:0%" class="hidden" value="<%= post._id %>" required="required">
         <button type="submit" class="postcomment button">Post Comment</button>
     </form>

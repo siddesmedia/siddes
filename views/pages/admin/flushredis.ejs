@@ -1,5 +1,5 @@
-<h3 class="header">Flush Redis</h3>
+<h3 class="header nobottompadmar">Flush Redis</h3>
 <p class="section">Flushing Redis will clear all cache. This will cause lag for the next couple minutes. Use cautiously.
 </p>
-<button class="section" onclick="const confirmclear = confirm('Are you sure you want to flush Redis?');
+<button class="section button" onclick="const confirmclear = confirm('Are you sure you want to flush Redis?');
     if(confirmclear == true){ window.location='/api/redis/flush'}">Flush Redis</button><br>

@@ -11,7 +11,10 @@
         <a href="/mod">Moderators</a>
         <% } else {} %>
         <span id="premium"></span>
-        <p>&copy; 2020 to Present, <a href="/about"><%= name %></a> | Beta V<span id="version"></span></p>
+        <p>&copy; 2020 to Present, <a href="/about"><%= name %></a> | <button
+                style="background: none!important;border: none;padding: 0!important;margin: 0!important;font-size: medium;"
+                onclick="window.location.href='/company/releases'">Beta
+                V<span id="version"></span></button></p>
         <script>
             version('version')
             premium('premium')

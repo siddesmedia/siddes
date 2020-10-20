@@ -124,7 +124,7 @@ body {
 .postdiv {
     padding: 10px;
     padding-top: 0;
-    border-bottom: 2px rgb(236, 236, 236) solid;
+    border-top: 2px rgb(236, 236, 236) solid;
     transition: 1s;
 }
 
@@ -135,10 +135,10 @@ body {
     transition: 1s;
 }
 
-div.postdiv:hover {
+.postdiv:hover {
     padding: 10px;
     padding-top: 0;
-    border-bottom: 2px rgb(173, 173, 173) solid;
+    border-top: 2px rgb(173, 173, 173) solid;
 }
 
 .roundpostdiv {

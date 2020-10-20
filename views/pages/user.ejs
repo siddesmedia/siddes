@@ -54,7 +54,7 @@
         <span><%= user.description %></span>
     </p>
 </div>
-<h2 class="noheader nobottompadmar">Posts:</h2>
+<h2 class="noheader">Posts:</h2>
 <div id="posts">
     <% for(var i = 0; i < posts.length; i++) { %>
     <div class="postcontainer">
@@ -72,7 +72,7 @@
                 </span>
                 <% } else { if (posts[i].reported == true) { %>
                 <span class="commentsmeta right">
-                    <button type="button" class="postreportbutton">Under Review</button>
+                    <button type="button" class="postreportbutton button">Under Review</button>
                 </span>
                 <% } else { %>
                 <span class="commentsmeta right">
