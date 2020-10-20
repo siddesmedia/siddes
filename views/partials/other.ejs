@@ -1,10 +1,11 @@
 <div id="postModal" class="hidden post-box">
     <h1 class="colwhite">New Post <button onclick="newPost('hide')" class="right" type="button">X</button>
     </h1>
-    <form action="/post/new" method="POST">
+    <form action="/post/new" method="POST" enctype="multipart/form-data">
         <textarea type="text" placeholder="Your thoughts..." name="body" required class="newposttext"
             maxlength="300"></textarea><br>
         <input type="text" class="hidden" name="repost" value="false">
+        <input type="file" accept="image/jpeg" class="input" name="image">
         <button type="submit" class="button">Submit</button>
     </form>
 </div>

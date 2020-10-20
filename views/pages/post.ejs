@@ -38,6 +38,12 @@
         <p class="postbody" id="postbody">
             <%= post.body.toString() %>
         </p>
+        <% if(post.media == true) { %>
+        <img class="postimage" src="/usergenerated/images/<%= post._id %>" loading="lazy"><br>
+        <span>
+            <a href="/usergenerated/images/<%= post._id %>" download class="postbody smalltext">Download Image</a>
+        </span><br><br>
+        <% } %>
     </div>
     <button onclick="window.location='/account/new?text=<%- encodeURIComponent(post.body) %>&repost=true'" type="button"
         class="postrepost button">Repost</button>

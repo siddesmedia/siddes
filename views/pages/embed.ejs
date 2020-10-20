@@ -13,7 +13,7 @@
                 <% } else { %>
                 <span class="commentsmeta right">
                     <button onclick="window.location='/report?post=<%= post._id %>'" type="button" class="postreport"><a
-                            class="nostyle" href="/report?post=<%= post._id %>"target='_blank'>Report</a></button>
+                            class="nostyle" href="/report?post=<%= post._id %>" target='_blank'>Report</a></button>
                 </span>
                 <% }} %>
                 <p class="postowner">
@@ -27,13 +27,20 @@
                 <p class="postbody" id="post_<%= post._id %>">
                     <%= post.body %>
                 </p>
+                <% if(post.media == true) { %>
+                <img class="postimage" src="/usergenerated/images/<%= post._id %>" loading="lazy"><br>
+                <span>
+                    <a href="/usergenerated/images/<%= post._id %>" download class="postbody smalltext">Download
+                        Image</a>
+                </span><br><br>
+                <% } %>
                 <!--<p class="postmeta">
                     <%= post.date.toLocaleString() %>
                 </p>-->
             </div>
             <div class="post_bottom_buttons">
                 <span class="seeallcommentsbutton">
-                    <button type="button" onclick="window.location='/embed/<%= post._id %>#comments'">See
+                    <button type="button" class="button" onclick="window.location='/embed/<%= post._id %>#comments'">See
                         Comments</button>
                 </span>
                 <span class="right">
@@ -47,7 +54,8 @@
                         <% }} %>
                     </span>
                     <span>
-                        <button onclick="window.parent.location='/s/<%= post._id %>'" target='_blank'>View On
+                        <button onclick="window.parent.location='/s/<%= post._id %>'" target='_blank'
+                            class="button">View On
                             <%= name %></button>
                     </span>
                     <span id="likebutton_<%= post._id %>">

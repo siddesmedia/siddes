@@ -3,6 +3,7 @@ const router = express.Router()
 require('dotenv').config()
 const Name = process.env.NAME
 const Post = require('../models/Post');
+const Media = require('../models/Media');
 const Comment = require('../models/Comment');
 const {
     forwardAuthenticated
@@ -11,6 +12,11 @@ const User = require('../models/User');
 const redis = require('../config/redis')
 const JSON5 = require('json5')
 const funcs = require('../config/functions');
+const multer = require('multer');
+const path = require('path');
+const uploadimage = multer({
+    dest: './usergenerated/images'
+});
 
 router.get('/', async function (req, res, next) {
     console.log('/')
@@ -461,6 +467,18 @@ router.get('/:username', async function (req, res, next) {
     }
 });
 
+router.get('/usergenerated/images/:parentid', async function (req, res, next) {
+    console.log(req.originalUrl)
+    try {
+        const mediaitem = await Media.findOne({
+            parentid: req.params.parentid
+        })
+        res.sendFile(path.join(__dirname, '../', mediaitem.file))
+    } catch (err) {
+        res.sendFile(path.join(__dirname, '../usergenerated/images/notfound.jpeg'))
+    }
+})
+
 router.get('/s/:postid', async function (req, res, next) {
     console.log('/s/' + req.params.postid)
 
@@ -480,6 +498,7 @@ router.get('/s/:postid', async function (req, res, next) {
             footer: true
         });
     } else {
+        var media = false;
         var post = await Post.findOne({
             _id: req.params.postid
         })
@@ -503,7 +522,9 @@ router.get('/s/:postid', async function (req, res, next) {
             liked = false
         }
 
-
+        if (post.media == true) {
+            media = true
+        }
 
         const about = {
             title: 'Post - ' + Name,
@@ -518,24 +539,30 @@ router.get('/s/:postid', async function (req, res, next) {
             post: post,
             owner: owner,
             liked: liked,
-            comments: comments.reverse()
+            comments: comments.reverse(),
+            media: media
         };
         return res.render('base', about);
     }
 });
 
-router.post('/post/new', async function (req, res, next) {
+router.post('/post/new', uploadimage.single('image'), async function (req, res, next) {
     console.log('/post/new POST')
     if (!req.user) {
         res.redirect('/login')
     } else {
-        console.log(req.body.repost + ' true or not')
         var body = req.body.body;
         var owner = req.user._id;
         var media = false;
         var date = Date.now()
 
-        const newPost = new Post({
+        if (req.file) {
+            media = true
+        }
+
+        console.log('media: ' + media)
+
+        var newPost = new Post({
             body: body,
             owner: owner,
             media: media,
@@ -545,8 +572,19 @@ router.post('/post/new', async function (req, res, next) {
 
         newPost
             .save()
-            .then(user => {
+            .then(post => {
                 res.redirect('/s/' + newPost._id);
+
+                if (media == true) {
+
+                    var newMedia = new Media({
+                        owner: req.user._id,
+                        parentid: post._id,
+                        file: req.file.path
+                    })
+
+                    newMedia.save().then(media => {})
+                }
             })
     }
 })

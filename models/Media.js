@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const Media = new mongoose.Schema({
+    parentid: {
+        type: String,
+        unique: false,
+        required: true
+    },
     owner: {
         type: String,
         unique: false,
