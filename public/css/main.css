@@ -148,6 +148,11 @@ body {
     float: right;
 }
 
+.pagination {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
 .postdiv {
     padding: 10px;
     padding-top: 0;

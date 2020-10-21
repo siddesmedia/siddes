@@ -98,3 +98,33 @@
     <% } %>
     <% } %>
 </div>
+<div style="display: flex;justify-content: center;" class="postdiv">
+    <style>
+        .pagination {
+            padding-left: 10px;
+            padding-right: 10px;
+            margin: 5px;
+        }
+    </style>
+    <% if(page == 0) { %>
+    <button onclick="window.location='/search/<%= page-1 %>?q=<%= searchterm %>'" disabled
+        class="button pagination">...</button>
+    <% if (lastpage == true ) { %>
+    <button onclick="window.location='/search/<%= eval(page)+1 %>?q=<%= searchterm %>'" class="button pagination"
+        disabled>...</button>
+    <% } else { %>
+    <button onclick="window.location='/search/<%= eval(page)+1 %>?q=<%= searchterm %>'"
+        class="button pagination"><%= eval(page)+2 %></button>
+    <% } %>
+    <% } else if (lastpage == true ) { %>
+    <button onclick="window.location='/search/<%= page-1 %>?q=<%= searchterm %>'"
+        class="button pagination"><%= page %></button>
+    <button onclick="window.location='/search/<%= eval(page)+1 %>?q=<%= searchterm %>'" class="button pagination"
+        disabled>...</button>
+    <% } else { %>
+    <button onclick="window.location='/search/<%= page-1 %>?q=<%= searchterm %>'"
+        class="button pagination"><%= page %></button>
+    <button onclick="window.location='/search/<%= eval(page)+1 %>?q=<%= searchterm %>'"
+        class="button pagination"><%= eval(page)+2 %></button>
+    <% } %>
+</div>

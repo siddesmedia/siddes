@@ -15,6 +15,13 @@ async function getpostowner(postid) {
     return postowner.owner.toString()
 }
 
+async function getuserid(username) {
+    const userid = await User.findOne({
+        username: username
+    })
+    return userid._id
+}
+
 async function getuser(userid) {
     const user = await User.findById(userid)
     return user
@@ -126,5 +133,6 @@ module.exports = {
     getuser,
     getlatestusers,
     getlatestposts,
-    moderator
+    moderator,
+    getuserid
 }

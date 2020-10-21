@@ -2,6 +2,8 @@
 socialmedia.txt
 dump.rdb
 /usergenerated/*
+backup*
+!backup.sh
 
 # Logs
 logs

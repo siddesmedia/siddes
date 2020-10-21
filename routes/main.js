@@ -170,13 +170,24 @@ router.get('/company/releases', function (req, res, next) {
     return res.render('base', about);
 });
 
-router.get('/search', async function (req, res, next) {
+router.get('/search/', async function (req, res, next) {
+    console.log(req.originalUrl)
+    res.redirect('/search/0?q=' + req.query.q)
+})
+
+router.get('/search/:page', async function (req, res, next) {
     console.log(req.originalUrl)
     var posts = await Post.find({
         $text: {
             $search: req.query.q
         }
-    })
+    }).skip(req.params.page * 20).limit(20);
+
+    var lastpage = false;
+
+    if (posts.length < 20) {
+        lastpage = true
+    }
 
     const about = {
         title: req.query.q + ' - ' + Name,
@@ -187,6 +198,8 @@ router.get('/search', async function (req, res, next) {
         navbar: true,
         footer: true,
         posts: posts,
+        lastpage: lastpage,
+        page: req.params.page,
         searchterm: req.query.q
     };
     return res.render('base', about);
@@ -194,11 +207,22 @@ router.get('/search', async function (req, res, next) {
 
 router.get('/tag/:hashtag', async function (req, res, next) {
     console.log(req.originalUrl)
+    res.redirect('/tag/0/' + req.params.hashtag)
+});
+
+router.get('/tag/:page/:hashtag', async function (req, res, next) {
+    console.log(req.originalUrl)
     var posts = await Post.find({
         $text: {
             $search: '#' + req.params.hashtag
         }
-    })
+    }).skip(req.params.page * 20).limit(20);
+
+    var lastpage = false;
+
+    if (posts.length < 20) {
+        lastpage = true
+    }
 
     const about = {
         title: '#' + req.params.hashtag + ' - ' + Name,
@@ -208,7 +232,9 @@ router.get('/tag/:hashtag', async function (req, res, next) {
         moderator: funcs.moderator(req.user),
         navbar: true,
         footer: true,
+        lastpage: lastpage,
         posts: posts,
+        page: req.params.page,
         hashtag: req.params.hashtag
     };
     return res.render('base', about);
@@ -393,109 +419,6 @@ router.get('/:username/following', async function (req, res, next) {
     }
 });
 
-router.get('/:username', async function (req, res, next) {
-    console.log(req.originalUrl)
-    var userObject = await User.exists({
-        username: req.params.username
-    })
-
-    if (userObject == false) {
-        res.status(404)
-        res.status(404).render('base', {
-            title: "404 Not Found" + Name,
-            template: "errors/400",
-            name: Name,
-            loggedin: funcs.loggedin(req.user),
-            moderator: funcs.moderator(req.user),
-            navbar: true,
-            footer: true
-        });
-    } else {
-        var followers;
-
-        var user = await User.findOne({
-            username: req.params.username
-        })
-
-        redis.get('user_follow_count_' + req.params.username, async (err, value) => {
-            if (value) {
-                followers = value
-            } else {
-                var followercount = await User.find({
-                    following: user._id
-                })
-
-                followers = followercount.length.toString()
-                redis.set('user_follow_count_' + req.params.username, followers)
-
-            }
-        })
-        var posts = await Post.find({
-            owner: user._id
-        })
-
-        var currentUser;
-        var followingbool;
-
-        var follows;
-        if (!req.user) {
-            currentUser = null;
-            followingbool = null;
-        } else {
-            follows = await User.findById(req.user._id)
-
-            followingbool = follows.following.includes(user._id)
-
-            if (req.user.username == user.username) {
-                currentUser = true;
-            } else {
-                currentUser = false;
-            }
-        }
-
-        const username = req.params.username
-
-        const about = {
-            title: username + ' - ' + Name,
-            template: 'pages/user',
-            name: Name,
-            loggedin: funcs.loggedin(req.user),
-            moderator: funcs.moderator(req.user),
-            navbar: true,
-            footer: true,
-
-            // user data being loaded
-            user: user,
-            posts: posts.reverse(),
-            sameuser: currentUser,
-            follows: followingbool,
-            followers: followers
-        };
-        return res.render('base', about);
-    }
-});
-
-router.get('/usergenerated/images/:parentid', async function (req, res, next) {
-    console.log(req.originalUrl)
-    try {
-        const mediaitem = await Media.findOne({
-            parentid: req.params.parentid
-        })
-        res.sendFile(path.join(__dirname, '..', mediaitem.file))
-    } catch (err) {
-        res.sendFile(path.join(__dirname, '../usergenerated/images/notfound.jpeg'))
-    }
-})
-
-router.get('/usergenerated/user/:parentid', async function (req, res, next) {
-    console.log(req.originalUrl)
-    try {
-        res.sendFile(path.join(__dirname, '../usergenerated/user/', req.params.parentid))
-    } catch (err) {
-        res.sendFile(path.join(__dirname, '../usergenerated/images/notfound.jpeg'))
-    }
-})
-
 router.get('/s/:postid', async function (req, res, next) {
     console.log(req.originalUrl)
     var postObject = await Post.exists({
@@ -562,15 +485,136 @@ router.get('/s/:postid', async function (req, res, next) {
     }
 });
 
+router.get('/:username/:page', async function (req, res, next) {
+    console.log(req.originalUrl)
+    var userObject = await User.exists({
+        username: req.params.username
+    })
+
+    if (userObject == false) {
+        res.status(404)
+        res.status(404).render('base', {
+            title: "404 Not Found" + Name,
+            template: "errors/400",
+            name: Name,
+            loggedin: funcs.loggedin(req.user),
+            moderator: funcs.moderator(req.user),
+            navbar: true,
+            footer: true
+        });
+    } else {
+        var followers;
+
+        var user = await User.findOne({
+            username: req.params.username
+        })
+
+        redis.get('user_follow_count_' + req.params.username, async (err, value) => {
+            if (value) {
+                followers = value
+            } else {
+                var followercount = await User.find({
+                    following: user._id
+                })
+
+                followers = followercount.length.toString()
+                redis.set('user_follow_count_' + req.params.username, followers)
+
+            }
+        })
+        var posts = await Post.find({
+            owner: await funcs.getuserid(req.params.username)
+        }).sort({
+            date: -1
+        }).skip(req.params.page * 20).limit(20);
+
+        var currentUser;
+        var followingbool;
+        var lastpage = false;
+
+        if (posts.length < 20) {
+            lastpage = true
+        }
+
+        var follows;
+        if (!req.user) {
+            currentUser = null;
+            followingbool = null;
+        } else {
+            follows = await User.findById(req.user._id)
+
+            followingbool = follows.following.includes(user._id)
+
+            if (req.user.username == user.username) {
+                currentUser = true;
+            } else {
+                currentUser = false;
+            }
+        }
+
+        const username = req.params.username
+
+        const about = {
+            title: username + ' - ' + Name,
+            template: 'pages/user',
+            name: Name,
+            loggedin: funcs.loggedin(req.user),
+            moderator: funcs.moderator(req.user),
+            navbar: true,
+            footer: true,
+            page: req.params.page,
+            lastpage: lastpage,
+
+            // user data being loaded
+            user: user,
+            posts: posts,
+            sameuser: currentUser,
+            follows: followingbool,
+            followers: followers
+        };
+        return res.render('base', about);
+    }
+});
+
+router.get('/:username', async function (req, res, next) {
+    console.log(req.originalUrl)
+    res.redirect('/' + req.params.username + '/0')
+});
+
+router.get('/usergenerated/images/:parentid', async function (req, res, next) {
+    console.log(req.originalUrl)
+    try {
+        const mediaitem = await Media.findOne({
+            parentid: req.params.parentid
+        })
+        if (fs.existsSync(path.join(__dirname, '..', mediaitem.file)) == false) {
+            return res.sendFile(path.join(__dirname, '../usergenerated/images/notfound.jpeg'))
+        } else {
+            res.sendFile(path.join(__dirname, '..', mediaitem.file))
+        }
+    } catch (err) {
+        res.sendFile(path.join(__dirname, '../usergenerated/images/notfound.jpeg'))
+    }
+})
+
+router.get('/usergenerated/user/:parentid', async function (req, res, next) {
+    console.log(req.originalUrl)
+    try {
+        if (fs.existsSync(path.join(__dirname, '../usergenerated/user/', req.params.parentid)) == false || !req.params.parentid || req.params.parentid == '') {
+            return res.sendFile(path.join(__dirname, '../usergenerated/images/notfound.jpeg'))
+        } else {
+            res.sendFile(path.join(__dirname, '../usergenerated/user/', req.params.parentid))
+        }
+    } catch (err) {
+        res.sendFile(path.join(__dirname, '../usergenerated/images/notfound.jpeg'))
+    }
+})
+
 router.post('/post/new', uploadimage.single('image'), async function (req, res, next) {
     console.log(req.originalUrl)
     if (!req.user) {
         res.redirect('/login')
     } else {
-        const {
-            filename: image
-        } = req.file
-
         var body = req.body.body;
         var owner = req.user._id;
         var media = false;
@@ -605,10 +649,12 @@ router.post('/post/new', uploadimage.single('image'), async function (req, res, 
                 }
             })
 
-        await sharp(path.join(__dirname, '../', req.file.path))
-            .resize(300)
-            .toFile(path.join(__dirname, '../', 'usergenerated/images/' + req.file.filename))
-        fs.unlinkSync(path.join(__dirname, '../', 'usergenerated/imageslarge/' + req.file.filename))
+        if (media == true) {
+            await sharp(path.join(__dirname, '../', req.file.path))
+                .resize(300)
+                .toFile(path.join(__dirname, '../', 'usergenerated/images/' + req.file.filename))
+            fs.unlinkSync(path.join(__dirname, '../', 'usergenerated/imageslarge/' + req.file.filename))
+        }
     }
 })
 

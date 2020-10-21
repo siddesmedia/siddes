@@ -1,8 +1,8 @@
 <div class="bannerimg">
-    <img class="banner" src="<%= user.banner %>" loading="lazy" style="width:100%;height: auto">
+    <img class="banner" src="/<%= user.banner %>" loading="lazy" style="width:100%;height: auto">
 </div>
 <div class="pfpimage">
-    <img class="pfp" src="<%= user.pfp %>" loading="lazy">
+    <img class="pfp" src="/<%= user.pfp %>" loading="lazy">
 </div>
 <br>
 <div>
@@ -38,7 +38,7 @@
 </div>
 <div class="section">
     <p>
-        <a href="<%= user.username %>/following">Following:
+        <a href="/<%= user.username %>/following">Following:
             <span><%= user.following.length %></span></a> - Followers:
         <span><%= followers %></span>
     </p>
@@ -156,5 +156,35 @@
         haveiliked('likebutton_<%= posts[i]._id %>', '<%= posts[i].likes.length %>', '<%= posts[i]._id %>',
             '<%= loggedin %>')
     </script>
+    <% } %>
+</div>
+<div style="display: flex;justify-content: center;" class="postdiv">
+    <style>
+        .pagination {
+            padding-left: 10px;
+            padding-right: 10px;
+            margin: 5px;
+        }
+    </style>
+    <% if(page == 0) { %>
+    <button onclick="window.location='/<%= user.username %>/<%= page-1 %>'" disabled
+        class="button pagination">...</button>
+    <% if (lastpage == true ) { %>
+    <button onclick="window.location='/<%= user.username %>/<%= eval(page)+1 %>'" class="button pagination"
+        disabled>...</button>
+    <% } else { %>
+    <button onclick="window.location='/<%= user.username %>/<%= eval(page)+1 %>'"
+        class="button pagination"><%= eval(page)+2 %></button>
+    <% } %>
+    <% } else if (lastpage == true ) { %>
+    <button onclick="window.location='/<%= user.username %>/<%= page-1 %>'"
+        class="button pagination"><%= page %></button>
+    <button onclick="window.location='/<%= user.username %>/<%= eval(page)+1 %>'" class="button pagination"
+        disabled>...</button>
+    <% } else { %>
+    <button onclick="window.location='/<%= user.username %>/<%= page-1 %>'"
+        class="button pagination"><%= page %></button>
+    <button onclick="window.location='/<%= user.username %>/<%= eval(page)+1 %>'"
+        class="button pagination"><%= eval(page)+2 %></button>
     <% } %>
 </div>
