@@ -11,7 +11,7 @@ const User = require('../models/User');
 const funcs = require('../config/functions');
 
 router.get('/admin/redis/flush', async function (req, res, next) {
-    console.log('/admin/redis/flush')
+    console.log(req.originalUrl)
     if (!req.user) {
         return res.redirect('/login')
     }

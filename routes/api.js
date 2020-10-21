@@ -11,6 +11,7 @@ const {
 const redis = require('../config/redis')
 
 router.get('/api/get/username/:id', async function (req, res, next) {
+    console.log(req.originalUrl)
     try {
         const user = await User.findOne({
             _id: req.params.id
@@ -29,6 +30,7 @@ router.get('/api/get/username/:id', async function (req, res, next) {
 });
 
 router.get('/api/version', async function (req, res, next) {
+    console.log(req.originalUrl)
     const commitCount = await (await countCommits("./")).toString();
     const commitCountLength = commitCount.length
     var finalCommitCount;
@@ -51,6 +53,7 @@ router.get('/api/version', async function (req, res, next) {
 });
 
 router.get('/api/premium', async function (req, res, next) {
+    console.log(req.originalUrl)
     try {
         if (!req.user) {
             res.json({
@@ -73,6 +76,7 @@ router.get('/api/premium', async function (req, res, next) {
 });
 
 router.get('/api/liked/:postid', async function (req, res, next) {
+    console.log(req.originalUrl)
     try {
         const postobject = await Post.findById(req.params.postid)
         if (postobject.likes.includes(req.user._id) == true) {
@@ -92,6 +96,7 @@ router.get('/api/liked/:postid', async function (req, res, next) {
 });
 
 router.get('/api/redis/flush', async function (req, res, next) {
+    console.log(req.originalUrl)
     if (req.user) {
         if (req.user.admin == true) {
             try {

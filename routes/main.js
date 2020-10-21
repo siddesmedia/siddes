@@ -5,17 +5,19 @@ const Name = process.env.NAME
 const Post = require('../models/Post');
 const Media = require('../models/Media');
 const Comment = require('../models/Comment');
-const {
-    forwardAuthenticated
-} = require('../config/auth');
+const fs = require('fs')
+const sharp = require('sharp')
 const User = require('../models/User');
 const redis = require('../config/redis')
 const JSON5 = require('json5')
 const funcs = require('../config/functions');
 const multer = require('multer');
 const path = require('path');
+const {
+    forwardAuthenticated
+} = require('../config/auth');
 const uploadimage = multer({
-    dest: './usergenerated/images',
+    dest: './usergenerated/imageslarge',
     limits: {
         fileSize: 4000000
     }
@@ -28,7 +30,7 @@ const uploadpfp = multer({
 });
 
 router.get('/', async function (req, res, next) {
-    console.log('/')
+    console.log(req.originalUrl)
     if (!req.user) {
         const getlatestusers = await funcs.getlatestusers()
         const getlatestposts = await funcs.getlatestposts()
@@ -50,7 +52,7 @@ router.get('/', async function (req, res, next) {
 });
 
 router.get('/home', async function (req, res, next) {
-    console.log('/home')
+    console.log(req.originalUrl)
     if (req.user) {
         const about = {
             title: 'Home - ' + Name,
@@ -71,7 +73,7 @@ router.get('/home', async function (req, res, next) {
 });
 
 router.get('/embed/:postid', async function (req, res, next) {
-    console.log('/home')
+    console.log(req.originalUrl)
     const embeddedpost = await Post.findById(req.params.postid)
     const about = {
         title: 'Embed - ' + Name,
@@ -87,7 +89,7 @@ router.get('/embed/:postid', async function (req, res, next) {
 });
 
 router.get('/account/edit', async function (req, res, next) {
-    console.log('/account/edit')
+    console.log(req.originalUrl)
     if (!req.user) {
         res.redirect('/login')
     } else {
@@ -110,7 +112,7 @@ router.get('/account/edit', async function (req, res, next) {
 });
 
 router.get('/account/developer', async function (req, res, next) {
-    console.log('/account/developer')
+    console.log(req.originalUrl)
     if (!req.user) {
         res.redirect('/login')
     } else {
@@ -132,7 +134,7 @@ router.get('/account/developer', async function (req, res, next) {
 })
 
 router.get('/account', function (req, res, next) {
-    console.log('/account')
+    console.log(req.originalUrl)
     if (!req.user) {
         res.redirect('/login')
     } else {
@@ -141,7 +143,7 @@ router.get('/account', function (req, res, next) {
 });
 
 router.get('/company/about', function (req, res, next) {
-    console.log('/company/about')
+    console.log(req.originalUrl)
     const about = {
         title: 'About - ' + Name,
         template: 'pages/company/about',
@@ -155,7 +157,7 @@ router.get('/company/about', function (req, res, next) {
 });
 
 router.get('/company/releases', function (req, res, next) {
-    console.log('/company/releases')
+    console.log(req.originalUrl)
     const about = {
         title: 'Releases - ' + Name,
         template: 'pages/company/releases',
@@ -169,8 +171,7 @@ router.get('/company/releases', function (req, res, next) {
 });
 
 router.get('/search', async function (req, res, next) {
-    console.log('/search?q=' + req.query.q)
-
+    console.log(req.originalUrl)
     var posts = await Post.find({
         $text: {
             $search: req.query.q
@@ -192,8 +193,7 @@ router.get('/search', async function (req, res, next) {
 });
 
 router.get('/tag/:hashtag', async function (req, res, next) {
-    console.log('/tag/' + req.params.hashtag)
-
+    console.log(req.originalUrl)
     var posts = await Post.find({
         $text: {
             $search: '#' + req.params.hashtag
@@ -215,8 +215,7 @@ router.get('/tag/:hashtag', async function (req, res, next) {
 });
 
 router.get('/account/search', async function (req, res, next) {
-    console.log('/account/search?q=' + req.query.q)
-
+    console.log(req.originalUrl)
     var users = await User.find({
         username: req.query.q
     })
@@ -236,7 +235,7 @@ router.get('/account/search', async function (req, res, next) {
 });
 
 router.get('/account/new', async function (req, res, next) {
-    console.log('/account/new?text=' + req.query.text + '&repost=' + req.query.repost)
+    console.log(req.originalUrl)
     if (!req.user) {
         return res.redirect('/login')
     }
@@ -256,7 +255,7 @@ router.get('/account/new', async function (req, res, next) {
 });
 
 router.get('/account/clear', async function (req, res, next) {
-    console.log('/account/clear')
+    console.log(req.originalUrl)
     if (!req.user) {
         res.redirect('/login')
     } else {
@@ -274,7 +273,7 @@ router.get('/account/clear', async function (req, res, next) {
 })
 
 router.get('/account/clear/confirm', async function (req, res, next) {
-    console.log('/account/clear/confirm')
+    console.log(req.originalUrl)
     if (!req.user) {
         res.redirect('/login')
     } else {
@@ -307,7 +306,7 @@ router.get('/account/clear/confirm', async function (req, res, next) {
 })
 
 router.get('/account/:id', async function (req, res, next) {
-    console.log('/account/' + req.params.id)
+    console.log(req.originalUrl)
     try {
         const username = await User.findOne({
             _id: req.params.id
@@ -328,7 +327,7 @@ router.get('/account/:id', async function (req, res, next) {
 });
 
 router.get('/:username/following', async function (req, res, next) {
-    console.log('/' + req.params.username + '/following')
+    console.log(req.originalUrl)
     var userObject = await User.exists({
         username: req.params.username
     })
@@ -395,7 +394,7 @@ router.get('/:username/following', async function (req, res, next) {
 });
 
 router.get('/:username', async function (req, res, next) {
-    console.log('/' + req.params.username)
+    console.log(req.originalUrl)
     var userObject = await User.exists({
         username: req.params.username
     })
@@ -482,7 +481,7 @@ router.get('/usergenerated/images/:parentid', async function (req, res, next) {
         const mediaitem = await Media.findOne({
             parentid: req.params.parentid
         })
-        res.sendFile(path.join(__dirname, '../', mediaitem.file))
+        res.sendFile(path.join(__dirname, '..', mediaitem.file))
     } catch (err) {
         res.sendFile(path.join(__dirname, '../usergenerated/images/notfound.jpeg'))
     }
@@ -498,8 +497,7 @@ router.get('/usergenerated/user/:parentid', async function (req, res, next) {
 })
 
 router.get('/s/:postid', async function (req, res, next) {
-    console.log('/s/' + req.params.postid)
-
+    console.log(req.originalUrl)
     var postObject = await Post.exists({
         _id: req.params.postid
     })
@@ -565,10 +563,14 @@ router.get('/s/:postid', async function (req, res, next) {
 });
 
 router.post('/post/new', uploadimage.single('image'), async function (req, res, next) {
-    console.log('/post/new POST')
+    console.log(req.originalUrl)
     if (!req.user) {
         res.redirect('/login')
     } else {
+        const {
+            filename: image
+        } = req.file
+
         var body = req.body.body;
         var owner = req.user._id;
         var media = false;
@@ -596,17 +598,22 @@ router.post('/post/new', uploadimage.single('image'), async function (req, res, 
                     var newMedia = new Media({
                         owner: req.user._id,
                         parentid: post._id,
-                        file: req.file.path
+                        file: 'usergenerated/images/' + req.file.filename
                     })
 
                     newMedia.save().then(media => {})
                 }
             })
+
+        await sharp(path.join(__dirname, '../', req.file.path))
+            .resize(300)
+            .toFile(path.join(__dirname, '../', 'usergenerated/images/' + req.file.filename))
+        fs.unlinkSync(path.join(__dirname, '../', 'usergenerated/imageslarge/' + req.file.filename))
     }
 })
 
 router.post('/comment/new', async function (req, res, next) {
-    console.log('/comment/new POST')
+    console.log(req.originalUrl)
     if (!req.user) {
         res.redirect('/login')
     } else {
@@ -643,7 +650,7 @@ router.post('/comment/new', async function (req, res, next) {
 })
 
 router.post('/account/edit', uploadpfp.any(), async function (req, res, next) {
-    console.log('/account/edit POST')
+    console.log(req.originalUrl)
     if (!req.user) {
         res.redirect('/login')
     } else {
@@ -662,8 +669,6 @@ router.post('/account/edit', uploadpfp.any(), async function (req, res, next) {
         });
 
         update
-
-        console.log(req.files)
 
         try {
             if (req.files) {
@@ -700,7 +705,7 @@ router.post('/account/edit', uploadpfp.any(), async function (req, res, next) {
 })
 
 router.post('/follow/new', async function (req, res, next) {
-    console.log('/follow/new POST')
+    console.log(req.originalUrl)
     if (!req.user) {
         res.redirect('/login')
     } else {
@@ -729,7 +734,7 @@ router.post('/follow/new', async function (req, res, next) {
 })
 
 router.post('/follow/remove', async function (req, res, next) {
-    console.log('/follow/remove POST')
+    console.log(req.originalUrl)
     if (!req.user) {
         res.redirect('/login')
     } else {
@@ -759,7 +764,7 @@ router.post('/follow/remove', async function (req, res, next) {
 })
 
 router.post('/like/new', async function (req, res, next) {
-    console.log('/like/new POST')
+    console.log(req.originalUrl)
     if (!req.user) {
         res.redirect('/login')
     } else {
@@ -867,7 +872,7 @@ router.post('/like/new', async function (req, res, next) {
 })
 
 router.post('/like/remove', async function (req, res, next) {
-    console.log('/like/remove POST')
+    console.log(req.originalUrl)
     if (!req.user) {
         res.redirect('/login')
     } else {

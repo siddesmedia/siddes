@@ -11,7 +11,7 @@ const User = require('../models/User');
 const funcs = require('../config/functions');
 
 router.get('/mod/reports', async function (req, res, next) {
-    console.log('/mod/reports')
+    console.log(req.originalUrl)
     if (!req.user) {
         return res.redirect('/login')
     }
@@ -38,7 +38,7 @@ router.get('/mod/reports', async function (req, res, next) {
 });
 
 router.get('/mod', async function (req, res, next) {
-    console.log('/mod')
+    console.log(req.originalUrl)
     if (!req.user) {
         return res.redirect('/login')
     }
@@ -61,7 +61,7 @@ router.get('/mod', async function (req, res, next) {
 });
 
 router.post('/mod/reports', async function (req, res, next) {
-    console.log('/mod/reports POST')
+    console.log(req.originalUrl)
     if (!req.user) {
         return res.redirect('/login')
     }
@@ -87,7 +87,7 @@ router.post('/mod/reports', async function (req, res, next) {
 });
 
 router.get('/report', async function (req, res, next) {
-    console.log('/report?post=' + req.query.post)
+    console.log(req.originalUrl)
     const postexists = await Post.exists({
         _id: req.query.post
     })
@@ -118,7 +118,7 @@ router.get('/report', async function (req, res, next) {
 });
 
 router.post('/report', async function (req, res, next) {
-    console.log('/report POST')
+    console.log(req.originalUrl)
     const postexists = await Post.exists({
         _id: req.body.post
     })

@@ -16,7 +16,7 @@ const {
 } = require('uuid');
 
 router.get('/signup', forwardAuthenticated, function (req, res, next) {
-    console.log('/signup')
+    console.log(req.originalUrl)
     const about = {
         title: 'Signup - ' + Name,
         template: 'pages/signup',
@@ -30,7 +30,7 @@ router.get('/signup', forwardAuthenticated, function (req, res, next) {
 });
 
 router.post('/signup', (req, res) => {
-    console.log('/signup POST')
+    console.log(req.originalUrl)
     const {
         username,
         email,
@@ -93,7 +93,7 @@ router.post('/signup', (req, res) => {
 });
 
 router.get('/login', forwardAuthenticated, function (req, res, next) {
-    console.log('/login')
+    console.log(req.originalUrl)
     passport.authenticate('local', {
         failureRedirect: '/login'
     })
@@ -113,7 +113,7 @@ router.get('/login', forwardAuthenticated, function (req, res, next) {
 });
 
 router.post('/login', (req, res, next) => {
-    console.log('/login POST')
+    console.log(req.originalUrl)
     passport.authenticate('local', {
         successRedirect: '/',
         failureRedirect: '/login',
@@ -121,29 +121,9 @@ router.post('/login', (req, res, next) => {
 });
 
 router.get('/logout', (req, res) => {
-    console.log('/logout')
+    console.log(req.originalUrl)
     req.logout();
     res.redirect('/login');
 });
-
-function loggedin(user) {
-    if (user) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-function moderator(user) {
-    if (user) {
-        if (user.moderator == false) {
-            return false;
-        } else {
-            return true;
-        }
-    } else {
-        return false;
-    }
-}
 
 module.exports = router;

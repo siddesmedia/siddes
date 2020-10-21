@@ -11,7 +11,7 @@ const User = require('../models/User');
 const funcs = require('../config/functions');
 
 router.get('/premium/live', async function (req, res, next) {
-    console.log('/premium/live')
+    console.log(req.originalUrl)
     if (!req.user) {
         return res.redirect('/login')
     }
@@ -33,7 +33,7 @@ router.get('/premium/live', async function (req, res, next) {
 });
 
 router.get('/premium', async function (req, res, next) {
-    console.log('/premium')
+    console.log(req.originalUrl)
     if (!req.user) {
         return res.redirect('/login')
     }
