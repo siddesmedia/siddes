@@ -32,7 +32,7 @@
                 <% }} %>
                 <p class="postowner">
                     <a class="postownerlink" id="user_<%= i.toString() %>_<%= posts[i]._id %>"
-                        href="/account/posts[i].owner">
+                        href="/account/<%= posts[i].owner %>">
                     </a>
                     <% if(posts[i].repost == 'true') { %>
                     <span class="repostbadge">Repost</span>
@@ -97,52 +97,28 @@
     </script>
     <% } %>
 </div>
-<div id="users" class="tab hidden">
-    <% for(var i = 0; i < users.length; i++) { %>
-    <div class="postcontainer">
-        <div class="postdiv">
-            <div style="cursor: pointer;" onclick="window.location='/account/<%= users[i]._id %>'">
-                <p class="postowner">
-                    <% if(users[i].displayname == "" || users[i].displayname == null || !users[i].displayname) { %>
-                    <a class="postownerlink" href="/account/<%= users[i]._id %>">
-                        @<%= users[i].username %>
-                    </a>
-                    <% } else { %>
-                    <a class="postownerlink" href="/account/<%= users[i]._id %>" style="font-size: large;">
-                        <%= users[i].displayname %>
-                    </a><br>
-                    <a class="postownerlink" href="/account/<%= users[i]._id %>">
-                        @<%= users[i].username %>
-                    </a>
-                    <% }%>
-                    <span>
-                        <% if(users[i].premium == true) { %>
-                        <span>Premium</span>
-                        <% } %>
-                        <% if(users[i].developer == true) { %>
-                        <span class="devbadge"><img width="15px" style="padding: 0;padding-top:5px;"
-                                src="/img/icons/dev_badge_2.svg"></span>
-                        <% } %>
-                        <% if(users[i].staff == true) { %>
-                        <span><%= name %>
-                            Staff</span>
-                        <% } %>
-                        <% if(users[i].betatester == true) { %>
-                        <span>Beta Tester</span>
-                        <% } %>
-                        <% if(users[i].bot == true) { %>
-                        <span>Bot Account</span>
-                        <% } %>
-                    </span>
-                    <p>
-                        <a href="/<%= users[i].username %>/following">Following: <%= users[i].following.length %></a>
-                    </p>
-                </p>
-                <p>
-                    <%= users[i].description %>
-                </p>
-            </div>
-        </div>
-    </div>
+<div style="display: flex;justify-content: center;" class="postdiv">
+    <style>
+        .pagination {
+            padding-left: 10px;
+            padding-right: 10px;
+            margin: 5px;
+        }
+    </style>
+    <% if(page == 0) { %>
+    <button onclick="window.location='/latest/<%= page-1 %>'" disabled class="button pagination">...</button>
+    <% if (lastpage == true ) { %>
+    <button onclick="window.location='/latest/<%= eval(page)+1 %>'" class="button pagination" disabled>...</button>
+    <% } else { %>
+    <button onclick="window.location='/latest/<%= eval(page)+1 %>'"
+        class="button pagination"><%= eval(page)+2 %></button>
+    <% } %>
+    <% } else if (lastpage == true ) { %>
+    <button onclick="window.location='/latest/<%= page-1 %>'" class="button pagination"><%= page %></button>
+    <button onclick="window.location='/latest/<%= eval(page)+1 %>'" class="button pagination" disabled>...</button>
+    <% } else { %>
+    <button onclick="window.location='/latest/<%= page-1 %>'" class="button pagination"><%= page %></button>
+    <button onclick="window.location='/latest/<%= eval(page)+1 %>'"
+        class="button pagination"><%= eval(page)+2 %></button>
     <% } %>
 </div>

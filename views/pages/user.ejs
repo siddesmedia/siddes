@@ -13,22 +13,33 @@
     </h3>
     <h2 class="header nobottompadmar"><%= user.displayname %></h2><br>
     <h4>
-        <span class="headerred">@<%= user.username %></span>
+        <span class="headerred notoppadmar">@<%= user.username %></span>
         <% } %>
         <span>
+            <% if(user.verified == true) { %>
+            <span title="Verified User">
+                <img width="15px" style="padding: 0;padding-top:5px;" src="/img/icons/verified.png">
+            </span>
+            <% } %>
             <% if(user.premium == true) { %>
-            <span>Premium</span>
+            <span title="Premium User">
+                <img width="15px" style="padding: 0;padding-top:5px;" src="/img/icons/premium.png">
+            </span>
             <% } %>
             <% if(user.developer == true) { %>
-            <span class="devbadge"><img width="15px" style="padding: 0;padding-top:5px;"
-                    src="/img/icons/dev_badge_2.svg"></span>
+            <span title="Developer">
+                <img width="15px" style="padding: 0;padding-top:5px;" src="/img/icons/developer.png">
+            </span>
             <% } %>
             <% if(user.staff == true) { %>
-            <span><%= name %>
-                Staff</span>
+            <span title="Staff">
+                <img width="15px" style="padding: 0;padding-top:5px;" src="/img/icons/staff.png">
+            </span>
             <% } %>
             <% if(user.betatester == true) { %>
-            <span>Beta Tester</span>
+            <span title="Beta Tester">
+                <img width="15px" style="padding: 0;padding-top:5px;" src="/img/icons/beta.png">
+            </span>
             <% } %>
             <% if(user.bot == true) { %>
             <span>Bot Account</span>

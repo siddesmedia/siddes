@@ -3,7 +3,7 @@
         <input name="q" type="text" placeholder="Search <%= name %>" style="width: 95%;">
     </form>
     <span>
-        <a href="/">Home</a><br>
+        <a href="/home">Home</a><br>
         <a href="#">Jobs</a><br>
         <a href="/company/about">About</a><br>
         <% if(loggedin == true) { %>
@@ -15,14 +15,16 @@
         <% if(moderator == true) { %>
         <a href="/mod">Moderators</a><br>
         <% } else {} %>
+        <a href="/company/bugs">Report a Bug</a><br>
         <span id="premiumsidebar"></span><br><br>
         <a>&copy; 2020 to Present <%= name %></a>
     </span>
 </div>
 <div class="navbar">
-    <a href="/">Home</a>
+    <a href="/home">Home</a>
     <% if(loggedin == true) { %>
-    <a href="/account">Account</a> <a href="/account/edit">Edit Account</a> <a href="javascript:newPost('show')">New</a>
+    <a href="/latest">Latest</a> <a href="/account">Account</a> <a href="/account/edit">Edit Account</a> <a
+        href="javascript:newPost('show')">New</a>
     <% } else { %>
     <a href="/login">Login</a>
     <a href="/signup">Register</a>

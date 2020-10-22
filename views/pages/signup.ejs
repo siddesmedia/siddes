@@ -30,6 +30,13 @@
                     Service</a> and <a>Privacy Policy</a>.
             </p>
         </div>
+        <% if(error == undefined || error == '' || !error){} else { %>
+        <div>
+            <p class="error">
+                <%= error %>
+            </p>
+        </div>
+        <% } %>
         <button type="submit" class="button">Register</button>
 
         <p>Have an account? <a href="/login">Login</a></p>

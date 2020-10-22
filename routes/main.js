@@ -29,26 +29,38 @@ const uploadpfp = multer({
     }
 });
 
-router.get('/', async function (req, res, next) {
+router.get('/', async function (req, res, nect) {
+    res.redirect('/latest/0/')
+})
+
+router.get('/latest/:page', async function (req, res, next) {
     console.log(req.originalUrl)
-    if (!req.user) {
-        const getlatestusers = await funcs.getlatestusers()
-        const getlatestposts = await funcs.getlatestposts()
-        const about = {
-            title: 'New User - ' + Name,
-            template: 'pages/latest',
-            name: Name,
-            loggedin: funcs.loggedin(req.user),
-            moderator: funcs.moderator(req.user),
-            navbar: true,
-            footer: true,
-            posts: getlatestposts,
-            users: getlatestusers
-        };
-        return res.render('base', about);
-    } else {
-        res.redirect('/home')
+    if (isNaN(req.params.page) == true) {
+        next()
     }
+    var posts = await Post.find().sort({
+        date: -1
+    }).skip(req.params.page * 20).limit(20);
+
+    var lastpage = false;
+
+    if (posts.length < 20) {
+        lastpage = true
+    }
+
+    const about = {
+        title: 'New User - ' + Name,
+        template: 'pages/latest',
+        name: Name,
+        loggedin: funcs.loggedin(req.user),
+        moderator: funcs.moderator(req.user),
+        navbar: true,
+        footer: true,
+        page: req.params.page,
+        posts: posts,
+        lastpage: lastpage
+    };
+    return res.render('base', about);
 });
 
 router.get('/home', async function (req, res, next) {
@@ -147,6 +159,34 @@ router.get('/company/about', function (req, res, next) {
     const about = {
         title: 'About - ' + Name,
         template: 'pages/company/about',
+        name: Name,
+        loggedin: funcs.loggedin(req.user),
+        moderator: funcs.moderator(req.user),
+        navbar: true,
+        footer: true
+    };
+    return res.render('base', about);
+});
+
+router.get('/company/howto', function (req, res, next) {
+    console.log(req.originalUrl)
+    const about = {
+        title: 'How to Use ' + Name,
+        template: 'pages/company/howto',
+        name: Name,
+        loggedin: funcs.loggedin(req.user),
+        moderator: funcs.moderator(req.user),
+        navbar: true,
+        footer: true
+    };
+    return res.render('base', about);
+});
+
+router.get('/company/bugs', function (req, res, next) {
+    console.log(req.originalUrl)
+    const about = {
+        title: 'About - ' + Name,
+        template: 'pages/company/bugs',
         name: Name,
         loggedin: funcs.loggedin(req.user),
         moderator: funcs.moderator(req.user),

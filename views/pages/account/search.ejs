@@ -23,19 +23,30 @@
                     </a>
                     <% }%>
                     <span>
+                        <% if(users[i].verified == true) { %>
+                        <span>
+                            <img width="10px" style="padding: 0;padding-top:5px;" src="/img/icons/verified.png">
+                        </span>
+                        <% } %>
                         <% if(users[i].premium == true) { %>
-                        <span>Premium</span>
+                        <span>
+                            <img width="10px" style="padding: 0;padding-top:5px;" src="/img/icons/premium.png">
+                        </span>
                         <% } %>
                         <% if(users[i].developer == true) { %>
-                        <span class="devbadge"><img width="15px" style="padding: 0;padding-top:5px;"
-                                src="/img/icons/dev_badge_2.svg"></span>
+                        <span>
+                            <img width="10px" style="padding: 0;padding-top:5px;" src="/img/icons/developer.png">
+                        </span>
                         <% } %>
                         <% if(users[i].staff == true) { %>
-                        <span><%= name %>
-                            Staff</span>
+                        <span>
+                            <img width="10px" style="padding: 0;padding-top:5px;" src="/img/icons/staff.png">
+                        </span>
                         <% } %>
                         <% if(users[i].betatester == true) { %>
-                        <span>Beta Tester</span>
+                        <span>
+                            <img width="10px" style="padding: 0;padding-top:5px;" src="/img/icons/beta.png">
+                        </span>
                         <% } %>
                         <% if(users[i].bot == true) { %>
                         <span>Bot Account</span>

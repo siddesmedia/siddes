@@ -95,6 +95,12 @@ const User = new mongoose.Schema({
         required: true,
         default: false
     },
+    verified: {
+        type: Boolean,
+        unique: false,
+        required: true,
+        default: false
+    },
     premiumexpiration: {
         type: Date,
         unique: false,
@@ -121,6 +127,18 @@ const User = new mongoose.Schema({
     bot: {
         type: Boolean,
         unique: false,
+        required: true,
+        default: false
+    },
+    emailverified: {
+        type: Boolean,
+        unique: false,
+        required: true,
+        default: false
+    },
+    verifyemailkey: {
+        type: String,
+        unique: true,
         required: true,
         default: false
     }

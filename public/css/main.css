@@ -478,6 +478,23 @@ body {
     padding-bottom: 0;
 }
 
+.error {
+    color: rgb(0, 0, 0);
+    background-color: rgb(255, 97, 97);
+    padding: 5px;
+    border-radius: 25px;
+}
+
+.icon {
+    height: 10px;
+    display: block;
+}
+
+.notoppadmar {
+    margin-top: 0;
+    padding-top: 0;
+}
+
 .noheader {
     position: relative;
     text-decoration: none;
