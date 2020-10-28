@@ -21,18 +21,19 @@
                 class="nostyle" href="/report?post=<%= post._id %>">Report</a></button>
     </span>
     <% }} %>
-    <% if(owner.displayname == "") { %>
+    <h3>
+        <% if(owner.displayname == "") { %>
+    </h3>
     <h2>
         <a href="/<%= owner.username %>"><%= owner.displayname %></a>
-        <% if(post.repost == 'true') { %>
-        <span class="repostbadge">Repost</span>
-        <% } else {} %>
     </h2>
     <h3>@<a href="/<%= owner.username %>"><%= owner.username %></a>
+        <% } else { %>
     </h3>
-    <% } else { %>
-    <h2>@<a href="/<%= owner.username %>"><%= owner.username %></a>
+    <h2>
+        @<a href="/<%= owner.username %>"><%= owner.username %></a>
     </h2>
+    </h3>
     <% } %>
     <div>
         <p class="postbody" id="postbody">
@@ -51,6 +52,9 @@
 
     </span>
     <button class="button"><%= post.date.toLocaleString() %></button>
+    <% if(post.repost == 'true') { %>
+    <button class="button">This Is a Repost</button>
+    <% } else {} %>
 </div>
 <script>
     haveiliked('likebutton_<%= post._id %>', '<%= post.likes.length %>', '<%= post._id %>',

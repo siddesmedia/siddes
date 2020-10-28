@@ -30,7 +30,11 @@ const uploadpfp = multer({
 });
 
 router.get('/', async function (req, res, nect) {
-    res.redirect('/latest/0/')
+    if (funcs.loggedin(req.user) == true) {
+        res.redirect('/home')
+    } else {
+        res.redirect('/latest/0/')
+    }
 })
 
 router.get('/latest/:page', async function (req, res, next) {

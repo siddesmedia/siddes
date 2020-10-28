@@ -74,7 +74,7 @@ async function premium(id, id2) {
     $.getJSON("/api/premium", function (json) {
         if (json.premium == true) {
             document.getElementById(id2).innerHTML = '<a href="/premium">Premium</a>';
-            return document.getElementById(id).innerHTML = '<a href="/premium">Premium</a>';
+            return document.getElementById(id).innerHTML = '<a class="navfooanoleftpad" href="/premium">Premium</a>';
         } else {
             return;
         }
