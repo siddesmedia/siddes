@@ -88,7 +88,8 @@
             <div style="cursor: pointer;" onclick="window.location='/s/<%= posts[i]._id %>'">
                 <% if (posts[i].approved == true) { %>
                 <span class="commentsmeta right">
-                    <button type="button" class="postreport button">Approved</button>
+                    <button type="button" class="postreport button"
+                        title="A moderator has already approved this post, it cannot be reported again.">Approved</button>
                 </span>
                 <% } else { if (posts[i].reported == true) { %>
                 <span class="commentsmeta right">

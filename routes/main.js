@@ -38,9 +38,22 @@ router.get('/latest/:page', async function (req, res, next) {
     if (isNaN(req.params.page) == true) {
         next()
     }
-    var posts = await Post.find().sort({
-        date: -1
-    }).skip(req.params.page * 20).limit(20);
+    var posts;
+    if (isNaN(req.query.limit) == false) {
+        if (req.query < 40) {
+            posts = await Post.find().sort({
+                date: -1
+            }).skip(req.params.page * eval(req.query.limit)).limit(eval(req.query.limit));
+        } else {
+            posts = await Post.find().sort({
+                date: -1
+            }).skip(req.params.page * 20).limit(20);
+        }
+    } else {
+        posts = await Post.find().sort({
+            date: -1
+        }).skip(req.params.page * 20).limit(20);
+    }
 
     var lastpage = false;
 

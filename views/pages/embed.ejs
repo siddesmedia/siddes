@@ -4,7 +4,8 @@
             <div style="cursor: pointer;" onclick="window.location='/embed/<%= post._id %>'">
                 <% if (post.approved == true) { %>
                 <span class="commentsmeta right">
-                    <button type="button" class="postreport">Approved</button>
+                    <button type="button" class="postreport button"
+                        title="A moderator has already approved this post, it cannot be reported again.">Approved</button>
                 </span>
                 <% } else { if (post.reported == true) { %>
                 <span class="commentsmeta right">

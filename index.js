@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
+const funcs = require('./config/functions');
 
 require('dotenv').config()
 require('./config/passport')(passport);
@@ -25,19 +26,35 @@ app.set('view engine', 'ejs');
 app.use(passport.initialize());
 app.use(passport.session());
 
-const user = require('./routes/user')
-app.use('/', user);
-const premium = require('./routes/premium')
-app.use('/', premium);
-const mod = require('./routes/mod')
-app.use('/', mod);
-const admin = require('./routes/admin')
-app.use('/', admin);
-const api = require('./routes/api')
-app.use('/', api);
-const main = require('./routes/main')
-app.use('/', main);
-
+if (process.env.ENV == "p" || process.env.ENV == "production") {
+    const user = require('./routes/user')
+    app.use('/', user);
+    const premium = require('./routes/premium')
+    app.use('/', premium);
+    const mod = require('./routes/mod')
+    app.use('/', mod);
+    const admin = require('./routes/admin')
+    app.use('/', admin);
+    const api = require('./routes/api')
+    app.use('/', api);
+    const main = require('./routes/main')
+    app.use('/', main);
+}
+if (process.env.ENV == "m" || process.env.ENV == "maintenance") {
+    app.get('/*', async function (req, res, next) {
+        console.log(req.originalUrl)
+        const about = {
+            title: 'Maintenance - ' + process.env.NAME,
+            template: 'errors/maintenance',
+            name: process.env.NAME,
+            loggedin: funcs.loggedin(req.user),
+            moderator: funcs.moderator(req.user),
+            navbar: false,
+            footer: false
+        };
+        return res.render('base', about);
+    });
+}
 mongoose.connect(process.env.MONGO, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
