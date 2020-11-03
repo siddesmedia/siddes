@@ -16,7 +16,7 @@ router.get('/premium/live', async function (req, res, next) {
         return res.redirect('/login')
     }
     if (req.user.premium == false) {
-        return res.redirect('/account')
+        return res.redirect('/premium/pricing')
     }
 
     const about = {
@@ -38,7 +38,7 @@ router.get('/premium', async function (req, res, next) {
         return res.redirect('/login')
     }
     if (req.user.premium == false) {
-        return res.redirect('/account')
+        return res.redirect('/premium/pricing')
     }
 
     const about = {
@@ -50,6 +50,26 @@ router.get('/premium', async function (req, res, next) {
         navbar: true,
         footer: true,
         username: req.user.username
+    };
+    return res.render('base', about);
+});
+
+router.get('/premium/pricing', async function (req, res, next) {
+    console.log(req.originalUrl)
+    if (req.user) {
+        if (req.user.premium == true) {
+            return res.redirect('/premium')
+        }
+    }
+
+    const about = {
+        title: 'Premium Pricing - ' + Name,
+        template: 'pages/premium/pricing',
+        name: Name,
+        loggedin: funcs.loggedin(req.user),
+        moderator: funcs.moderator(req.user),
+        navbar: false,
+        footer: false,
     };
     return res.render('base', about);
 });

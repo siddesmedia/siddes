@@ -16,6 +16,9 @@ const path = require('path');
 const {
     forwardAuthenticated
 } = require('../config/auth');
+const {
+    functions
+} = require('lodash');
 const uploadimage = multer({
     dest: './usergenerated/imageslarge',
     limits: {
@@ -66,7 +69,7 @@ router.get('/latest/:page', async function (req, res, next) {
     }
 
     const about = {
-        title: 'New User - ' + Name,
+        title: 'The Latest - ' + Name,
         template: 'pages/latest',
         name: Name,
         loggedin: funcs.loggedin(req.user),
@@ -478,22 +481,7 @@ router.get('/:username/following', async function (req, res, next) {
 
 router.get('/s/:postid', async function (req, res, next) {
     console.log(req.originalUrl)
-    var postObject = await Post.exists({
-        _id: req.params.postid
-    })
-
-    if (postObject == false) {
-        res.status(404)
-        res.status(404).render('base', {
-            title: "404 Not Found" + Name,
-            template: "errors/400",
-            name: Name,
-            loggedin: funcs.loggedin(req.user),
-            moderator: funcs.moderator(req.user),
-            navbar: true,
-            footer: true
-        });
-    } else {
+    try {
         var media = false;
         var post = await Post.findOne({
             _id: req.params.postid
@@ -537,6 +525,17 @@ router.get('/s/:postid', async function (req, res, next) {
             liked: liked,
             comments: comments.reverse(),
             media: media
+        };
+        return res.render('base', about);
+    } catch (err) {
+        const about = {
+            title: 'Post Not Found - ' + Name,
+            template: 'errors/400',
+            name: Name,
+            loggedin: funcs.loggedin(req.user),
+            moderator: funcs.moderator(req.user),
+            navbar: true,
+            footer: true,
         };
         return res.render('base', about);
     }
@@ -871,106 +870,7 @@ router.post('/like/new', async function (req, res, next) {
     if (!req.user) {
         res.redirect('/login')
     } else {
-        var username = req.user._id
-
-        var posttoedit = await Post.findById(req.body.postid.toString())
-
-        var newLikes = posttoedit.likes
-        var likeCount = posttoedit.likes.length + 1
-        // tenlikes hundredlikes thousandlikes tenthousandlikes hundredthousandlikes millionlikes
-        if (likeCount == 10) {
-            if (posttoedit.tenlikes == true) {
-                var tenlikes;
-            } else {
-                funcs.addtofeed(posttoedit.owner, "Your post hit 10 likes!", '/s/' + posttoedit._id, posttoedit.body)
-                var updatepostlikecountstatus = await Post.findOneAndUpdate({
-                    _id: posttoedit._id
-                }, {
-                    tenlikes: true
-                })
-                updatepostlikecountstatus
-            }
-        }
-        if (likeCount == 100) {
-            if (posttoedit.hundredlikes == true) {
-                var hundredlikes;
-            } else {
-                addtofeed(posttoedit.owner, "Your post hit 100 likes!", '/s/' + posttoedit._id, posttoedit.body)
-                var updatepostlikecountstatus = await Post.findOneAndUpdate({
-                    _id: posttoedit._id
-                }, {
-                    hundredlikes: true
-                })
-                updatepostlikecountstatus
-            }
-        }
-        if (likeCount == 1000) {
-            if (posttoedit.thousandlikes == true) {
-                var thousandlikes;
-            } else {
-                addtofeed(posttoedit.owner, "Your post hit 1,000 likes!", '/s/' + posttoedit._id, posttoedit.body)
-                var updatepostlikecountstatus = await Post.findOneAndUpdate({
-                    _id: posttoedit._id
-                }, {
-                    thousandlikes: true
-                })
-                updatepostlikecountstatus
-            }
-        }
-        if (likeCount == 10000) {
-            if (posttoedit.tenthousandlikes == true) {
-                var tenthousandlikes;
-            } else {
-                addtofeed(posttoedit.owner, "Your post hit 10,000 likes!", '/s/' + posttoedit._id, posttoedit.body)
-                var updatepostlikecountstatus = await Post.findOneAndUpdate({
-                    _id: posttoedit._id
-                }, {
-                    tenthousandlikes: true
-                })
-                updatepostlikecountstatus
-            }
-        }
-        if (likeCount == 100000) {
-            if (posttoedit.hundredthousandlikes == true) {
-                var hundredthousandlikes;
-            } else {
-                addtofeed(posttoedit.owner, "Your post hit 100,000 likes! That's something to celebrate about!", '/s/' + posttoedit._id, posttoedit.body)
-                var updatepostlikecountstatus = await Post.findOneAndUpdate({
-                    _id: posttoedit._id
-                }, {
-                    hundredthousandlikes: true
-                })
-                updatepostlikecountstatus
-            }
-        }
-        if (likeCount == 1000000) {
-            if (posttoedit.millionlikes == true) {
-                var millionlikes;
-            } else {
-                addtofeed(posttoedit.owner, "Wow, your post hit 1,000,000 likes. That's insane!", '/s/' + posttoedit._id, posttoedit.body)
-                var updatepostlikecountstatus = await Post.findOneAndUpdate({
-                    _id: posttoedit._id
-                }, {
-                    millionlikes: true
-                })
-                updatepostlikecountstatus
-            }
-        }
-        if (newLikes.includes(username)) {
-            return res.redirect('/s/' + req.body.postid);
-        } else {
-            newLikes.push(username.toString())
-
-            var update = await Post.findOneAndUpdate({
-                _id: req.body.postid
-            }, {
-                likes: newLikes
-            });
-
-            update;
-
-            res.redirect('/s/' + req.body.postid)
-        }
+        funcs.like(req.user._id, req.body.postid)
     }
 })
 
@@ -979,28 +879,7 @@ router.post('/like/remove', async function (req, res, next) {
     if (!req.user) {
         res.redirect('/login')
     } else {
-        var username = req.user._id;
-
-        var posttoedit = await Post.findById(req.body.postid)
-
-        var newLikes = posttoedit.likes
-
-        if (newLikes.includes(username) == false) {
-            return res.redirect('/s/' + req.body.postid);
-        } else {
-
-            newLikes.splice(newLikes.indexOf(req.user._id), 1)
-
-            var update = await Post.findOneAndUpdate({
-                _id: req.body.postid
-            }, {
-                likes: newLikes
-            });
-
-            update;
-
-            res.redirect('/s/' + req.body.postid)
-        }
+        funcs.removelike(req.user._id, req.body.postid)
     }
 })
 

@@ -2,7 +2,8 @@
 <br>
 <span>
     <a href="/account/clear" class="headerred smalltext">Clear Account</a>
-    <a href="/account/developer" class="headerred nopadmar smalltext">Developer</a>
+    <a href="/account/developer" class="headerred nopadmar smalltext">API Key</a>
+    <a href="/account/developer" class="headerred nopadmar smalltext">API Docs</a>
 </span>
 <br><br>
 <form action="/account/edit" method="POST" class="section" enctype="multipart/form-data">
@@ -19,11 +20,13 @@
     <label for="email">Email:</label><br>
     <input type="email" class="input" name="email" value="<%= user.email %>" style="width: 50%;" required>
     <br><br>
-    <label for="image">Profile Picture (optional):</label><br>
-    <input type="file" accept="image/*" class="input" name="image" style="width: 50%;" value="Upload Profile Picture">
-    <br><br>
-    <label for="image">Banner (optional):</label><br>
-    <input type="file" accept="image/*" class="input" name="banner" style="width: 50%;" value="Upload Banner">
+    <label for="pfp" class="input" style="width: 50%; cursor: pointer;">Select Profile Picture...</label><br>
+    <input type="file" accept="image/*" class="input hidden" name="image" style="width: 50%;"
+        value="Upload Profile Picture" id="pfp">
+    <br>
+    <label for="banner" class="input" style="width: 50%; cursor: pointer;">Select Banner Image...</label><br>
+    <input type="file" accept="image/*" class="input hidden" name="banner" style="width: 50%;" value="Upload Banner"
+        id="banner">
     <br><br>
     <button type="submit" class="button">Save</button>
 </form>

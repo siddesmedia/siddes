@@ -54,6 +54,7 @@ router.get('/mod', async function (req, res, next) {
         name: Name,
         loggedin: funcs.loggedin(req.user),
         moderator: funcs.moderator(req.user),
+        admin: funcs.admin(req.user),
         navbar: true,
         footer: true,
     };

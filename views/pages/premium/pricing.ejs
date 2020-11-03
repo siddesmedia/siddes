@@ -1,0 +1,133 @@
+<style>
+    body {
+        width: 100%;
+        background-color: rgb(46, 46, 46);
+    }
+
+    * {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    li {
+        list-style: none;
+    }
+
+    .navbar a {
+        color: black;
+        padding: 0;
+    }
+
+    .mainbodypremium *,
+    .mainbodypremium {
+        background-color: rgb(46, 46, 46);
+        color: rgb(181, 181, 181);
+    }
+
+    .yearlypurchase {
+        margin: 20px !important;
+        padding: 10px !important;
+        background-color: var(--red) !important;
+        color: rgb(255, 255, 255) !important;
+        font-weight: bold !important;
+        border: none !important;
+        border-radius: 25px !important;
+    }
+
+    .purchase {
+        margin: 20px !important;
+        margin-left: 0 !important;
+        padding: 10px !important;
+        background-color: black !important;
+        color: rgb(255, 255, 255) !important;
+        font-weight: bold !important;
+        border: none !important;
+        border-radius: 25px !important;
+    }
+
+    .padleft10 {
+        padding-left: 10px;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .nopadleft {
+        padding-left: 0;
+        margin-left: 0;
+    }
+
+    .benefitsbox {
+        padding: 0;
+        width: 40%;
+        margin: auto;
+    }
+
+    .benefitsbox ul {
+        background-color: rgb(29, 29, 29);
+        padding: 0;
+        border-radius: 20px;
+    }
+
+    .benefitsbox li,
+    .benefitsbox button {
+        padding: 20px;
+        background-color: rgb(29, 29, 29);
+        border-radius: 20px;
+    }
+
+    .toppremium {
+        padding: 50px;
+    }
+
+    .hugetext {
+        font-size: 150px;
+    }
+</style>
+<div class="navbar">
+    <span>
+        <img width="13px" style="padding: 0;padding-top:5px;" src="https://static-cdn.siddes.com/img/icons/premium.png">
+    </span>
+    <span>
+        <a href="/">Home</a>
+    </span>
+</div>
+<div class="mainbodypremium">
+    <div class="toppremium">
+        <h1 class="header hugetext"><%= name %><br>Premium</h1><br>
+        <h1 class="header nobottompadmar">Premium is Everything You Need Plus More</h1>
+        <p class="section padleft10">
+            <%= name %> premium gives you an ad-free browsing experience and a ton of user benefits. It also directly
+            helps
+            <%= name %> financially. The more we are supported, the more we can make our product better!
+        </p>
+        <div id="pricing" class="section nopadleft">
+            <button class="yearlypurchase nopadleft">
+                $40.99 USD/Year
+            </button>
+            <button class="purchase">
+                $4.99 USD/Month
+            </button>
+        </div>
+    </div>
+    <div class="premiumbottom center">
+        <h3 class="noheader">What Are the Benefits of <%= name %> Premium?</h3>
+    </div>
+    <div class="benefitsbox">
+        <ul>
+            <li>Premium Only Live Chat</li>
+            <li>4,000 Monthly Coins</li>
+            <li>Ad-free Browsing</li>
+            <li>Premium Only Live Streams</li>
+            <li>GIF Profile Pictures</li>
+            <li>Bigger File Uploads</li>
+            <button class="yearlypurchase">
+                $40.99 USD/Year
+            </button>
+            <button class="purchase">
+                $4.99 USD/Month
+            </button>
+        </ul>
+    </div>
+    <br><br>
+</div>

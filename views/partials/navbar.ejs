@@ -8,6 +8,7 @@
         <a href="#">Jobs</a><br>
         <a href="/company/about">About</a><br>
         <% if(loggedin == true) { %>
+        <a href="/account/edit">Settings</a><br>
         <a href="/logout">Logout</a><br>
         <% } else if(loggedin == false) { %>
         <a href="/login">Login</a><br>
@@ -23,10 +24,13 @@
     </span>
 </div>
 <div class="navbar">
+    <a href="/"><img style="width:15px" src="https://static-cdn.siddes.com/logo-transparent.png" alt="Siddes"
+            title="Siddes"></a>
     <% if(loggedin == true) { %>
     <a href="/home">Feed</a>
-    <a href="/latest">Latest</a> <a href="/account">Account</a> <a href="/account/edit">Edit Account</a> <a
-        href="javascript:newPost('show')">New</a>
+    <a href="/latest">Latest</a>
+    <a href="/account">Account</a>
+    <a href="javascript:newPost('show')">New</a>
     <% } else { %>
     <a href="/latest">Latest</a>
     <a href="/login">Login</a>

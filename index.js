@@ -35,8 +35,12 @@ if (process.env.ENV == "p" || process.env.ENV == "production") {
     app.use('/', mod);
     const admin = require('./routes/admin')
     app.use('/', admin);
-    const api = require('./routes/api')
-    app.use('/', api);
+    const nokeyapi = require('./routes/api/nokey')
+    app.use('/', nokeyapi);
+    const keyapi = require('./routes/api/key')
+    app.use('/api/v1', keyapi);
+    const apidocs = require('./routes/api/docs')
+    app.use('/', apidocs);
     const main = require('./routes/main')
     app.use('/', main);
 }
