@@ -1,12 +1,24 @@
 <div class="postdiv">
     <br>
-    <% if(moderator == true) { if(post.approved == true) { %>
-    <button class="button" onclick="removepost('<%= post._id %>')" type="button">Mod: Remove Post</button>
-    <% } else { %>
+    <% if(moderator == true) { %>
+    <% if(post.approved == true) { %>
+    <button class="button" onclick=" removepost('<%= post._id %>')" type="button">Mod: Remove Post</button>
+    <% } %>
+    <% if(post.sensitive == true) { %>
+    <button class="button" onclick=" removesensitive('<%= post._id %>')" type="button">Mod: Remove Sensitive
+        Marking</button>
+    <% } else if(post.approved == true) { %>
+    <button class="button" onclick=" approvesensitivepost('<%= post._id %>')" type="button">Mod: Change to
+        Sensitive</button>
+    <% } %>
+    <% if(post.approved == false && post.sensitive == false) { %>
     <button class="button" onclick=" removepost('<%= post._id %>')" type="button">Mod: Remove Post</button>
     <button class="button" onclick=" approvepost('<%= post._id %>')" type="button">Mod: Approve Post</button>
-
-    <% }} %>
+    <button class="button" onclick=" approvesensitivepost('<%= post._id %>')" type="button">Mod: Approve Post as
+        Sensitive</button>
+    <% } %>
+    <br><br>
+    <% } %>
     <% if (post.approved == true) { %>
     <span class="commentsmeta right">
         <button type="button" class="postreport button">Approved</button>
@@ -21,20 +33,24 @@
                 class="nostyle" href="/report?post=<%= post._id %>">Report</a></button>
     </span>
     <% }} %>
-    <h3>
-        <% if(owner.displayname == "") { %>
-    </h3>
-    <h2>
-        <a href="/<%= owner.username %>"><%= owner.displayname %></a>
-    </h2>
-    <h3>@<a href="/<%= owner.username %>"><%= owner.username %></a>
-        <% } else { %>
-    </h3>
-    <h2>
-        @<a href="/<%= owner.username %>"><%= owner.username %></a>
-    </h2>
-    </h3>
-    <% } %>
+
+    <span class="idcard">
+        <img src="/account/<%= post.owner %>/pfp" class="postownerimage left" style="margin-right:5px;">
+        <% if(!owner.displayname == "") { %>
+        <span>
+            <a class="header nopadmar" href="/<%= owner.username %>"><%= owner.displayname %></a><br>
+        </span>
+        <span>
+            <a class="headerred nopadmar" style="font-size: 18px;"
+                href="/<%= owner.username %>">@<%= owner.username %></a>
+            <% } else { %>
+        </span>
+        <span>
+            <a class="headerred nopadmar" href="/<%= owner.username %>">@<%= owner.username %></a>
+            <br><br>
+        </span>
+        <% } %>
+    </span>
     <div>
         <p class="postbody" id="postbody">
             <%= post.body.toString() %>
@@ -46,6 +62,7 @@
         </span><br><br>
         <% } %>
     </div>
+    <button onclick="share('<%= post._id %>')" type="button" class="postshare button">Share</button>
     <button onclick="window.location='/account/new?text=<%- encodeURIComponent(post.body) %>&repost=true'" type="button"
         class="postrepost button">Repost</button>
     <span id="likebutton_<%= post._id %>" class="right">

@@ -3,7 +3,7 @@
 <span>
     <a href="/account/clear" class="headerred smalltext">Clear Account</a>
     <a href="/account/developer" class="headerred nopadmar smalltext">API Key</a>
-    <a href="/account/developer" class="headerred nopadmar smalltext">API Docs</a>
+    <a href="/account/developer/docs" class="headerred nopadmar smalltext">API Docs</a>
 </span>
 <br><br>
 <form action="/account/edit" method="POST" class="section" enctype="multipart/form-data">
@@ -20,6 +20,26 @@
     <label for="email">Email:</label><br>
     <input type="email" class="input" name="email" value="<%= user.email %>" style="width: 50%;" required>
     <br><br>
+    <label for="theme">Theme:</label><br>
+    <select name="theme" id="reason" required class="input">
+        <optgroup label='Theme'>
+            <% if(user.theme == 'retro') { %>
+            <option>retro</option>
+            <option>light</option>
+            <option>dark</option>
+            <% } else if(user.theme == 'light') { %>
+            <option>retro</option>
+            <option selected>light</option>
+            <option>dark</option>
+            <% } else { %>
+            <option>retro</option>
+            <option>light</option>
+            <option selected>dark</option>
+            <% } %>
+        </optgroup>
+    </select><br>
+    <span class="nopadmar smalltext postownerlink">Current: <b><i><span id="themename"></span></i></b></span>
+    <br><br>
     <label for="pfp" class="input" style="width: 50%; cursor: pointer;">Select Profile Picture...</label><br>
     <input type="file" accept="image/*" class="input hidden" name="image" style="width: 50%;"
         value="Upload Profile Picture" id="pfp">
@@ -28,5 +48,14 @@
     <input type="file" accept="image/*" class="input hidden" name="banner" style="width: 50%;" value="Upload Banner"
         id="banner">
     <br><br>
-    <button type="submit" class="button">Save</button>
+    <button type="submit" class="button">Save Changes</button>
 </form>
+<h3 class="header">Other</h3><br>
+<a class="headerred smalltext">Account ID</a><br>
+<form class="section">
+    <input type="text" class="input" style="width: 50%;" disabled value="<%= user._id %>">
+</form>
+<script>
+    themename()
+</script>
+<br>

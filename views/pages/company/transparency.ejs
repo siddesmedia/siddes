@@ -1,0 +1,156 @@
+<h1 class="header nobottompadmar">Transparency</h1>
+<div class="section">
+    <p>We want to be completely transparent about everything we do, we created this page to breakdown everything we
+        do and why.</p>
+</div>
+<h3 class="headerred">Table of Contents</h3>
+<div class="section">
+    <ul class="colwhite">
+        <li><a href="#userdata">User Data we Store</a></li>
+        <li><a href="#urls">URLs</a></li>
+        <li><a href="#reports">Reports</a></li>
+    </ul>
+</div>
+<h3 class="headerred" id="userdata">User Data we Store</h3>
+<div class="section">
+    <p>This is a list of what we store and why:</p>
+    <p>Although it seems like a lot, most of this is just Booleans that state whether your this or that.</p>
+    <ul class="colwhite">
+        <li>username (this is just the general name of your account, it is easily recognizable to other people)
+        </li>
+        <li>display name (this is an optional second name that could be used if you want to put your real name
+            and a fake username)</li>
+        <li>email (we need to sotre and verify emails for reduction of spam bots, <a href="#emails">read more on
+                how we secure emails here</a>)</li>
+        <li>password (we obviosly have to store a password to keep your account safe, <a href="#passwords">learn
+                more how we store passwords here</a>)</li>
+        <li>description (this is just a short 'bio' about yourself, it is completely optional and shows on your
+            account page)</li>
+        <li>moderator (this is a boolean [true or false] of whether you have moderator permissions)</li>
+        <li>admin (this is a boolean [true or false] of whether you have admin permissions)</li>
+        <li>uploadbanned (this is a boolean [true or false] that stores whether a mod or admin has upload banned
+            you)</li>
+        <li>suspended (this is a boolean [true or false] that stores if your account is suspended, <a
+                href="#suspensions">read more here</a>)</li>
+        <li>apikey (this is a uuidv4 string that is used to programmaticaly use your account)</li>
+        <li>pfp (this is a url to your pfp)</li>
+        <li>banner (this is a url to your banner)</li>
+        <li>following (this is an array of userids you are following)</li>
+        <li>feed (everyones feed has 40 items at max, the text, links, and titles are stored differently. this is
+            the text of your feed)</li>
+        <li>feedlinks (these are the links that your feed blocks lead you to after you click on it)</li>
+        <li>feedtype (this is the title of your feed blocks, [ex: Someone commented on your post!])</li>
+        <li>date (this is the date of the creattion of your account)</li>
+        <li>theme (your chosen theme)</li>
+        <li>premium (true or false if you have premium)</li>
+        <li>premiumexpiration (the date your premium expires)</li>
+        <li>verified (this is a boolean [true or false] of whether you are verified, <a href="#verification">learn
+                more about the verification process here</a>)</li>
+        <li>developer (this is a boolean [true or false] of whether you are a developer, this will show devs
+            debug menus and testing menus)</li>
+        <li>staff (this is a boolean [true or false] of whether you are a staff member)</li>
+        <li>betatester (this is a boolean [true or false] of whether you are a beta tester [to show you were one of
+            the early users])</li>
+        <li>betatester (this is a boolean [true or false] of whether you are a beta tester [to show you were one
+            of the early users])</li>
+        <li>bot (not used and does not store anything)</li>
+        <li>emailverified (this is a boolean [true or false] if your email is verified)</li>
+        <li>verifyemailkey (the random string of characters used to verify your account)</li>
+        <li>_id (a objectid that is unique to you and never changes)</li>
+    </ul>
+</div>
+<h3 class="headerred" id="urls">URLs</h3>
+<div class="section">
+    <p>This is a list of publicly available URLs:</p>
+    <p class="nopadmar">if we missed one, please contact us (api urls are not shown)</p>
+    <ul class="colwhite">
+        <h4 class="header">User Accounts</h4>
+        <li>/:username (redirects to /:username/0)</li>
+        <li>/:username/:page (shows the user and page)</li>
+        <li>/:username/following (shows who an account is following)</li>
+
+        <h4 class="header">General URLs</h4>
+        <li>/latest (redirects to /latest/0)</li>
+        <li>/latest/:page (shows the latest posts available on that page)</li>
+        <li>/s/:id (shows the post with that id)</li>
+        <li>/account/developer/docs (shows the developer documentation)</li>
+        <li>/report?postid=:id (shows you the report page for the postid)</li>
+        <li>/search?q=:query (redirects to /search/0?q=:query)</li>
+        <li>/search/:page?q=:query (shows results for your query and page)</li>
+        <li>/tag/:page/:tag (shows you the hashtag and page results)</li>
+
+        <h4 class="header">Logged In</h4>
+        <li>/ (redirects to /home)</li>
+        <li>/home (shows your 40 feed objects)</li>
+        <li>/logout (logs you out of your account)</li>
+        <li>/account (redirects to /:yourusername)</li>
+        <li>/account/edit (lets you edit your account)</li>
+        <li>/account/clear (lets you clear your account)</li>
+        <li>/account/developer (shows you your unique confidential api key)</li>
+        <li>/login (redirects you to /accountm)</li>
+        <li>/signup (redirects you to /accountm)</li>
+        <li>/account/new (new post page)</li>
+
+        <h4 class="header">Not Logged In</h4>
+        <li>/ (redirects to /latest)</li>
+        <li>/home (redirects you to /latest)</li>
+        <li>/logout (redirects you to the /login)</li>
+        <li>/account (redirects to /login)</li>
+        <li>/account/edit (redirects to /login)</li>
+        <li>/account/clear (redirects to /login)</li>
+        <li>/account/developer (redirects to /login)</li>
+        <li>/login (shows you the login form)</li>
+        <li>/signup (shows you the signup form)</li>
+        <li>/account/new (redirects you to /account)</li>
+
+        <h4 class="header">Company</h4>
+        <li>/company/about (shows you the about page)</li>
+        <li>/company/transparency (shows you the transparency report)</li>
+        <li>/company/releases (all the releases and the changes they had)</li>
+        <li>/company/bugs (survey monkey form to submit a bug)</li>
+
+        <h4 class="header">Premium</h4>
+        <p class="nopadmar">(if you dont have premium it redirects to /premium/pricing)</p>
+        <li>/premium (shows you the premium services)</li>
+        <li>/company/live (a giant live chat of all the premium users)</li>
+
+        <h4 class="header">Non-Premium</h4>
+        <p class="nopadmar">(if you have premium it redirects to /premium)</p>
+        <li>/premium/pricing (shows you the premium pricing page)</li>
+
+        <h4 class="header">Moderators</h4>
+        <p class="nopadmar">(if you are not an admin or mod it redirects to /account)</p>
+        <li>/mod (shows moderators all of the mod links)</li>
+        <li>/mod/reports (shows all the reported posts and buttons to approve, remove, or approve as sensitive, <a
+                href="#reports">learn more on reports</a>)</li>
+
+        <h4 class="header">Admin</h4>
+        <p class="nopadmar">(if you are not an admin or mod it redirects to /account)</p>
+        <li>/mod (shows mods and admins all of there links)</li>
+        <li>/admin/redis/flush (flushes redis [our cache])</li>
+        <li>/admin/analytics (shows the little analytics we have here, <a href="#analytics">learn more on analytics</a>)
+        </li>
+    </ul>
+</div>
+<h3 class="headerred" id="reports">Reports</h3>
+<div class="section">
+    <p>
+        Reporting content can be very confusing, but it was built to be easy to use and to reduce spam.
+        <br><br>
+        The report button will take you to /report?postid=:id, this will bring up a dropdown of why you are reporting
+        this post. When a post is reported, it moves to a list available to moderators and admins, this list shows all
+        reported posts. It also shows them links to approve or remove posts.
+        <br><br>
+        When a post is reported but not approved or removed, it will show an under review tag in the report status.
+        <br><br>
+        When a moderator approves a post it is checked as approved in the database. If a post is approved, it cannot be
+        reported again. We do this to keep spammy reports to a minimum. If a post is approved, you'll see the word
+        "Approved" instead of a report link in the report tag of a post.
+        <br><br>
+        When a moderator removes a post, it is completely deleted, no trace whatsoever. We do this to keep privacy at
+        its max and never store uneeded data.
+        <br><br>
+        When a moderator approves a post as sensitive, it does not delete the post but instead does not show on main
+        pages like account pages, search results, or hashtag pages. The only way to see the contents of this post is to
+        go to /s/:postid.
+</div>

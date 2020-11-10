@@ -11,7 +11,7 @@ const User = require('../models/User');
 const funcs = require('../config/functions');
 
 router.get('/mod/reports', async function (req, res, next) {
-    console.log(req.originalUrl)
+
     if (!req.user) {
         return res.redirect('/login')
     }
@@ -38,7 +38,7 @@ router.get('/mod/reports', async function (req, res, next) {
 });
 
 router.get('/mod', async function (req, res, next) {
-    console.log(req.originalUrl)
+
     if (!req.user) {
         return res.redirect('/login')
     }
@@ -62,7 +62,7 @@ router.get('/mod', async function (req, res, next) {
 });
 
 router.post('/mod/reports', async function (req, res, next) {
-    console.log(req.originalUrl)
+
     if (!req.user) {
         return res.redirect('/login')
     }
@@ -82,13 +82,13 @@ router.post('/mod/reports', async function (req, res, next) {
         })
         return updateapprovedpost;
     } else {
-        const removebadpost = await Post.findByIdAndDelete(postid)
+        const removebadpost = await funcs.removepost(postid)
         return removebadpost;
     }
 });
 
 router.get('/report', async function (req, res, next) {
-    console.log(req.originalUrl)
+
     const postexists = await Post.exists({
         _id: req.query.post
     })
@@ -118,8 +118,61 @@ router.get('/report', async function (req, res, next) {
     }
 });
 
+router.get('/mod/uploadban/:id', async function (req, res, next) {
+    if (!req.user) {
+        return res.redirect('/login')
+    }
+    if (req.user.admin == false) {
+        if (req.user.moderator == false) {
+            return res.redirect('/account')
+        }
+    }
+    try {
+        const updateuserwithban = await User.findByIdAndUpdate(req.params.id, {
+            uploadbanned: true
+        })
+
+        updateuserwithban
+
+        res.json({
+            banned: true
+        })
+    } catch (err) {
+
+        res.json({
+            banned: false
+        })
+    }
+});
+
+router.get('/mod/removeuploadban/:id', async function (req, res, next) {
+    if (!req.user) {
+        return res.redirect('/login')
+    }
+    if (req.user.admin == false) {
+        if (req.user.moderator == false) {
+            return res.redirect('/account')
+        }
+    }
+    try {
+        const updateuserwithban = await User.findByIdAndUpdate(req.params.id, {
+            uploadbanned: false
+        })
+
+        updateuserwithban
+
+        res.json({
+            banned: false
+        })
+    } catch (err) {
+        res.json({
+            banned: true
+        })
+    }
+});
+
 router.post('/report', async function (req, res, next) {
-    console.log(req.originalUrl)
+
     const postexists = await Post.exists({
         _id: req.body.post
     })

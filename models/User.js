@@ -38,6 +38,18 @@ const User = new mongoose.Schema({
         required: true,
         default: false
     },
+    uploadbanned: {
+        type: Boolean,
+        unique: false,
+        required: true,
+        default: false
+    },
+    suspended: {
+        type: Boolean,
+        unique: false,
+        required: true,
+        default: false
+    },
     apikey: {
         type: String,
         unique: true,
@@ -45,19 +57,19 @@ const User = new mongoose.Schema({
     },
     pfp: {
         type: String,
-        unique: true,
+        unique: false,
         required: false,
     },
     banner: {
         type: String,
-        unique: true,
+        unique: false,
         required: false,
     },
     following: {
         type: Array,
         unique: false,
         required: true,
-        default: ["5f878ebc9b39e38585777498"]
+        default: []
     },
     feed: {
         type: Array,
@@ -87,7 +99,7 @@ const User = new mongoose.Schema({
         type: String,
         unique: false,
         required: false,
-        default: "retro"
+        default: "dark"
     },
     premium: {
         type: Boolean,

@@ -8,7 +8,6 @@ const Comment = require('../models/Comment');
 const fs = require('fs')
 const sharp = require('sharp')
 const User = require('../models/User');
-const redis = require('../config/redis')
 const JSON5 = require('json5')
 const funcs = require('../config/functions');
 const multer = require('multer');
@@ -17,7 +16,8 @@ const {
     forwardAuthenticated
 } = require('../config/auth');
 const {
-    functions
+    functions,
+    reject
 } = require('lodash');
 const uploadimage = multer({
     dest: './usergenerated/imageslarge',
@@ -31,6 +31,7 @@ const uploadpfp = multer({
         fileSize: 4000000
     }
 });
+const analytics = require('../middleware/simple-lytics')
 
 router.get('/', async function (req, res, nect) {
     if (funcs.loggedin(req.user) == true) {
@@ -40,8 +41,47 @@ router.get('/', async function (req, res, nect) {
     }
 })
 
+router.get('/analytics/addvisit', async function (req, res, next) {
+    await analytics.analytics()
+
+    return res.json({
+        success: true
+    })
+});
+
+router.get('/account/:id/pfp', async function (req, res, next) {
+    const pfpid = req.params.id
+    const pfpurl = await User.findById(pfpid)
+
+    try {
+        if (fs.existsSync(path.join(__dirname, '../', pfpurl.pfp)) == false || !pfpurl.pfp || pfpurl.pfp == '') {
+            return res.sendFile(path.join(__dirname, '../usergenerated/images/notfound.jpeg'))
+        } else {
+            res.sendFile(path.join(__dirname, '../', pfpurl.pfp))
+        }
+    } catch (err) {
+        res.sendFile(path.join(__dirname, '../usergenerated/images/notfound.jpeg'))
+    }
+})
+
+router.get('/account/:id/banner', async function (req, res, next) {
+    const bannerid = req.params.id
+    const bannerurl = await User.findById(bannerid)
+
+
+    try {
+        if (fs.existsSync(path.join(__dirname, '../', bannerurl.banner)) == false || !bannerurl.banner || bannerurl.banner == '') {
+            return res.sendFile(path.join(__dirname, '../usergenerated/images/notfound.jpeg'))
+        } else {
+            res.sendFile(path.join(__dirname, '../', bannerurl.banner))
+        }
+    } catch (err) {
+        res.sendFile(path.join(__dirname, '../usergenerated/images/notfound.jpeg'))
+    }
+})
+
 router.get('/latest/:page', async function (req, res, next) {
-    console.log(req.originalUrl)
+
     if (isNaN(req.params.page) == true) {
         next()
     }
@@ -84,7 +124,7 @@ router.get('/latest/:page', async function (req, res, next) {
 });
 
 router.get('/home', async function (req, res, next) {
-    console.log(req.originalUrl)
+
     if (req.user) {
         const about = {
             title: 'Home - ' + Name,
@@ -105,7 +145,7 @@ router.get('/home', async function (req, res, next) {
 });
 
 router.get('/embed/:postid', async function (req, res, next) {
-    console.log(req.originalUrl)
+
     const embeddedpost = await Post.findById(req.params.postid)
     const about = {
         title: 'Embed - ' + Name,
@@ -121,7 +161,7 @@ router.get('/embed/:postid', async function (req, res, next) {
 });
 
 router.get('/account/edit', async function (req, res, next) {
-    console.log(req.originalUrl)
+
     if (!req.user) {
         res.redirect('/login')
     } else {
@@ -144,7 +184,7 @@ router.get('/account/edit', async function (req, res, next) {
 });
 
 router.get('/account/developer', async function (req, res, next) {
-    console.log(req.originalUrl)
+
     if (!req.user) {
         res.redirect('/login')
     } else {
@@ -166,7 +206,7 @@ router.get('/account/developer', async function (req, res, next) {
 })
 
 router.get('/account', function (req, res, next) {
-    console.log(req.originalUrl)
+
     if (!req.user) {
         res.redirect('/login')
     } else {
@@ -175,7 +215,7 @@ router.get('/account', function (req, res, next) {
 });
 
 router.get('/company/about', function (req, res, next) {
-    console.log(req.originalUrl)
+
     const about = {
         title: 'About - ' + Name,
         template: 'pages/company/about',
@@ -188,8 +228,22 @@ router.get('/company/about', function (req, res, next) {
     return res.render('base', about);
 });
 
+router.get('/company/transparency', function (req, res, next) {
+
+    const about = {
+        title: 'URL Schemas - ' + Name,
+        template: 'pages/company/transparency',
+        name: Name,
+        loggedin: funcs.loggedin(req.user),
+        moderator: funcs.moderator(req.user),
+        navbar: true,
+        footer: true
+    };
+    return res.render('base', about);
+});
+
 router.get('/company/howto', function (req, res, next) {
-    console.log(req.originalUrl)
+
     const about = {
         title: 'How to Use ' + Name,
         template: 'pages/company/howto',
@@ -203,7 +257,7 @@ router.get('/company/howto', function (req, res, next) {
 });
 
 router.get('/company/bugs', function (req, res, next) {
-    console.log(req.originalUrl)
+
     const about = {
         title: 'About - ' + Name,
         template: 'pages/company/bugs',
@@ -217,7 +271,7 @@ router.get('/company/bugs', function (req, res, next) {
 });
 
 router.get('/company/releases', function (req, res, next) {
-    console.log(req.originalUrl)
+
     const about = {
         title: 'Releases - ' + Name,
         template: 'pages/company/releases',
@@ -231,12 +285,12 @@ router.get('/company/releases', function (req, res, next) {
 });
 
 router.get('/search/', async function (req, res, next) {
-    console.log(req.originalUrl)
+
     res.redirect('/search/0?q=' + req.query.q)
 })
 
 router.get('/search/:page', async function (req, res, next) {
-    console.log(req.originalUrl)
+
     var posts = await Post.find({
         $text: {
             $search: req.query.q
@@ -266,12 +320,12 @@ router.get('/search/:page', async function (req, res, next) {
 });
 
 router.get('/tag/:hashtag', async function (req, res, next) {
-    console.log(req.originalUrl)
+
     res.redirect('/tag/0/' + req.params.hashtag)
 });
 
 router.get('/tag/:page/:hashtag', async function (req, res, next) {
-    console.log(req.originalUrl)
+
     var posts = await Post.find({
         $text: {
             $search: '#' + req.params.hashtag
@@ -301,7 +355,7 @@ router.get('/tag/:page/:hashtag', async function (req, res, next) {
 });
 
 router.get('/account/search', async function (req, res, next) {
-    console.log(req.originalUrl)
+
     var users = await User.find({
         username: req.query.q
     })
@@ -321,7 +375,7 @@ router.get('/account/search', async function (req, res, next) {
 });
 
 router.get('/account/new', async function (req, res, next) {
-    console.log(req.originalUrl)
+
     if (!req.user) {
         return res.redirect('/login')
     }
@@ -341,7 +395,7 @@ router.get('/account/new', async function (req, res, next) {
 });
 
 router.get('/account/clear', async function (req, res, next) {
-    console.log(req.originalUrl)
+
     if (!req.user) {
         res.redirect('/login')
     } else {
@@ -359,7 +413,7 @@ router.get('/account/clear', async function (req, res, next) {
 })
 
 router.get('/account/clear/confirm', async function (req, res, next) {
-    console.log(req.originalUrl)
+
     if (!req.user) {
         res.redirect('/login')
     } else {
@@ -392,95 +446,53 @@ router.get('/account/clear/confirm', async function (req, res, next) {
 })
 
 router.get('/account/:id', async function (req, res, next) {
-    console.log(req.originalUrl)
+
     try {
         const username = await User.findOne({
             _id: req.params.id
         })
         res.redirect('/' + username.username)
     } catch (err) {
-        res.status(404)
-        res.status(404).render('base', {
-            title: "404 Not Found" + Name,
-            template: "errors/400",
-            name: Name,
-            loggedin: funcs.loggedin(req.user),
-            moderator: funcs.moderator(req.user),
-            navbar: true,
-            footer: true
-        });
+        next()
     }
 });
 
 router.get('/:username/following', async function (req, res, next) {
-    console.log(req.originalUrl)
+
     var userObject = await User.exists({
         username: req.params.username
     })
 
     if (userObject == false) {
-        res.status(404)
-        res.status(404).render('base', {
-            title: "404 Not Found" + Name,
-            template: "errors/400",
+        next()
+    } else {
+        var about;
+        var username;
+        var user = await User.findOne({
+            username: req.params.username
+        })
+
+        username = req.params.username
+
+        about = {
+            title: username + ' Following - ' + Name,
+            template: 'pages/following',
             name: Name,
             loggedin: funcs.loggedin(req.user),
             moderator: funcs.moderator(req.user),
             navbar: true,
-            footer: true
-        });
-    } else {
-        var about;
-        var username;
+            footer: true,
 
-        redis.get('user_following_list_' + req.params.username, async (err, value) => {
-            if (value) {
-                username = req.params.username
-
-                about = {
-                    title: username + ' Following - ' + Name,
-                    template: 'pages/following',
-                    name: Name,
-                    loggedin: funcs.loggedin(req.user),
-                    moderator: funcs.moderator(req.user),
-                    navbar: true,
-                    footer: true,
-
-                    // user data being loaded through cache
-                    username: username,
-                    user: JSON5.parse(value)
-                };
-                return res.render('base', about);
-            } else {
-                var user = await User.findOne({
-                    username: req.params.username
-                })
-
-                redis.set('user_following_list_' + req.params.username, JSON.stringify(user))
-
-                username = req.params.username
-
-                about = {
-                    title: username + ' Following - ' + Name,
-                    template: 'pages/following',
-                    name: Name,
-                    loggedin: funcs.loggedin(req.user),
-                    moderator: funcs.moderator(req.user),
-                    navbar: true,
-                    footer: true,
-
-                    // user data being loaded
-                    username: username,
-                    user: user
-                };
-                return res.render('base', about);
-            }
-        })
+            // user data being loaded
+            username: username,
+            user: user
+        };
+        return res.render('base', about);
     }
 });
 
 router.get('/s/:postid', async function (req, res, next) {
-    console.log(req.originalUrl)
+
     try {
         var media = false;
         var post = await Post.findOne({
@@ -528,36 +540,18 @@ router.get('/s/:postid', async function (req, res, next) {
         };
         return res.render('base', about);
     } catch (err) {
-        const about = {
-            title: 'Post Not Found - ' + Name,
-            template: 'errors/400',
-            name: Name,
-            loggedin: funcs.loggedin(req.user),
-            moderator: funcs.moderator(req.user),
-            navbar: true,
-            footer: true,
-        };
-        return res.render('base', about);
+        next()
     }
 });
 
 router.get('/:username/:page', async function (req, res, next) {
-    console.log(req.originalUrl)
+
     var userObject = await User.exists({
         username: req.params.username
     })
 
     if (userObject == false) {
-        res.status(404)
-        res.status(404).render('base', {
-            title: "404 Not Found" + Name,
-            template: "errors/400",
-            name: Name,
-            loggedin: funcs.loggedin(req.user),
-            moderator: funcs.moderator(req.user),
-            navbar: true,
-            footer: true
-        });
+        next()
     } else {
         var followers;
 
@@ -565,19 +559,12 @@ router.get('/:username/:page', async function (req, res, next) {
             username: req.params.username
         })
 
-        redis.get('user_follow_count_' + req.params.username, async (err, value) => {
-            if (value) {
-                followers = value
-            } else {
-                var followercount = await User.find({
-                    following: user._id
-                })
-
-                followers = followercount.length.toString()
-                redis.set('user_follow_count_' + req.params.username, followers)
-
-            }
+        var followercount = await User.find({
+            following: user._id
         })
+
+        followers = followercount.length.toString()
+
         var posts = await Post.find({
             owner: await funcs.getuserid(req.params.username)
         }).sort({
@@ -616,6 +603,7 @@ router.get('/:username/:page', async function (req, res, next) {
             name: Name,
             loggedin: funcs.loggedin(req.user),
             moderator: funcs.moderator(req.user),
+            admin: funcs.admin(req.user),
             navbar: true,
             footer: true,
             page: req.params.page,
@@ -633,12 +621,12 @@ router.get('/:username/:page', async function (req, res, next) {
 });
 
 router.get('/:username', async function (req, res, next) {
-    console.log(req.originalUrl)
+
     res.redirect('/' + req.params.username + '/0')
 });
 
 router.get('/usergenerated/images/:parentid', async function (req, res, next) {
-    console.log(req.originalUrl)
+
     try {
         const mediaitem = await Media.findOne({
             parentid: req.params.parentid
@@ -654,7 +642,7 @@ router.get('/usergenerated/images/:parentid', async function (req, res, next) {
 })
 
 router.get('/usergenerated/user/:parentid', async function (req, res, next) {
-    console.log(req.originalUrl)
+
     try {
         if (fs.existsSync(path.join(__dirname, '../usergenerated/user/', req.params.parentid)) == false || !req.params.parentid || req.params.parentid == '') {
             return res.sendFile(path.join(__dirname, '../usergenerated/images/notfound.jpeg'))
@@ -667,7 +655,6 @@ router.get('/usergenerated/user/:parentid', async function (req, res, next) {
 })
 
 router.post('/post/new', uploadimage.single('image'), async function (req, res, next) {
-    console.log(req.originalUrl)
     if (!req.user) {
         res.redirect('/login')
     } else {
@@ -680,6 +667,12 @@ router.post('/post/new', uploadimage.single('image'), async function (req, res, 
             media = true
         }
 
+        if (body.length > 265) {
+            return res.json({
+                error: 'body too long'
+            })
+        }
+
         var newPost = new Post({
             body: body,
             owner: owner,
@@ -688,34 +681,39 @@ router.post('/post/new', uploadimage.single('image'), async function (req, res, 
             repost: req.body.repost
         })
 
-        newPost
-            .save()
-            .then(post => {
-                res.redirect('/s/' + newPost._id);
+        if (req.user.uploadbanned == true || req.user.suspended == true) {
+            res.redirect('/account')
+        } else {
 
-                if (media == true) {
+            newPost
+                .save()
+                .then(post => {
+                    res.redirect('/s/' + newPost._id);
 
-                    var newMedia = new Media({
-                        owner: req.user._id,
-                        parentid: post._id,
-                        file: 'usergenerated/images/' + req.file.filename
-                    })
+                    if (media == true) {
 
-                    newMedia.save().then(media => {})
-                }
-            })
+                        var newMedia = new Media({
+                            owner: req.user._id,
+                            parentid: post._id,
+                            file: 'usergenerated/images/' + req.file.filename
+                        })
 
-        if (media == true) {
-            await sharp(path.join(__dirname, '../', req.file.path))
-                .resize(300)
-                .toFile(path.join(__dirname, '../', 'usergenerated/images/' + req.file.filename))
-            fs.unlinkSync(path.join(__dirname, '../', 'usergenerated/imageslarge/' + req.file.filename))
+                        newMedia.save().then(media => {})
+                    }
+                })
+
+            if (media == true) {
+                await sharp(path.join(__dirname, '../', req.file.path))
+                    .resize(300)
+                    .toFile(path.join(__dirname, '../', 'usergenerated/images/' + req.file.filename))
+                fs.unlinkSync(path.join(__dirname, '../', 'usergenerated/imageslarge/' + req.file.filename))
+            }
         }
     }
 })
 
 router.post('/comment/new', async function (req, res, next) {
-    console.log(req.originalUrl)
+
     if (!req.user) {
         res.redirect('/login')
     } else {
@@ -752,7 +750,7 @@ router.post('/comment/new', async function (req, res, next) {
 })
 
 router.post('/account/edit', uploadpfp.any(), async function (req, res, next) {
-    console.log(req.originalUrl)
+
     if (!req.user) {
         res.redirect('/login')
     } else {
@@ -760,6 +758,7 @@ router.post('/account/edit', uploadpfp.any(), async function (req, res, next) {
         var displayname = req.body.displayname;
         var description = req.body.description;
         var email = req.body.email;
+        var theme = req.body.theme;
 
         var update = await User.findOneAndUpdate({
             _id: req.user._id
@@ -767,7 +766,8 @@ router.post('/account/edit', uploadpfp.any(), async function (req, res, next) {
             username: username,
             displayname: displayname,
             description: description,
-            email: email
+            email: email,
+            theme: theme
         });
 
         update
@@ -807,7 +807,7 @@ router.post('/account/edit', uploadpfp.any(), async function (req, res, next) {
 })
 
 router.post('/follow/new', async function (req, res, next) {
-    console.log(req.originalUrl)
+
     if (!req.user) {
         res.redirect('/login')
     } else {
@@ -836,7 +836,7 @@ router.post('/follow/new', async function (req, res, next) {
 })
 
 router.post('/follow/remove', async function (req, res, next) {
-    console.log(req.originalUrl)
+
     if (!req.user) {
         res.redirect('/login')
     } else {
@@ -866,21 +866,27 @@ router.post('/follow/remove', async function (req, res, next) {
 })
 
 router.post('/like/new', async function (req, res, next) {
-    console.log(req.originalUrl)
+
     if (!req.user) {
         res.redirect('/login')
     } else {
         funcs.like(req.user._id, req.body.postid)
     }
+    res.json({
+        success: true
+    })
 })
 
 router.post('/like/remove', async function (req, res, next) {
-    console.log(req.originalUrl)
+
     if (!req.user) {
         res.redirect('/login')
     } else {
         funcs.removelike(req.user._id, req.body.postid)
     }
+    res.json({
+        success: true
+    })
 })
 
 module.exports = router;

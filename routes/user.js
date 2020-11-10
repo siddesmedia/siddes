@@ -18,7 +18,7 @@ const {
 const url = require('url');
 
 router.get('/signup', forwardAuthenticated, function (req, res, next) {
-    console.log(req.originalUrl)
+
     var error = req.query.error
     const about = {
         title: 'Signup - ' + Name,
@@ -34,7 +34,7 @@ router.get('/signup', forwardAuthenticated, function (req, res, next) {
 });
 
 router.post('/signup', (req, res) => {
-    console.log(req.originalUrl)
+
     const verifyemailkey = uuidv4()
     const {
         username,
@@ -148,7 +148,7 @@ router.post('/signup', (req, res) => {
 });
 
 router.get('/login', forwardAuthenticated, function (req, res, next) {
-    console.log(req.originalUrl)
+
     passport.authenticate('local', {
         failureRedirect: '/login'
     })
@@ -179,7 +179,7 @@ router.get('/login', forwardAuthenticated, function (req, res, next) {
 });
 
 router.get('/account/verify/:verifytoken', forwardAuthenticated, async function (req, res, next) {
-    console.log(req.originalUrl)
+
     const userexists = await User.exists({
         verifyemailkey: req.params.verifytoken
     })
@@ -198,7 +198,7 @@ router.get('/account/verify/:verifytoken', forwardAuthenticated, async function 
 });
 
 router.post('/login', async function (req, res, next) {
-    console.log(req.originalUrl)
+
 
     try {
         const user = await User.findOne({
@@ -224,7 +224,7 @@ router.post('/login', async function (req, res, next) {
 });
 
 router.get('/logout', (req, res) => {
-    console.log(req.originalUrl)
+
     req.logout();
     res.redirect('/login');
 });

@@ -5,7 +5,6 @@ const Name = process.env.NAME
 const Post = require('../../models/Post');
 const Comment = require('../../models/Comment');
 const User = require('../../models/User');
-const redis = require('../../config/redis')
 const funcs = require('../../config/functions');
 const ratelimit = require("express-rate-limit");
 
@@ -42,14 +41,22 @@ router.post('/posts/new', _15per15, async function (req, res, next) {
             repost: false
         })
 
-        newPost
-            .save()
-            .then(post => {
-                res.json({
-                    "success": true,
-                    "message": "/s/" + post._id
-                })
+
+        if (verify.uploadbanned == true || verify.suspended == true) {
+            res.json({
+                "success": false,
+                "message": "this user is upload banned or their account is suspended"
             })
+        } else {
+            newPost
+                .save()
+                .then(post => {
+                    res.json({
+                        "success": true,
+                        "message": "/s/" + post._id
+                    })
+                })
+        }
     }
 });
 

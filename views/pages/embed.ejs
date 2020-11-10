@@ -1,3 +1,12 @@
+<style>
+    .postdiv {
+        border: none;
+    }
+
+    .postdiv:hover {
+        border: none;
+    }
+</style>
 <div class="embed" style="width:325px">
     <div class="postcontainer">
         <div class="postdiv" style="width: auto;border-bottom: none;">
@@ -18,8 +27,8 @@
                 </span>
                 <% }} %>
                 <p class="postowner">
-                    <a class="postownerlink" id="user_<%= post._id %>" href="/account/<%= post.owner %>"
-                        target='_blank'>
+                    <a class="header nopadmar notoppadmar" style="padding-left: 0;" id="user_<%= post._id %>"
+                        href="/account/<%= post.owner %>" target='_blank'>
                     </a><br>
                     <% if(post.repost == 'true') { %>
                     <span class="repostbadge">Repost</span>

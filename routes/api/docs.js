@@ -5,7 +5,6 @@ const Name = process.env.NAME
 const Post = require('../../models/Post');
 const Comment = require('../../models/Comment');
 const User = require('../../models/User');
-const redis = require('../../config/redis')
 const funcs = require('../../config/functions');
 const ratelimit = require("express-rate-limit");
 

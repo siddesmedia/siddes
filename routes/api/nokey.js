@@ -5,13 +5,9 @@ const Name = process.env.NAME
 const Post = require('../../models/Post');
 const Comment = require('../../models/Comment');
 const User = require('../../models/User');
-const {
-    countCommits
-} = require("count-commits");
-const redis = require('../../config/redis')
 
 router.get('/api/get/username/:id', async function (req, res, next) {
-    console.log(req.originalUrl)
+
     try {
         const user = await User.findOne({
             _id: req.params.id
@@ -29,21 +25,32 @@ router.get('/api/get/username/:id', async function (req, res, next) {
     }
 });
 
-router.get('/api/version', async function (req, res, next) {
-    console.log(req.originalUrl)
-    const commitCount = await (await countCommits("./")).toString();
-    const commitCountLength = commitCount.length
-    var finalCommitCount;
+router.get('/api/uploadsbanned', async function (req, res, next) {
+    try {
+        const user = await User.findById(req.user._id)
 
-    if (commitCountLength < 3) {
-        finalCommitCount = "0." + commitCount.charAt(0) + "." + commitCount.charAt(1);
-    } else {
-        finalCommitCount = commitCount.charAt(0) + commitCount.charAt(1) + "." + commitCount.charAt(2);
+        var banned
+
+        if (user.suspended == true) {
+            banned = true
+        } else {
+            banned = user.uploadbanned
+        }
+
+        res.json({
+            banned: banned
+        })
+    } catch (err) {
+        res.json({
+            banned: false
+        })
     }
+});
 
+router.get('/api/version', async function (req, res, next) {
     try {
         res.json({
-            version: finalCommitCount
+            version: process.env.VERSION
         })
     } catch (err) {
         res.json({
@@ -53,7 +60,6 @@ router.get('/api/version', async function (req, res, next) {
 });
 
 router.get('/api/premium', async function (req, res, next) {
-    console.log(req.originalUrl)
     try {
         if (!req.user) {
             res.json({
@@ -75,8 +81,26 @@ router.get('/api/premium', async function (req, res, next) {
     }
 });
 
+router.get('/api/theme/get', async function (req, res, next) {
+    try {
+        if (!req.user) {
+            res.json({
+                theme: 'dark'
+            })
+        } else {
+            res.json({
+                theme: req.user.theme
+            })
+        }
+    } catch (err) {
+        res.json({
+            theme: 'dark'
+        })
+    }
+});
+
 router.get('/api/liked/:postid', async function (req, res, next) {
-    console.log(req.originalUrl)
+
     try {
         const postobject = await Post.findById(req.params.postid)
         if (postobject.likes.includes(req.user._id) == true) {
@@ -96,13 +120,16 @@ router.get('/api/liked/:postid', async function (req, res, next) {
 });
 
 router.get('/api/redis/flush', async function (req, res, next) {
-    console.log(req.originalUrl)
+
     if (req.user) {
         if (req.user.admin == true) {
             try {
-                redis.flushdb(function (err, succeeded) {
+                /*redis.flushdb(function (err, succeeded) {
                     res.send('did the flush succeed: ' + succeeded);
-                });
+                });*/
+                res.json({
+                    "success": true
+                })
             } catch (err) {
                 res.send('their was an error');
             }

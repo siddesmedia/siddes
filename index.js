@@ -25,6 +25,10 @@ app.set('view engine', 'ejs');
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use('/*', async function (req, res, next) {
+    console.log(req.method + ' ' + res.statusCode + ' ' + req.originalUrl /*+ ' ' + req.ip*/ )
+    next()
+})
 
 if (process.env.ENV == "p" || process.env.ENV == "production") {
     const user = require('./routes/user')
@@ -46,7 +50,6 @@ if (process.env.ENV == "p" || process.env.ENV == "production") {
 }
 if (process.env.ENV == "m" || process.env.ENV == "maintenance") {
     app.get('/*', async function (req, res, next) {
-        console.log(req.originalUrl)
         const about = {
             title: 'Maintenance - ' + process.env.NAME,
             template: 'errors/maintenance',

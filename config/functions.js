@@ -1,12 +1,6 @@
 const Post = require('../models/Post');
 const Comment = require('../models/Comment');
 const User = require('../models/User');
-const {
-    findOne
-} = require('../models/Post');
-const {
-    use
-} = require('passport');
 
 function loggedin(user) {
     if (user) {
@@ -280,6 +274,16 @@ async function removelike(userid, postid) {
     }
 }
 
+async function removepost(postid) {
+    try {
+        const post = await Post.findByIdAndDelete(postid)
+        post
+        return;
+    } catch (err) {
+        return
+    }
+}
+
 module.exports = {
     loggedin,
     getpostowner,
@@ -297,5 +301,6 @@ module.exports = {
     getuserid,
     getuserbyapikey,
     like,
-    removelike
+    removelike,
+    removepost
 }

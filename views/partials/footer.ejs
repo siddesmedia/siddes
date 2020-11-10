@@ -13,12 +13,11 @@
         <a class="navfooanoleftpad" href="/company/howto">How to Use <%= name %></a>
         <span id="premium"></span>
         <p>&copy; 2020 to Present, <a class="navfooanoleftpad" href="/company/about"><%= name %></a> | <button
-                style="background: none!important;border: none;padding: 0!important;margin: 0!important;font-size: medium;"
-                onclick="window.location.href='/company/releases'">Beta
+                class="versionlink" onclick="window.location.href='/company/releases'">Beta
                 V<span id="version"></span></button></p>
         <script>
             version('version')
-            premium('premium', 'premiumsidebar')
+            premium(['premium', 'premiumsidebar', 'premiumsidebarext'])
         </script>
     </div>
 </div>

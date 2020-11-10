@@ -3,6 +3,43 @@
     <p class="noheader smalltext">Shhhhh (this is a secret page!)</p>
 </span>
 <div class="fullsection">
+    <h4>1.0.1 (Beta)</h4>
+    <p>Public Beta</p>
+    <ul>
+        <p>Client Side</p>
+        <li>added css for dark and retro themes</li>
+        <li>added theme switcher in account settings</li>
+        <li>added som styling to clear account page</li>
+        <li>fixed link to api docs</li>
+        <li>added share popup modal for posts</li>
+        <li>mods now have buttons to post ban and suspend account</li>
+        <li>if an account is post banned, they wont be able to create a new post</li>
+        <li>if an account is suspended, there account will not be visible and it will say they have been suspended</li>
+        <li>small screens that dont see the sidebar now have a popup menu instead</li>
+        <li>anonymous analytics, the only analytics kept is page views. you can see for yourself, the analytics are in
+            the 'analytics' function in <a href="/js/index.js">this code</a></li>
+        <li>admins can now see analytics in chart, table, and raw data form</li>
+        <li>redid the new post popup</li>
+        <li>added transparency report at <a href="/company/transparency">/company/transparency</a></li>
+
+        <p>Server Side</p>
+        <li>added theme saver for POST to /account/edit</li>
+        <li>processes ban and account suspension</li>
+        <li>will ban and suspend accounts based off of that ^</li>
+        <li>when rendering pages, "posts", is now a partial for ease of updating</li>
+        <li>easy route for accounts pfp</li>
+        <li>easy route for accounts banner</li>
+        <li>fixed redis caching library</li>
+
+        <p>Client & Server Side</p>
+        <li>posts are now limited to 265 characters (300 originally)</li>
+
+        <p>Notes</p>
+        <li>themes default to dark mode, if you are not logged in, it defaults to dark mode too</li>
+        <li>if a tag lookup yields results that dont include that tag, please ignore this, we are working on a fix</li>
+    </ul>
+</div>
+<div class="fullsection">
     <h4>1.0.0 (Beta)</h4>
     <p>Public Beta</p>
     <ul>
