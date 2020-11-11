@@ -3,7 +3,7 @@
     <div class="section">
         <a href="/">Home</a>
         <a class="navfooanoleftpad" href="#">Jobs</a>
-        <a class="navfooanoleftpad" href="/company/about">About</a>
+        <a class="navfooanoleftpad" href="/company">Company</a>
         <% if(loggedin == true) { %>
         <a class="navfooanoleftpad" href="/logout">Logout</a>
         <% } else {} %>
@@ -12,9 +12,10 @@
         <% } else {} %>
         <a class="navfooanoleftpad" href="/company/howto">How to Use <%= name %></a>
         <span id="premium"></span>
-        <p>&copy; 2020 to Present, <a class="navfooanoleftpad" href="/company/about"><%= name %></a> | <button
+        <p>&copy; 2020 to Present, <a class="navfooanoleftpad" href="/company"><%= name %></a> | <button
                 class="versionlink" onclick="window.location.href='/company/releases'">Beta
-                V<span id="version"></span></button></p>
+                V<span id="version"></span></button> | <a href="/company/tos" class="navfooanoleftpad">Terms of
+                Service</a> | <a href="/company/pp" class="navfooanoleftpad">Privacy Policy</a></p>
         <script>
             version('version')
             premium(['premium', 'premiumsidebar', 'premiumsidebarext'])

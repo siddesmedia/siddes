@@ -60,7 +60,7 @@ function newPost(toggle) {
         $.getJSON("/api/uploadsbanned", function (json) {
             if (json.banned == true) {
                 uploadsbanned = true
-                document.getElementById('newpostform').innerHTML = '<h3 class="header">Banned</h3><br><p class="section">Sorry, but you have been post banned, if you think this was a mistake, please contact us here: <a href="/admin/banappeals">ban appeals</a>.</p>'
+                document.getElementById('newpostform').innerHTML = '<h3 class="header">Banned</h3><br><p class="section">Sorry, but you have been post banned, if you think this was a mistake, please contact us here: <a href="/admin/appeals">ban appeals</a>.</p>'
             } else {
                 uploadsbanned = false
             }
@@ -78,7 +78,8 @@ function newPost(toggle) {
 }
 
 function uploadban(id) {
-    $.getJSON("/mod/uploadban/" + id, function (json) {
+    var reason = prompt('Why?')
+    $.getJSON("/mod/uploadban/" + id + '/' + encodeURIComponent(reason), function (json) {
         if (json.banned == true) {
             alert('success')
             window.location = window.location
@@ -100,7 +101,8 @@ function removeuploadban(id) {
 }
 
 function suspend(id) {
-    $.getJSON("/admin/suspend/" + id, function (json) {
+    var reason = prompt('Why?')
+    $.getJSON("/admin/suspend/" + id + '/' + encodeURIComponent(reason), function (json) {
         if (json.suspended == true) {
             alert('success')
             window.location = window.location

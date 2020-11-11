@@ -50,6 +50,28 @@ const User = new mongoose.Schema({
         required: true,
         default: false
     },
+    banreason: {
+        type: String,
+        unique: false,
+        required: true
+    },
+    suspensionreason: {
+        type: String,
+        unique: false,
+        required: true
+    },
+    suspensionappealed: {
+        type: Boolean,
+        unique: false,
+        required: true,
+        default: false
+    },
+    uploadbannedappealed: {
+        type: Boolean,
+        unique: false,
+        required: true,
+        default: false
+    },
     apikey: {
         type: String,
         unique: true,

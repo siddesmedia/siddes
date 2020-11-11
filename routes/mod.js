@@ -61,6 +61,33 @@ router.get('/mod', async function (req, res, next) {
     return res.render('base', about);
 });
 
+router.get('/mod/viewappeals', async function (req, res, next) {
+    if (!req.user) {
+        return res.redirect('/login')
+    }
+    if (req.user.admin == false) {
+        if (req.user.moderator == false) {
+            return res.redirect('/account')
+        }
+    }
+
+    const users = await User.find({
+        uploadbannedappealed: true
+    })
+
+    const about = {
+        title: 'View Appeals - ' + Name,
+        template: 'pages/mod/viewappeals',
+        name: Name,
+        loggedin: funcs.loggedin(req.user),
+        moderator: funcs.moderator(req.user),
+        navbar: true,
+        footer: true,
+        users: users
+    };
+    return res.render('base', about);
+});
+
 router.post('/mod/reports', async function (req, res, next) {
 
     if (!req.user) {
@@ -118,7 +145,7 @@ router.get('/report', async function (req, res, next) {
     }
 });
 
-router.get('/mod/uploadban/:id', async function (req, res, next) {
+router.get('/mod/uploadban/:id/:reason', async function (req, res, next) {
     if (!req.user) {
         return res.redirect('/login')
     }
@@ -129,10 +156,14 @@ router.get('/mod/uploadban/:id', async function (req, res, next) {
     }
     try {
         const updateuserwithban = await User.findByIdAndUpdate(req.params.id, {
-            uploadbanned: true
+            uploadbanned: true,
+            uploadbannedappealed: false,
+            banreason: decodeURIComponent(req.params.reason)
         })
 
         updateuserwithban
+
+        funcs.addtofeed(req.params.id, "A moderator has upload banned you.", '/admin/appeals', 'Press me to appeal this upload ban. Reason: ' + decodeURIComponent(req.params.reason))
 
         res.json({
             banned: true
@@ -156,10 +187,14 @@ router.get('/mod/removeuploadban/:id', async function (req, res, next) {
     }
     try {
         const updateuserwithban = await User.findByIdAndUpdate(req.params.id, {
-            uploadbanned: false
+            uploadbanned: false,
+            uploadbannedappealed: false,
+            banreason: ""
         })
 
         updateuserwithban
+
+        funcs.addtofeed(req.params.id, "Your upload ban has been removed.", '/account', 'You can now post if your account is not suspended.')
 
         res.json({
             banned: false
@@ -170,6 +205,28 @@ router.get('/mod/removeuploadban/:id', async function (req, res, next) {
         })
     }
 });
+
+router.post('/mod/appealuploadban', async function (req, res, next) {
+    if (!req.user) {
+        return res.redirect('/account')
+    }
+
+    try {
+        const updateuploadban = await User.findByIdAndUpdate(req.user._id, {
+            uploadbannedappealed: true
+        })
+
+        updateuploadban
+
+        res.json({
+            success: true
+        })
+    } catch (err) {
+        res.json({
+            success: false
+        })
+    }
+})
 
 router.post('/report', async function (req, res, next) {
 

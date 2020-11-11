@@ -74,7 +74,7 @@ router.get('/admin/analytics', async function (req, res, next) {
     return res.render('base', about);
 });
 
-router.get('/admin/suspend/:id', async function (req, res, next) {
+router.get('/admin/suspend/:id/:reason', async function (req, res, next) {
     if (!req.user) {
         return res.redirect('/login')
     }
@@ -85,10 +85,14 @@ router.get('/admin/suspend/:id', async function (req, res, next) {
     }
     try {
         const updateuserwithban = await User.findByIdAndUpdate(req.params.id, {
-            suspended: true
+            suspended: true,
+            suspensionreason: decodeURIComponent(req.params.reason),
+            suspensionappealed: false,
         })
 
         updateuserwithban
+
+        funcs.addtofeed(req.params.id, "An admin has upload banned you.", '/admin/appeals', 'Press me to appeal this suspension. Reason: ' + decodeURIComponent(req.params.reason))
 
         res.json({
             suspended: true
@@ -99,6 +103,53 @@ router.get('/admin/suspend/:id', async function (req, res, next) {
             suspended: false
         })
     }
+});
+
+router.get('/admin/viewappeals', async function (req, res, next) {
+    if (!req.user) {
+        return res.redirect('/login')
+    }
+    if (req.user.admin == false) {
+        if (req.user.moderator == false) {
+            return res.redirect('/account')
+        }
+    }
+
+    const users = await User.find({
+        suspensionappealed: true
+    })
+
+    const about = {
+        title: 'View Appeals - ' + Name,
+        template: 'pages/admin/viewappeals',
+        name: Name,
+        loggedin: funcs.loggedin(req.user),
+        moderator: funcs.moderator(req.user),
+        navbar: true,
+        footer: true,
+        users: users
+    };
+    return res.render('base', about);
+});
+
+router.get('/admin/appeals', async function (req, res, next) {
+    if (!req.user) {
+        return res.redirect('/account')
+    }
+
+    const user = await User.findById(req.user._id)
+
+    const about = {
+        title: 'Ban Appeals - ' + Name,
+        template: 'pages/admin/appeals',
+        name: Name,
+        loggedin: funcs.loggedin(req.user),
+        moderator: funcs.moderator(req.user),
+        navbar: true,
+        footer: true,
+        user: user
+    };
+    return res.render('base', about);
 });
 
 router.get('/admin/unsuspend/:id', async function (req, res, next) {
@@ -109,11 +160,15 @@ router.get('/admin/unsuspend/:id', async function (req, res, next) {
         return res.redirect('/account')
     }
     try {
-        const updateuserwithban = await User.findByIdAndUpdate(req.params.id, {
-            suspended: false
+        const updateuserwithsuspension = await User.findByIdAndUpdate(req.params.id, {
+            suspended: false,
+            suspensionappealed: false,
+            suspensionreason: ""
         })
 
-        updateuserwithban
+        updateuserwithsuspension
+
+        funcs.addtofeed(req.params.id, "Your account has been unsuspended.", '/admin/appeals', 'You can now use your account normally if you are not upload banned.')
 
         res.json({
             suspended: false
@@ -124,5 +179,27 @@ router.get('/admin/unsuspend/:id', async function (req, res, next) {
         })
     }
 });
+
+router.post('/admin/appealsuspension', async function (req, res, next) {
+    if (!req.user) {
+        return res.redirect('/account')
+    }
+
+    try {
+        const updateuploadban = await User.findByIdAndUpdate(req.user._id, {
+            suspensionappealed: true
+        })
+
+        updateuploadban
+
+        res.json({
+            success: true
+        })
+    } catch (err) {
+        res.json({
+            success: false
+        })
+    }
+})
 
 module.exports = router;

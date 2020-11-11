@@ -1,0 +1,46 @@
+<h3 class="header nobottompadmar">Appeals</h3><br>
+<span class="section">
+    <% if(user.uploadbanned == true) { %>
+    <p><b>Ban reason: </b><%= user.banreason %></p>
+    <% if(user.uploadbannedappealed == true) { %>
+    <button class="button section">Already Appealed</button>
+    <% } else { %>
+    <button class="button section" onclick="appealuploadban()">Appeal Upload Ban</button>
+    <% } } %>
+    <% if(user.suspended == true) { %>
+    <p><b>Suspension reason: </b><%= user.suspensionreason %></p>
+    <% if(user.suspensionappealed == true) { %>
+    <button class="button section">Already Appealed</button>
+    <% } else { %>
+    <button class="button section" onclick="appealsuspension()">Appeal Suspension</button>
+    <% } } %>
+    <% if(user.suspended == false && user.uploadbanned == false) { %>
+    <p>Your account is not uploadbanned or suspended.</p>
+    <% } %>
+    <br>
+</span>
+<script>
+    function appealsuspension() {
+        $.post('/admin/appealsuspension', {
+            appeal: true
+        }, function (data) {
+            if (data.success == true) {
+                alert('successfully appealed suspension')
+            } else {
+                alert('there was an error appealing your suspension')
+            }
+        })
+    }
+
+    function appealuploadban() {
+        $.post('/mod/appealuploadban', {
+            appeal: true
+        }, function (data) {
+            if (data.success == true) {
+                alert('successfully appealed upload ban')
+            } else {
+                alert('there was an error appealing your upload ban')
+            }
+        })
+    }
+</script>

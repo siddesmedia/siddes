@@ -1,0 +1,18 @@
+<h3 class="header">Upload Ban Appeals</h3><br>
+<% if(users.length == 0) { %>
+<h4 class="headerred">No upload banned users with appeals</h4>
+<% } else { %>
+<% for(var i = 0; i < users.length; i++) { %>
+<div class="postcontainer">
+    <div class="postdiv section">
+        <br>
+        <a class="section" target="_blank" href="/account/<%= users[i]._id %>">
+            @<%= users[i].username %>
+        </a>
+        <p><b>suspension reason: </b><%= users[i].suspensionreason %></p>
+        <p><a target="_blank" href="/account/<%= users[i]._id %>">view account</a></p>
+        <button class="button section" onclick="removeuploadban('<%= users[i]._id %>')">Remove Upload Ban</button>
+    </div>
+</div>
+<% } %>
+<% } %>

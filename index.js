@@ -41,6 +41,10 @@ if (process.env.ENV == "p" || process.env.ENV == "production") {
     app.use('/', admin);
     const nokeyapi = require('./routes/api/nokey')
     app.use('/', nokeyapi);
+    const company = require('./routes/company')
+    app.use('/company', company);
+    const redirects = require('./routes/redirects')
+    app.use('/redirects', redirects);
     const keyapi = require('./routes/api/key')
     app.use('/api/v1', keyapi);
     const apidocs = require('./routes/api/docs')

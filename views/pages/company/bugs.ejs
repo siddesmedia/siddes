@@ -1,3 +1,30 @@
+<h3 class="header">Bugs</h3><br>
+<span class="section">
+    <button class="button" onclick="formredirect()">Go to SurveyMonkey</button>
+    <button class="button" onclick="loadembed()">Load Survey Embed</button>
+</span>
+<br>
+<br>
+<div id="formembed">
+
+</div>
 <script>
-    window.location = "https://www.surveymonkey.com/r/KN7Q6Q9"
+    formredirect()
+
+    function formredirect() {
+        var redirect = confirm("Go to surveymonkey.com?")
+        if (redirect == true) {
+            window.location = "https://www.surveymonkey.com/r/KN7Q6Q9"
+        } else {
+
+        }
+    }
+
+    function loadembed() {
+        document.getElementById('formembed').innerHTML = `
+        <iframe width="100%" height="600px" style="border:none"
+            src="https://www.surveymonkey.com/r/?sm=k7S255An3jsdwcABIxSfp1E6FMirtk8C9cGOIAyIQCg_3D">
+        </iframe>    
+        `
+    }
 </script>
