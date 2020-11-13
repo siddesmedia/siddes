@@ -5,6 +5,7 @@ const Name = process.env.NAME
 const Post = require('../../models/Post');
 const Comment = require('../../models/Comment');
 const User = require('../../models/User');
+const Directs = require('../../models/Directs');
 
 router.get('/api/get/username/:id', async function (req, res, next) {
 
@@ -43,6 +44,157 @@ router.get('/api/uploadsbanned', async function (req, res, next) {
     } catch (err) {
         res.json({
             banned: false
+        })
+    }
+});
+
+router.post('/api/comments/:amount/:id', async function (req, res, next) {
+    try {
+        const comments = await Comment.find({
+            parentid: req.params.id
+        }).sort({
+            date: -1
+        }).limit(20)
+
+        return res.send({
+            success: true,
+            comments: comments
+        })
+    } catch (err) {
+        res.json({
+            success: false
+        })
+    }
+});
+
+router.get('/api/latest/:amount', async function (req, res, next) {
+    try {
+        const posts = await Post.find().sort({
+            date: -1
+        }).limit(eval(req.params.amount))
+
+        return res.send({
+            success: true,
+            posts: posts
+        })
+    } catch (err) {
+        res.json({
+            success: false
+        })
+    }
+});
+
+router.post('/api/get/dms', async function (req, res, next) {
+    try {
+        const user = await User.findById(req.user._id)
+        const dm_id_array = user.directmessages
+        const dm_username_array = []
+
+        for (i = 0; i < dm_id_array.length; i++) {
+            var tempuser = await User.findById(dm_id_array[i])
+            dm_username_array.push(tempuser.username)
+        }
+
+        return res.send({
+            success: true,
+            ids: dm_id_array,
+            id: req.user._id,
+            usernames: dm_username_array
+        })
+    } catch (err) {
+        res.json({
+            success: false,
+            error: err
+        })
+    }
+});
+
+router.post('/api/fetch/dms', async function (req, res, next) {
+    try {
+        const myid = req.user._id
+        const id = req.body.id
+
+        var dms = await Directs.find({
+            sender: myid,
+            res: id
+        }).sort({
+            date: -1
+        })
+
+        var dms2 = await Directs.find({
+            sender: id,
+            res: myid
+        }).sort({
+            date: -1
+        })
+
+        var dms = dms.concat(dms2)
+
+        dms.sort(function (a, b) {
+            return eval(a.date) - eval(b.date)
+        });
+
+        return res.send({
+            success: true,
+            dms: dms
+        })
+    } catch (err) {
+        res.json({
+            success: false,
+            error: err
+        })
+    }
+});
+
+router.post('/api/dms/create', async function (req, res, next) {
+    try {
+        const id = req.body.id
+        const user = await User.findById(req.user._id)
+
+        const directsarray = user.directmessages
+
+        if (directsarray.includes(id) == true) {
+
+        } else {
+            directsarray.push(id)
+        }
+
+        const updatedms = await User.findByIdAndUpdate(req.user._id, {
+            directmessages: directsarray
+        })
+
+        updatedms
+
+        return res.send({
+            success: true
+        })
+    } catch (err) {
+        res.json({
+            success: false,
+            error: err
+        })
+    }
+});
+
+router.post('/api/message/send', async function (req, res, next) {
+    try {
+        const to = req.body.to
+        const message = req.body.message
+
+        const createmessage = new Directs({
+            sender: req.user._id,
+            res: to,
+            message: message
+        })
+
+        createmessage.save()
+
+        return res.send({
+            success: true
+        })
+    } catch (err) {
+        res.json({
+            success: false
         })
     }
 });

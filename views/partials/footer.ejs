@@ -1,24 +1,32 @@
 <div class="footer">
-    <br>
-    <div class="section">
-        <a href="/">Home</a>
-        <a class="navfooanoleftpad" href="#">Jobs</a>
-        <a class="navfooanoleftpad" href="/company">Company</a>
-        <% if(loggedin == true) { %>
-        <a class="navfooanoleftpad" href="/logout">Logout</a>
-        <% } else {} %>
-        <% if(moderator == true) { %>
-        <a class="navfooanoleftpad" href="/mod">Moderators</a>
-        <% } else {} %>
-        <a class="navfooanoleftpad" href="/company/howto">How to Use <%= name %></a>
-        <span id="premium"></span>
-        <p>&copy; 2020 to Present, <a class="navfooanoleftpad" href="/company"><%= name %></a> | <button
-                class="versionlink" onclick="window.location.href='/company/releases'">Beta
-                V<span id="version"></span></button> | <a href="/company/tos" class="navfooanoleftpad">Terms of
-                Service</a> | <a href="/company/pp" class="navfooanoleftpad">Privacy Policy</a></p>
-        <script>
-            version('version')
-            premium(['premium', 'premiumsidebar', 'premiumsidebarext'])
-        </script>
+    <div class="row">
+        <div class="column" style="padding-left: 30px;">
+            <h3 class="noheader nobottompadmar navfooanoleftpad" style="margin-left: 0;">Siddes.com</h3><br>
+            <span class="section"><br>
+                <a href="/" class="">Home</a><br>
+                <% if(loggedin == true) { %>
+                <a class="" href="/logout">Logout</a><br>
+                <% } else {} %>
+                <% if(moderator == true) { %>
+                <a class="" href="/mod">Moderators</a><br>
+                <% } else {} %>
+                <a href="/company/howto" class="">How to Use <%= name %></a>
+            </span>
+        </div>
+        <div class="column" style="padding-left: 30px;">
+            <h3 class="noheader nobottompadmar navfooanoleftpad" style="margin-left: 0;">Company</h3><br>
+            <span class="section"><br>
+                <a href="/company" class="">Company</a><br>
+                <a href="/company/analytics" class="">Analytics</a><br>
+                <a href="#" class="">Jobs</a><br>
+                <a href="/company/tos" class="">Terms of Service</a><br>
+                <a href="/company/pp" class="">Privacy Policy</a>
+            </span>
+        </div>
     </div>
 </div>
+<br>
+<script>
+    version('version')
+    premium(['premiumsidebar'])
+</script>

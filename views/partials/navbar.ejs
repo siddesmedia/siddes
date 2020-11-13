@@ -1,31 +1,70 @@
 <div class="sidebar">
-    <form action="/search" method="GET" style="width: 90%;margin-left: auto;margin-right: auto;display: block;">
-        <input name="q" type="text" class="input" placeholder="Search <%= name %>" style="width: 95%;">
-    </form>
-    <br>
     <span class="sidebartextsection">
-        <a href="/home">Home</a><br>
+        <span id="thelatestcontainer">
+            <button class="sidebarbutton" style="text-align: left;border-radius: 10px;">
+                The Latest
+                <br><br>
+                <div class="expandcommentdiv" style="width: 95%;display: block;margin: auto;" id="latest">
+
+                </div>
+            </button>
+        </span>
+
+        <p class="sidetext smalltext">
+            &copy; 2020
+            <a class="navfooanoleftpad" href="/company">
+                <%= name %>
+            </a>
+            •
+            <a class="navfooanoleftpad" href="/account/developer/docs">
+                Developers
+            </a>
+            •
+            <a class="navfooanoleftpad" href="/account/developer/docs">
+                Contact
+            </a>
+            •
+            <button class="versionlink smalltext" onclick="window.location.href='/company/releases'">
+                Beta V<span id="version"></span>
+            </button>
+        </p>
+    </span>
+</div>
+<script>
+    showlatestposts('latest')
+</script>
+<div class="sidebarleft">
+    <form action="/search" method="GET" style="width: 90%;margin-left: auto;margin-right: auto;display: block;">
+        <input name="q" type="text" class="input" placeholder="Search <%= name %>"
+            style="width: 91%;padding: 8px;margin-bottom: 8px;">
+    </form>
+    <span class="sidebartextsection">
+        <button class="sidebarbutton" onclick="url('/home')"><i class="fa fa-home"></i></button>
         <% if(loggedin == true) { %>
-        <a href="/account/edit">Settings</a><br>
-        <a href="/logout">Logout</a><br>
+        <button class="sidebarbutton" onclick="newPost('show')"><i class="fa fa-pen"></i></button>
+        <button class="sidebarbutton" onclick="messages('open')"><i class="fa fa-envelope"></i></button>
+        <button class="sidebarbutton" onclick="url('/account/edit')"><i class="fa fa-cog"></i></button>
+        <button class="sidebarbutton" onclick="url('/logout')"><i class="fas fa-sign-out-alt"></i></button>
         <% } else if(loggedin == false) { %>
-        <a href="/login">Login</a><br>
-        <a href="/signup">Register</a><br>
+        <button class="sidebarbutton" onclick="url('/login')"><i class="fas fa-sign-in-alt"></i></button>
+        <button class="sidebarbutton" onclick="url('/signup')"><i class="fas fa-user-plus"></i></button>
         <% } %>
         <% if(moderator == true) { %>
-        <a href="/mod">Moderators</a><br>
-        <% } else {} %>
-        <a href="/company/bugs">Report a Bug</a><br>
-        <a href="/company">Company</a><br>
-        <a href="/company/tos">Terms of Service</a><br>
-        <a href="/company/pp">Privacy Policy</a><br>
+        <button class="sidebarbutton" onclick="url('/mod')"><i class="fas fa-gavel"></i></button>
+        <% } %>
+        <button class="sidebarbutton" onclick="url('/latest')"><i class="fa fa-clock"></i></button>
         <span id="premiumsidebar"></span><br><br>
-        <p class="sidetext">&copy; 2020 to Present, <a class="navfooanoleftpad" href="/company"><%= name %></a></p>
-        <br>
+        <span class="sidebarleftbottom">
+            <% if(loggedin == true) { %>
+            <button class="sidebarbutton" onclick="url('/account')" style="padding: 5px;"><img width="40px"
+                    src="/account/pfp"></button>
+            <% } %>
+        </span>
     </span>
 </div>
 <div class="sidebar sidebarextension hidden" id="sidebarext">
-    <form action="/search" method="GET" style="width: 90%;margin-left: auto;margin-right: auto;display: block;">
+    <form action="/search" method="GET"
+        style="width: 90%;margin-left: auto;margin-right: auto;display: block;padding: 5px;">
         <input name="q" type="text" class="input" placeholder="Search <%= name %>" style="width: 80%;">
         <button class="button" type="submit">Search</button>
     </form>
@@ -34,6 +73,7 @@
     <br><br>
     <span class="">
         <a href="/home">Home</a><br>
+        <a href="javascript:messages()">Messages</a><br>
         <% if(loggedin == true) { %>
         <a href="/account/edit">Settings</a><br>
         <a href="/logout">Logout</a><br>
@@ -54,23 +94,5 @@
                 &copy; 2020 to Present, <a class="navfooanoleftpad" href="/company"><%= name %></a>
             </p>
         </span>
-    </span>
-</div>
-<div class="navbar">
-    <!--<a href="/"><img style="width:15px" src="https://static-cdn.siddes.com/logo-transparent.png" alt="Siddes"
-            title="Siddes"></a>-->
-    <a href="/">Siddes</a>
-    <% if(loggedin == true) { %>
-    <a href="/home">Feed</a>
-    <a href="/latest">Latest</a>
-    <a href="/account">Account</a>
-    <a href="javascript:newPost('show')">New</a>
-    <% } else { %>
-    <a href="/latest">Latest</a>
-    <a href="/login">Login</a>
-    <a href="/signup">Register</a>
-    <% } %>
-    <span>
-        <a id="dropdown" class="right" href="javascript:showmenu('show')">Menu</a><br>
     </span>
 </div>

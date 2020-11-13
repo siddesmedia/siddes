@@ -64,6 +64,23 @@ router.get('/account/:id/pfp', async function (req, res, next) {
     }
 })
 
+router.get('/account/pfp', async function (req, res, next) {
+    if (!req.user) {
+        return res.sendFile(path.join(__dirname, '../usergenerated/images/notfound.jpeg'))
+    }
+    const pfpurl = await User.findById(req.user._id)
+
+    try {
+        if (fs.existsSync(path.join(__dirname, '../', pfpurl.pfp)) == false || !pfpurl.pfp || pfpurl.pfp == '') {
+            return res.sendFile(path.join(__dirname, '../usergenerated/images/notfound.jpeg'))
+        } else {
+            res.sendFile(path.join(__dirname, '../', pfpurl.pfp))
+        }
+    } catch (err) {
+        res.sendFile(path.join(__dirname, '../usergenerated/images/notfound.jpeg'))
+    }
+})
+
 router.get('/account/:id/banner', async function (req, res, next) {
     const bannerid = req.params.id
     const bannerurl = await User.findById(bannerid)

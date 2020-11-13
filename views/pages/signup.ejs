@@ -1,44 +1,64 @@
-<h3 class="header">Signup</h3>
-<div class="section">
-    <form action="/signup" method="POST">
-        <div>
-            <label for="username">Username (no space ' or "):</label>
-            <input type="username" class="input" id="username" name="username" placeholder="username" value="" required
-                pattern="\S+" />
+<style>
+    .input {
+        width: 95%;
+    }
+</style>
+<div class="row">
+    <div class="column">
+        <h3 class="header">Signup</h3>
+        <div class="section">
+            <form action="/signup" method="POST">
+                <div>
+                    <label for="username">Username:</label><br><br>
+                    <input type="username" class="input" id="username" name="username" placeholder="username" value=""
+                        required pattern="\S+" />
+                </div>
+                <br>
+                <div>
+                    <label for="email">Email:</label><br><br>
+                    <input type="email" class="input" id="email" name="email" placeholder="email" value="" required />
+                </div>
+                <br>
+                <div>
+                    <label for="password">Password:</label><br><br>
+                    <input type="password" class="input" id="password" name="password" placeholder="password" value=""
+                        required />
+                </div>
+                <br>
+                <div>
+                    <label for="password2">Confirm Password:</label><br><br>
+                    <input type="password" class="input" id="password2" name="password2" placeholder="password" value=""
+                        required />
+                </div>
+                <div>
+                    <p style="padding-left: 0;margin-left: 0;">
+                        <input type="checkbox" required checked>
+                        I am over 13 years old and agree to the <a href="/company/tos">Terms of
+                            Service</a> and <a href="/company/pp">Privacy Policy</a>.
+                    </p>
+                </div>
+                <% if(error == undefined || error == '' || !error){} else { %>
+                <div>
+                    <p class="error">
+                        <%= error %>
+                    </p>
+                </div>
+                <% } %>
+                <button type="submit" class="button">Register</button>
+                <p style="padding-left: 0;margin-left: 0;">Have an account? <a href="/login">Login</a></p>
+            </form>
         </div>
-        <br>
-        <div>
-            <label for="email">Email:</label>
-            <input type="email" class="input" id="email" name="email" placeholder="email" value="" required />
-        </div>
-        <br>
-        <div>
-            <label for="password">Password:</label>
-            <input type="password" class="input" id="password" name="password" placeholder="password" value=""
-                required />
-        </div>
-        <br>
-        <div>
-            <label for="password2">Confirm Password:</label>
-            <input type="password" class="input" id="password2" name="password2" placeholder="password" value=""
-                required />
-        </div>
-        <div>
-            <p style="padding-left: 0;margin-left: 0;">
-                <input type="checkbox" required checked>
-                I am over 13 years old and agree to the <a href="/company/tos">Terms of
-                    Service</a> and <a href="/company/pp">Privacy Policy</a>.
-            </p>
-        </div>
-        <% if(error == undefined || error == '' || !error){} else { %>
-        <div>
-            <p class="error">
-                <%= error %>
-            </p>
-        </div>
-        <% } %>
-        <button type="submit" class="button">Register</button>
-
-        <p style="padding-left: 0;margin-left: 0;">Have an account? <a href="/login">Login</a></p>
-    </form>
+    </div>
+    <div class="column">
+        <h3 class="header nobottompadmar">Scared if we track you?</h3>
+        <span class="section">
+            <p>Don't worry, we don't</p>
+            <p>We do not share anything with third-parties. Heck, we don't even know anything.</p>
+            <p>The only stuff we know is the stuff you give us when you signup, so your email.</p>
+            <p>We also don't store analytics, or anything personal or identifiable.</p>
+            <p>We originally built Siddes to be a privacy-based social network. There are currently none like ours.</p>
+            <p>If you want, you can <a href="/company/about">learn more</a>!</p>
+            <p>Our transparency report is <a href="/company/transparency">available here</a>!</p>
+        </span>
+    </div>
 </div>

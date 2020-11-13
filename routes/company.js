@@ -3,6 +3,7 @@ const router = express.Router()
 require('dotenv').config()
 const Name = process.env.NAME
 const funcs = require('../config/functions');
+const Analytics = require('../models/Analytics');
 
 router.get('/', function (req, res, next) {
 
@@ -181,6 +182,41 @@ router.get('/roadmap', function (req, res, next) {
         moderator: funcs.moderator(req.user),
         navbar: true,
         footer: true
+    };
+    return res.render('base', about);
+});
+
+router.get('/analytics', async function (req, res, next) {
+    const analytics = await Analytics.find().sort({
+        _id: -1
+    }).limit(400)
+
+    var chart_data = []
+    var chart_labels = []
+
+    if (analytics.length < 25) {
+        for (i = 0; i < analytics.length; i++) {
+            chart_labels.push(`${analytics[i].hour}`)
+            chart_data.push(analytics[i].views)
+        }
+    } else {
+        for (i = 0; i < 24; i++) {
+            chart_labels.push(`${analytics[i].hour}`)
+            chart_data.push(analytics[i].views)
+        }
+    }
+
+    const about = {
+        title: 'Analytics - ' + Name,
+        template: 'pages/admin/analytics',
+        name: Name,
+        loggedin: funcs.loggedin(req.user),
+        moderator: funcs.moderator(req.user),
+        navbar: true,
+        footer: true,
+        analytics: analytics,
+        chart_data: chart_data,
+        chart_labels: chart_labels
     };
     return res.render('base', about);
 });

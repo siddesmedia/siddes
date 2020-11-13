@@ -6,6 +6,7 @@
 
 var loggedinbool;
 var uploadsbanned = undefined;
+var myid = ''
 
 changetheme()
 
@@ -24,7 +25,82 @@ function share(id) {
     document.getElementById('share_twitter_link').setAttribute('href', "https://www.twitter.com/share?title=Check out this post on Siddes!&text=Here it is: https://www.siddes.com/s/" + id);
     document.getElementById('share_facebook_link').setAttribute('href', "https://www.facebook.com/sharer/sharer.php?u=https://www.siddes.com/s/" + id);
     document.getElementById('share_email_link').setAttribute('href', "mailto:email@example.com?subject=You won't believe what I found on Siddes!&body=Here it is: https://www.siddes.com/s/" + id);
+    document.getElementById('share_link').setAttribute('value', "https://siddes.com/s/" + id);
     return document.getElementById('sharemodal').classList.remove('hidden')
+}
+
+function adddirect(id) {
+    $.post('/api/dms/create', {
+        id: id
+    }, function (data) {
+
+    })
+}
+
+function messages(toggle) {
+    if (toggle == 'open') {
+        var html = ''
+        $.post('/api/get/dms', function (data) {
+            if (data.success == true) {
+                myid = data.id
+                var ids = data.ids
+                var usernames = data.usernames
+
+                for (i = 0; i < ids.length; i++) {
+                    html = html + `<button class="chat" onclick="openmessage('${ids[i]}')">@${usernames[i]}</button>`
+                }
+            } else {
+                html = `<p class='section'>Nothing here...</p>`
+            }
+
+            document.getElementById('listofchats').innerHTML = html
+        })
+
+        document.getElementById('messagesbox').classList.remove('hidden')
+    } else if (toggle == 'close') {
+        document.getElementById('messagesbox').classList.add('hidden')
+    }
+}
+
+function openmessage(id) {
+    $.post('/api/fetch/dms', {
+        id: id
+    }, function (data) {
+        var html = ''
+        if (data.success == true) {
+            for (i = 0; i < data.dms.length; i++) {
+                if (data.dms[i].sender == myid) {
+                    var float = "right"
+                } else {
+                    var float = "left"
+                }
+                html = html + `<br><li class="message ${float}">${data.dms[i].message}</li><br>`
+            }
+
+            document.getElementById('sendmessage').setAttribute('onclick', `sendmessage('${id}')`)
+            return document.getElementById('messagescontainer').innerHTML = html
+        } else {
+
+        }
+    })
+}
+
+var encodeHtmlEntity = function (str) {
+    var buf = [];
+    for (var i = str.length - 1; i >= 0; i--) {
+        buf.unshift(['&#', str[i].charCodeAt(), ';'].join(''));
+    }
+    return buf.join('');
+};
+
+function sendmessage(id) {
+    var message = document.getElementById('sendmessageinput').value
+    $.post('/api/message/send', {
+        to: id,
+        message: encodeHtmlEntity(message)
+    }, function (data) {
+        return document.getElementById('messagescontainer').innerHTML = document.getElementById('messagescontainer').innerHTML + `<br><li class="message right">${encodeHtmlEntity(message)}</li><br>`
+    })
 }
 
 function changetheme() {
@@ -152,6 +228,72 @@ async function haveiliked(elemid, likecount, postid, loggedin) {
     });
 }
 
+function url(path) {
+    window.location = path
+}
+
+function expandcomments(postid) {
+    $.post('/api/comments/20/' + postid, function (data) {
+        if (data.success == true) {
+            var html = `<br><button class="button" onclick="hidecomments('expand_${postid}')">Hide Comments</button><br><br>`
+            var comments = data.comments
+            for (i = 0; i < data.comments.length; i++) {
+                html = html + `
+                <div class="commentcontainer">
+                    <div class="expandcommentdiv">
+                        <p class="commentsowner">
+                            <a class="postownerlink" href="/account/${comments[i].owner}"
+                                id="comment_${i}_${comments[i].owner}">View Poster</a>
+                        </p>
+                        <p class="commentsbody">${comments[i].body}</p>
+                        <button class="button">${comments[i].date.toLocaleString()}</button>
+                    </div>
+                </div><br>`
+                document.getElementById(`expand_${postid}`).innerHTML = html
+
+                getusername(`comment_${i}_${comments[i].owner}`, `${comments[i].owner}`)
+            }
+
+            if (comments.length == 0) {
+                html = html + `<p class='section'>There are no comments.</p>`
+            }
+
+            html = html + `<button class="button" onclick="hidecomments('expand_${postid}')">Hide Comments</button>`
+
+            if (comments.length == 20) {
+                html = html + `<a class='section' href="/s/${postid}#comments">View More</a>`
+            }
+
+            document.getElementById(`expand_${postid}`).innerHTML = html
+        } else {
+            alert('There was an error loading the comments.')
+        }
+    })
+}
+
+function showlatestposts(divid) {
+    $.getJSON('/api/latest/3', function (json) {
+        if (json.success == true) {
+            var posts = json.posts
+            var html = ''
+            for (i = 0; i < posts.length; i++) {
+                html = html + `
+                <div style="width:100%;border-bottom:2px grey solid;cursor:pointer;" onclick="url('/s/${posts[i]._id}')">
+                    <p class="commentsbody">${posts[i].body}</p>
+                </div>
+                `
+            }
+            document.getElementById(divid).innerHTML = html
+        } else {
+            alert('error')
+        }
+    })
+}
+
+function hidecomments(postid) {
+    document.getElementById(postid).innerHTML = ''
+}
+
 async function like(postid, elemid, likecount) {
     if (loggedinbool == "true") {
         document.getElementById(elemid).innerHTML = "<button onclick='unlike(\"" + postid + '", "' + elemid + '", "' + eval(likecount + 1) + '")\' "type="button" class="postlike red button" id="i_' + elemid + '">Unlike - ' + eval(eval(likecount) + 1) + "</button>";
@@ -182,7 +324,7 @@ async function premium(array) {
     $.getJSON("/api/premium", function (json) {
         if (json.premium == true) {
             for (i = 0; i < array.length; i++) {
-                document.getElementById(array[i]).innerHTML = '<a href="/premium">Premium</a>'
+                document.getElementById(array[i]).innerHTML = `<button class="sidebarbutton" onclick="url('/premium')"><i class="fas fa-star"></i></button>`
             }
         } else {
             return;

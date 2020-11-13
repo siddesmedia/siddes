@@ -87,6 +87,12 @@ const User = new mongoose.Schema({
         unique: false,
         required: false,
     },
+    directmessages: {
+        type: Array,
+        unique: false,
+        required: true,
+        default: []
+    },
     following: {
         type: Array,
         unique: false,

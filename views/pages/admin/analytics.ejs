@@ -149,8 +149,8 @@
         </tr>
         <% for(i = 0; i < analytics.length;i++) { %>
         <tr>
-            <td><%= analytics[i].date %> hour:<%= analytics[i].hour %></td>
-            <td>Views: <%= analytics[i].views %></td>
+            <td><%= analytics[i].date %> <%= analytics[i].hour %></td>
+            <td><%= analytics[i].views %></td>
         </tr>
         <% } %>
     </table>
@@ -161,11 +161,10 @@
     <% for(i = 0; i < analytics.length;i++) { %>
     <div class="section">
         <h4 class="smallheader noheader nopadmar nobottompadmar" style="font-size: small;">
-            <%= analytics[i].date %>
-            hour:<%= analytics[i].hour %>
+            <%= analytics[i].date %> <%= analytics[i].hour %>
         </h4>
         <br class='nopadmar nobottompadmar' style="margin: 0;">
-        <h3 class="noheader smalltext" style="font-weight: 400;"><b>Views:</b> <%= analytics[i].views %></h3>
+        <h3 class="noheader smalltext" style="font-weight: 400;"><%= analytics[i].views %></h3>
     </div>
     <% } %>
 </div>

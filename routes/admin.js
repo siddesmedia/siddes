@@ -9,7 +9,6 @@ const {
 } = require('../config/auth');
 const User = require('../models/User');
 const funcs = require('../config/functions');
-const Analytics = require('../models/Analytics');
 
 router.get('/admin/redis/flush', async function (req, res, next) {
 
@@ -27,49 +26,6 @@ router.get('/admin/redis/flush', async function (req, res, next) {
         moderator: funcs.moderator(req.user),
         navbar: true,
         footer: true,
-    };
-    return res.render('base', about);
-});
-
-router.get('/admin/analytics', async function (req, res, next) {
-
-    if (!req.user) {
-        return res.redirect('/login')
-    }
-    if (req.user.admin == false) {
-        return res.redirect('/account')
-    }
-
-    const analytics = await Analytics.find().sort({
-        _id: -1
-    }).limit(5)
-
-    var chart_data = []
-    var chart_labels = []
-
-    if (analytics.length < 25) {
-        for (i = 0; i < analytics.length; i++) {
-            chart_labels.push(`${analytics[i].hour}`)
-            chart_data.push(analytics[i].views)
-        }
-    } else {
-        for (i = 0; i < 24; i++) {
-            chart_labels.push(`${analytics[i].hour}`)
-            chart_data.push(analytics[i].views)
-        }
-    }
-
-    const about = {
-        title: 'Analytics - ' + Name,
-        template: 'pages/admin/analytics',
-        name: Name,
-        loggedin: funcs.loggedin(req.user),
-        moderator: funcs.moderator(req.user),
-        navbar: true,
-        footer: true,
-        analytics: analytics,
-        chart_data: chart_data,
-        chart_labels: chart_labels
     };
     return res.render('base', about);
 });
@@ -92,7 +48,7 @@ router.get('/admin/suspend/:id/:reason', async function (req, res, next) {
 
         updateuserwithban
 
-        funcs.addtofeed(req.params.id, "An admin has upload banned you.", '/admin/appeals', 'Press me to appeal this suspension. Reason: ' + decodeURIComponent(req.params.reason))
+        funcs.addtofeed(req.params.id, "An admin has suspended you.", '/admin/appeals', 'Press me to appeal this suspension. Reason: ' + decodeURIComponent(req.params.reason))
 
         res.json({
             suspended: true
