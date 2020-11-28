@@ -2,6 +2,7 @@
 socialmedia.txt
 dump.rdb
 /usergenerated/*
+!/usergenerated/images/notfound.jpeg
 backup*
 !backup.sh
 

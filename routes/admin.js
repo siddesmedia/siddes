@@ -9,6 +9,8 @@ const {
 } = require('../config/auth');
 const User = require('../models/User');
 const funcs = require('../config/functions');
+const Directs = require('../models/Directs');
+const Media = require('../models/Media');
 
 router.get('/admin/redis/flush', async function (req, res, next) {
 
@@ -26,6 +28,38 @@ router.get('/admin/redis/flush', async function (req, res, next) {
         moderator: funcs.moderator(req.user),
         navbar: true,
         footer: true,
+    };
+    return res.render('base', about);
+});
+
+router.get('/admin/report', async function (req, res, next) {
+
+    if (!req.user) {
+        return res.redirect('/login')
+    }
+    if (req.user.admin == false) {
+        return res.redirect('/account')
+    }
+
+    const usercount = await User.find().count()
+    const postcount = await Post.find().count()
+    const commentcount = await Comment.find().count()
+    const directcount = await Directs.find().count()
+    const mediacount = await Media.find().count()
+
+    const about = {
+        title: 'Database Report - ' + Name,
+        template: 'pages/admin/report',
+        name: Name,
+        loggedin: funcs.loggedin(req.user),
+        moderator: funcs.moderator(req.user),
+        navbar: true,
+        footer: true,
+        usercount: usercount,
+        postcount: postcount,
+        commentcount: commentcount,
+        directcount: directcount,
+        mediacount: mediacount
     };
     return res.render('base', about);
 });

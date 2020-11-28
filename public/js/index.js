@@ -12,6 +12,14 @@ changetheme()
 
 analytics()
 
+setup()
+
+function setup() {
+    if (window.location.toString().includes('herokuapp') == true) {
+        window.location = "https://siddes.com"
+    }
+}
+
 function replacepostlinks(id) {
     return (document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#(\S*)/g, "<a href='/tag/$1' class='hashtag'>#$1</a>").replace(/@(\S*)/g, "<a href='/$1' class='mention'>@$1</a>").replace(/http:\/\/(\S*)/g, "<a href='http://$1' class='link'>http://$1</a>").replace(/https:\/\/(\S*)/g, "<a href='https://$1' class='link'>https://$1</a>"));
 }
@@ -271,7 +279,7 @@ function expandcomments(postid) {
     })
 }
 
-function showlatestposts(divid) {
+function showlatestposts(divclass) {
     $.getJSON('/api/latest/3', function (json) {
         if (json.success == true) {
             var posts = json.posts
@@ -283,7 +291,10 @@ function showlatestposts(divid) {
                 </div>
                 `
             }
-            document.getElementById(divid).innerHTML = html
+            var elements = document.getElementsByClassName(divclass)
+            for (i = 0; i < elements.length; i++) {
+                elements[i].innerHTML = html
+            }
         } else {
             alert('error')
         }

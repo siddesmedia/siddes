@@ -4,7 +4,7 @@
             <button class="sidebarbutton" style="text-align: left;border-radius: 10px;">
                 The Latest
                 <br><br>
-                <div class="expandcommentdiv" style="width: 95%;display: block;margin: auto;" id="latest">
+                <div class="expandcommentdiv latest" style="width: 95%;display: block;margin: auto;">
 
                 </div>
             </button>
@@ -16,8 +16,8 @@
                 <%= name %>
             </a>
             •
-            <a class="navfooanoleftpad" href="/account/developer/docs">
-                Developers
+            <a class="navfooanoleftpad" href="/account/developer/home">
+                Developer
             </a>
             •
             <a class="navfooanoleftpad" href="/account/developer/docs">
@@ -42,7 +42,7 @@
         <button class="sidebarbutton" onclick="url('/home')"><i class="fa fa-home"></i></button>
         <% if(loggedin == true) { %>
         <button class="sidebarbutton" onclick="newPost('show')"><i class="fa fa-pen"></i></button>
-        <button class="sidebarbutton" onclick="messages('open')"><i class="fa fa-envelope"></i></button>
+        <button class="sidebarbutton" onclick="messages('open')" id="showmessagesleftbar"><i class="fa fa-envelope"></i></button>
         <button class="sidebarbutton" onclick="url('/account/edit')"><i class="fa fa-cog"></i></button>
         <button class="sidebarbutton" onclick="url('/logout')"><i class="fas fa-sign-out-alt"></i></button>
         <% } else if(loggedin == false) { %>
@@ -53,6 +53,7 @@
         <button class="sidebarbutton" onclick="url('/mod')"><i class="fas fa-gavel"></i></button>
         <% } %>
         <button class="sidebarbutton" onclick="url('/latest')"><i class="fa fa-clock"></i></button>
+        <button class="sidebarbutton" onclick="showmenu('show')" id="showmenu"><i class="fa fa-bars"></i></button>
         <span id="premiumsidebar"></span><br><br>
         <span class="sidebarleftbottom">
             <% if(loggedin == true) { %>
@@ -73,7 +74,6 @@
     <br><br>
     <span class="">
         <a href="/home">Home</a><br>
-        <a href="javascript:messages()">Messages</a><br>
         <% if(loggedin == true) { %>
         <a href="/account/edit">Settings</a><br>
         <a href="/logout">Logout</a><br>
@@ -89,6 +89,13 @@
         <a href="/company/tos">Terms of Service</a><br>
         <a href="/company/pp">Privacy Policy</a><br>
         <span id="premiumsidebarext"></span><br><br>
+        <button class="sidebarbutton" style="text-align: left;border-radius: 10px;width: 35%;">
+            The Latest
+            <br><br>
+            <div class="expandcommentdiv latest" style="width: 95%;display: block;margin: auto;">
+
+            </div>
+        </button>
         <span>
             <p class="sidetext">
                 &copy; 2020 to Present, <a class="navfooanoleftpad" href="/company"><%= name %></a>

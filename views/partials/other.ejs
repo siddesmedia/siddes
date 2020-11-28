@@ -47,7 +47,7 @@
 </div>
 
 <!-- message box -->
-<button class="sidebarbutton messagesbutton" onclick="messages('open')">Messages</button>
+<button class="sidebarbutton messagesbutton" id="showmessagesbottom" onclick="messages('open')">Messages</button>
 
 <div class="messagebox hidden" id="messagesbox">
     <div class="messagesnav">
@@ -71,7 +71,7 @@
 
                 <span class="dmbottombar">
                     <label for="dmimageselect" class="dmimageselect">Images</label>
-                    <input class="hidden" name="dmimageselect" type="file">
+                    <input class="hidden" id="dmimageselect" type="file">
                     <input class="dminput" required id="sendmessageinput" placeholder="Message...">
                     <button class="dmsend right" type="submit" id="sendmessage">Send</button>
                 </span>

@@ -6,12 +6,16 @@
 <% } else { %>
 <% for(var i = 0; i < posts.length; i++) { %>
 <div class="postcontainer">
-    <div class="postdiv" style="border-top: 2px rgb(236, 236, 236) solid;padding-top: 6px;">
+    <div class="postdiv" style="padding-top: 6px;">
         <div style="cursor: pointer;" onclick="window.location='/s/<%= posts[i]._id %>'">
+            <br>
             <h4 class="headerred nobottompadmar nopadmar">Reason: <%= posts[i].reportreason %></h4>
             <p class="postbody" id="post_<%= posts[i]._id %>">
                 <%= posts[i].body %>
             </p>
+            <% if(posts[i].media == true) { %>
+            <img class="postimage" src="/usergenerated/images/<%= posts[i]._id %>" loading="lazy"><br><br>
+            <% } %>
         </div>
         <a href="javascript:removepost('<%= posts[i]._id %>')"><button class="button">Remove</button></a>
         <a href="javascript:approvepost('<%= posts[i]._id %>')"><button class="button">Approve</button></a>

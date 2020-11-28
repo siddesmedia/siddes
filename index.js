@@ -5,10 +5,13 @@ const passport = require('passport');
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const funcs = require('./config/functions');
-
 require('dotenv').config()
 require('./config/passport')(passport);
-const port = process.env.PORT;
+const port = process.env.PORT
+const statusoptions = {
+    path: '/company/status',
+    title: `${process.env.NAME} Status`
+}
 
 app.use(require('serve-static')('./public'));
 app.use(require('cookie-parser')());
@@ -29,6 +32,7 @@ app.use('/*', async function (req, res, next) {
     console.log(req.method + ' ' + res.statusCode + ' ' + req.originalUrl /*+ ' ' + req.ip*/ )
     next()
 })
+app.use(require('express-status-monitor')(statusoptions));
 
 if (process.env.ENV == "p" || process.env.ENV == "production") {
     const user = require('./routes/user')
@@ -39,14 +43,16 @@ if (process.env.ENV == "p" || process.env.ENV == "production") {
     app.use('/', mod);
     const admin = require('./routes/admin')
     app.use('/', admin);
-    const nokeyapi = require('./routes/api/nokey')
-    app.use('/', nokeyapi);
+    const internalapi = require('./routes/api/internal')
+    app.use('/', internalapi);
     const company = require('./routes/company')
     app.use('/company', company);
     const redirects = require('./routes/redirects')
     app.use('/redirects', redirects);
     const keyapi = require('./routes/api/key')
     app.use('/api/v1', keyapi);
+    const nokeyapi = require('./routes/api/nokey')
+    app.use('/api/v1', nokeyapi);
     const apidocs = require('./routes/api/docs')
     app.use('/', apidocs);
     const main = require('./routes/main')
@@ -69,7 +75,6 @@ if (process.env.ENV == "m" || process.env.ENV == "maintenance") {
 mongoose.connect(process.env.MONGO, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useFindAndModify: false,
     useCreateIndex: true
 });
 

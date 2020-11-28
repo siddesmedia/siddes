@@ -863,7 +863,23 @@ body {
     clear: both;
 }
 
+@media only screen and (max-width: 606px) {
+
+    #messagesbox,
+    #showmessagesbottom,
+    #showmessagesleftbar {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 615px) {
+    .postrepost {
+        display: none;
+    }
+}
+
 @media only screen and (max-width: 840px) {
+
     .sidebar {
         display: none;
     }
@@ -873,6 +889,10 @@ body {
     }
 
     .sidebarextension {
+        display: block;
+    }
+
+    #showmenu {
         display: block;
     }
 
@@ -892,19 +912,19 @@ body {
 }
 
 @media only screen and (max-width: 570px) {
-    .commentsform {
+
+    .postcomment,
+    .postcommentinput {
         display: none;
     }
 }
 
-@media only screen and (max-width: 445px) {
-    .seeallcommentsbutton {
-        display: none;
-    }
-}
+@media only screen and (max-width: 445px) {}
 
 @media only screen and (max-width: 350px) {
-    .commentform {
+
+    .postcomment,
+    .postcommentinput {
         display: none;
     }
 
@@ -918,5 +938,9 @@ body {
         width: 60%;
         display: block;
         margin: 0 auto;
+    }
+
+    #showmenu {
+        display: none;
     }
 }

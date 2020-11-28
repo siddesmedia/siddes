@@ -1,0 +1,224 @@
+<style>
+    body {
+        width: 100% !important;
+    }
+
+    .docssidebar li {
+        list-style: none;
+        padding-left: 3px !important;
+        margin-left: 0 !important;
+        border: 1px gray solid;
+        border-bottom: 0;
+        padding: 3px;
+        word-break: break-all;
+    }
+
+    .docssidebar li:last-child {
+        border-bottom: 1px gray solid;
+    }
+
+    .docssidebar {
+        padding: 0;
+        padding-left: 5px;
+        margin-left: 10px;
+    }
+
+    .docssidebar * {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    .docssidebar p {
+        font-size: large;
+    }
+
+    .docs p {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    .docs pre,
+    .docs code {
+        word-break: break-all;
+    }
+
+    pre {
+        margin: 15px !important;
+        background-color: white;
+        color: black;
+        border-radius: 25px;
+    }
+
+    code {
+        color: black;
+    }
+</style>
+<h3 class="header nobottompadmar">API Docs</h3><br>
+<a class="headerred smalltext" href="/account/developer/home">Home</a>
+<a class="headerred smalltext" href="javascript:window.history.go(-1)" style="margin-left: 0;">Back</a>
+<p class="section">The root for all API access is /api/v1</p>
+<div class="row">
+    <div class="column" style="width:30%;">
+        <h3 class="noheader">POST</h3>
+        <ul class="docssidebar colwhite">
+            <p>Likes</p>
+            <li onclick="changedocs('/like/add')">/like/add</li>
+            <li onclick="changedocs('/like/remove')">/like/remove</li>
+        </ul>
+        <ul class="docssidebar colwhite">
+            <p>Account</p>
+            <li onclick="changedocs('/account/get/feed')">/account/get/feed</li>
+            <li onclick="changedocs('/account/get/posts')">/account/get/posts</li>
+            <li onclick="changedocs('/account/get/following')">/account/get/following</li>
+        </ul>
+        <ul class="docssidebar colwhite">
+            <p>Posts</p>
+            <li onclick="changedocs('/posts/get/user')">/posts/get/user</li>
+            <li onclick="changedocs('/posts/get/post')">/posts/get/post</li>
+            <li onclick="changedocs('/posts/get/latest')">/posts/get/latest</li>
+            <li onclick="changedocs('/posts/get/search')">/posts/get/search</li>
+            <li onclick="changedocs('/posts/get/tag')">/posts/get/tag</li>
+        </ul>
+    </div>
+    <div class="column" style="width:70%;position: fixed;left: 30%;">
+        <h3 class="headerred" id="docsheader">API Documentation</h3>
+        <span id="docs" class="docs section">
+
+        </span>
+    </div>
+</div>
+
+<div id="/like/add" class="docs hidden">
+    <p>This endpoint is used to like a post using your API key</p>
+    <p>Example:</p>
+    <pre class="colwhite">
+<code>
+    type: POST
+    to: /api/v1/like/add
+    apikey: true
+    body:
+
+    {
+        "apikey": "21b4897e-25f1-11eb-adc1-0242ac120002",
+        "postid": "5faaeeb4fdd2420024c4d70b"
+    }
+
+    example response:
+
+    {
+        "success": true,
+        "message": ""
+    }
+</code>
+    </pre>
+</div>
+
+<div id="/like/remove" class="docs hidden">
+    <p>This endpoint is used to un-like a post using your API key</p>
+    <p>Example:</p>
+    <pre class="colwhite">
+<code>
+    type: POST
+    to: /api/v1/like/remove
+    apikey: true
+    body:
+
+    {
+        "apikey": "21b4897e-25f1-11eb-adc1-0242ac120002",
+        "postid": "5faaeeb4fdd2420024c4d70b"
+    }
+
+    example response:
+
+    {
+        "success": true,
+        "message": ""
+    }
+        </code>
+    </pre>
+</div>
+
+<div id="/account/get/following" class="docs hidden">
+    <p>This endpoint is used to get an array of who a user is following.</p>
+    <p>Example:</p>
+    <pre class="colwhite">
+<code>
+    type: POST
+    to: /api/v1/account/get/following
+    apikey: false
+    body:
+
+    {
+        "userid": "5faaeeb4fdd2420024c4d70b"
+    }
+
+    example response:
+
+    {
+        "success": true,
+        "following": ["5faaeeb4fdd2420024c4d70b"] // an array of user IDs
+    }
+</code>
+    </pre>
+</div>
+
+<div id="/account/get/feed" class="docs hidden">
+    <p>This endpoint allows you to get your 40 feed items.</p>
+    <p>Example:</p>
+    <pre class="colwhite">
+<code>
+    type: POST
+    to: /api/v1/account/get/feed
+    apikey: true
+    body:
+
+    {
+        "apikey": "21b4897e-25f1-11eb-adc1-0242ac120002",
+    }
+
+    example response:
+
+    {
+        "success": true,
+        "feedtitles": ["Someone commented on your post!"] // title of feed items
+        "feedlinks": ["/s/5faaeeb4fdd2420024c4d70b"] // feed links
+        "feedtext": ["I agree so much"] // feed body
+    }
+</code>
+    </pre>
+</div>
+
+<div id="/account/get/posts" class="docs hidden">
+    <p>This endpoint allows you to get up to 20 posts off a user by their id.</p>
+    <p>Each page returns 20 results. Page 2 will return results 41-60, page 0 will return results 1-20, etc.</p>
+    <p>Example:</p>
+    <pre class="colwhite">
+<code>
+    type: POST
+    to: /api/v1/account/get/posts
+    apikey: false
+    body:
+
+    {
+        "userid": "5faaeeb4fdd2420024c4d70b",
+        "page": 3
+    }
+
+    example response:
+
+    {
+        "success": true,
+        "posts": ["5faaeeb4fdd2420024c4d70b"], // upto 20 post ids
+        "nextpage": false // true if their is enough results for another page false if not
+    }
+</code>
+    </pre>
+</div>
+
+<script>
+    function changedocs(id) {
+        document.getElementById('docsheader').innerHTML = '/api/v1' + id
+        document.getElementById('docs').innerHTML = ""
+        var newdocs = document.getElementById(id).innerHTML
+
+        document.getElementById('docs').innerHTML = newdocs
+    }
+</script>

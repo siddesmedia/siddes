@@ -35,10 +35,8 @@ router.get('/signup', forwardAuthenticated, function (req, res, next) {
 
 router.post('/signup', (req, res) => {
 
-    const verifyemailkey = uuidv4()
     const {
         username,
-        email,
         password,
         password2
     } = req.body;
@@ -55,7 +53,7 @@ router.post('/signup', (req, res) => {
         }))
     }
 
-    if (!username || !email || !password || !password2) {
+    if (!username || !password || !password2) {
         return '{"type": "error", "message": "Please fill out all fields."}'
     }
 
@@ -96,54 +94,29 @@ router.post('/signup', (req, res) => {
                     }
                 }))
             } else {
-                User.findOne({
-                    email: email
-                }).then(user => {
-                    if (user) {
-                        return res.redirect(url.format({
-                            pathname: "/signup",
-                            query: {
-                                "error": "There is already an account using that email."
-                            }
-                        }))
-                    } else {
-                        const newUser = new User({
-                            username,
-                            email,
-                            password,
-                            description: "This is a description. Click 'Edit Account' to change me!",
-                            moderator: false,
-                            admin: false,
-                            apikey: uuidv4(),
-                            verifyemailkey: verifyemailkey
-                        });
+                const newUser = new User({
+                    username,
+                    password,
+                    description: "This is a description. Click 'Edit Account' to change me!",
+                    moderator: false,
+                    admin: false,
+                    apikey: uuidv4(),
+                });
 
-                        bcrypt.genSalt(10, (err, salt) => {
-                            bcrypt.hash(newUser.password, salt, (err, hash) => {
-                                if (err) throw err;
-                                newUser.password = hash;
-                                newUser
-                                    .save()
-                                    .then(async user => {
-                                        res.redirect('/login');
-                                        const pm = await ProtonMail.connect({
-                                            username: 'mrwinson',
-                                            password: 'aYWBNqMyT2n@uCV'
-                                        })
-                                        pm
-                                        await pm.sendEmail({
-                                            to: user.email,
-                                            subject: 'Verify your account',
-                                            body: 'Thanks for signing up! Verify yout email by clicking this link:\n\nhttp://localhost:3000/account/verify/' + verifyemailkey
-                                        })
-                                    })
-                                    .catch(err => console.log(err));
-                            });
-                        });
-                    }
-                })
+                bcrypt.genSalt(10, (err, salt) => {
+                    bcrypt.hash(newUser.password, salt, (err, hash) => {
+                        if (err) throw err;
+                        newUser.password = hash;
+                        newUser
+                            .save()
+                            .then(async user => {
+                                res.redirect('/login?success=true');
+                            })
+                            .catch(err => console.log(err));
+                    });
+                });
             }
-        });
+        })
     }
 });
 
@@ -156,12 +129,6 @@ router.get('/login', forwardAuthenticated, function (req, res, next) {
         return res.redirect('/');
     }
     var errormessage
-    if (req.query.email == 'true') {
-        errormessage = 'Before you can login, verify your account'
-    }
-    if (req.query.email == 'false') {
-        errormessage = 'Awesome, your email has been verified!'
-    }
     if (req.query.error != undefined) {
         errormessage = req.query.error
     }
@@ -178,37 +145,10 @@ router.get('/login', forwardAuthenticated, function (req, res, next) {
     return res.render('base', about);
 });
 
-router.get('/account/verify/:verifytoken', forwardAuthenticated, async function (req, res, next) {
-
-    const userexists = await User.exists({
-        verifyemailkey: req.params.verifytoken
-    })
-
-    if (userexists == true) {
-        const user = await User.findOneAndUpdate({
-            verifyemailkey: req.params.verifytoken
-        }, {
-            emailverified: true
-        })
-        user
-        res.redirect('/login?email=false')
-    } else {
-        res.redirect('/login')
-    }
-});
-
 router.post('/login', async function (req, res, next) {
 
 
     try {
-        const user = await User.findOne({
-            username: req.body.username
-        })
-
-        if (user.emailverified == false || !user.emailverified) {
-            return res.redirect('/login?email=true')
-        }
-
         passport.authenticate('local', {
             successRedirect: '/',
             failureRedirect: '/login',

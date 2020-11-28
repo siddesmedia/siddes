@@ -11,11 +11,6 @@ const User = new mongoose.Schema({
         unique: false,
         required: false
     },
-    email: {
-        type: String,
-        unique: true,
-        required: true
-    },
     password: {
         type: String,
         unique: false,
@@ -53,12 +48,12 @@ const User = new mongoose.Schema({
     banreason: {
         type: String,
         unique: false,
-        required: true
+        required: false
     },
     suspensionreason: {
         type: String,
         unique: false,
-        required: true
+        required: false
     },
     suspensionappealed: {
         type: Boolean,
@@ -167,18 +162,6 @@ const User = new mongoose.Schema({
     bot: {
         type: Boolean,
         unique: false,
-        required: true,
-        default: false
-    },
-    emailverified: {
-        type: Boolean,
-        unique: false,
-        required: true,
-        default: false
-    },
-    verifyemailkey: {
-        type: String,
-        unique: true,
         required: true,
         default: false
     }

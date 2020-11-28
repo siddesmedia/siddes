@@ -704,7 +704,6 @@ router.post('/account/edit', uploadpfp.any(), async function (req, res, next) {
         var username = req.body.username;
         var displayname = req.body.displayname;
         var description = req.body.description;
-        var email = req.body.email;
         var theme = req.body.theme;
 
         var update = await User.findOneAndUpdate({
@@ -713,7 +712,6 @@ router.post('/account/edit', uploadpfp.any(), async function (req, res, next) {
             username: username,
             displayname: displayname,
             description: description,
-            email: email,
             theme: theme
         });
 

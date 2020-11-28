@@ -7,7 +7,7 @@
 </span>
 <br><br>
 <form action="/account/edit" method="POST" class="section" enctype="multipart/form-data">
-    <label for="username">Username (no spaces or " or '):</label><br>
+    <label for="username">Username:</label><br>
     <input type="text" class="input" name="username" value="<%= user.username %>" style="width: 50%;" id="usernamefield"
         required pattern="\S+">
     <br><br>
@@ -16,9 +16,6 @@
     <br><br>
     <label for="description">Bio:</label><br>
     <input type="text" class="input" name="description" value="<%= user.description %>" style="width: 50%;" required>
-    <br><br>
-    <label for="email">Email:</label><br>
-    <input type="email" class="input" name="email" value="<%= user.email %>" style="width: 50%;" required>
     <br><br>
     <label for="theme">Theme:</label><br>
     <select name="theme" id="reason" required class="input">
