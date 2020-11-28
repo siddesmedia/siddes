@@ -57,6 +57,8 @@ if (process.env.ENV == "p" || process.env.ENV == "production") {
     app.use('/', apidocs);
     const main = require('./routes/main')
     app.use('/', main);
+    const errors = require('./routes/errors')
+    app.use('/', errors);
 }
 if (process.env.ENV == "m" || process.env.ENV == "maintenance") {
     app.get('/*', async function (req, res, next) {

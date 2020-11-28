@@ -290,16 +290,34 @@ function showlatestposts(divclass) {
         if (json.success == true) {
             var posts = json.posts
             var html = ''
+            var latestimgids = []
             for (i = 0; i < posts.length; i++) {
-                html = html + `
+                if (posts[i].media == true) {
+                    latestimgids.push(`${posts[i]._id}`)
+                    html = html + `
+                    <div style="width:100%;border-bottom:1px rgb(37,37,37) solid;cursor:pointer;" onclick="url('/s/${posts[i]._id}')">
+                        <p class="commentsbody">${posts[i].body}</p>
+                        <img class="postimage" style="width:100%" id="latest_img_${posts[i]._id}" src="" loading="lazy"><br>
+                        <script>
+                        </script>
+                    </div>
+                    `
+                } else {
+                    html = html + `
                 <div style="width:100%;border-bottom:2px grey solid;cursor:pointer;" onclick="url('/s/${posts[i]._id}')">
                     <p class="commentsbody">${posts[i].body}</p>
                 </div>
                 `
+                }
             }
+
             var elements = document.getElementsByClassName(divclass)
             for (i = 0; i < elements.length; i++) {
                 elements[i].innerHTML = html
+            }
+
+            for (i = 0; i < latestimgids.length; i++) {
+                getmedia("latest_img_" + latestimgids[i], latestimgids[i])
             }
         } else {
             alert('error')

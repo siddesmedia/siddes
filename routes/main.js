@@ -13,13 +13,6 @@ const funcs = require('../config/functions');
 const multer = require('multer');
 const path = require('path');
 const imgur = require('../config/imgur');
-const {
-    forwardAuthenticated
-} = require('../config/auth');
-const {
-    functions,
-    reject
-} = require('lodash');
 const uploadimage = multer({
     dest: './usergenerated/imageslarge',
     limits: {
@@ -55,11 +48,7 @@ router.get('/account/:id/pfp', async function (req, res, next) {
     const pfpurl = await User.findById(pfpid)
 
     try {
-        if (fs.existsSync(path.join(__dirname, '../', pfpurl.pfp)) == false || !pfpurl.pfp || pfpurl.pfp == '') {
-            return res.sendFile(path.join(__dirname, '../usergenerated/images/notfound.jpeg'))
-        } else {
-            res.sendFile(path.join(__dirname, '../', pfpurl.pfp))
-        }
+        res.redirect(pfpurl.pfp)
     } catch (err) {
         res.sendFile(path.join(__dirname, '../usergenerated/images/notfound.jpeg'))
     }
@@ -72,11 +61,7 @@ router.get('/account/pfp', async function (req, res, next) {
     const pfpurl = await User.findById(req.user._id)
 
     try {
-        if (fs.existsSync(path.join(__dirname, '../', pfpurl.pfp)) == false || !pfpurl.pfp || pfpurl.pfp == '') {
-            return res.sendFile(path.join(__dirname, '../usergenerated/images/notfound.jpeg'))
-        } else {
-            res.sendFile(path.join(__dirname, '../', pfpurl.pfp))
-        }
+        return res.redirect(pfpurl.pfp)
     } catch (err) {
         res.sendFile(path.join(__dirname, '../usergenerated/images/notfound.jpeg'))
     }
@@ -88,11 +73,7 @@ router.get('/account/:id/banner', async function (req, res, next) {
 
 
     try {
-        if (fs.existsSync(path.join(__dirname, '../', bannerurl.banner)) == false || !bannerurl.banner || bannerurl.banner == '') {
-            return res.sendFile(path.join(__dirname, '../usergenerated/images/notfound.jpeg'))
-        } else {
-            res.sendFile(path.join(__dirname, '../', bannerurl.banner))
-        }
+        res.redirect(bannerurl.banner)
     } catch (err) {
         res.sendFile(path.join(__dirname, '../usergenerated/images/notfound.jpeg'))
     }
@@ -773,11 +754,36 @@ router.post('/account/edit', uploadpfp.any(), async function (req, res, next) {
                         });
                     }
                 } else if (req.files.length == 2) {
-                    var updatepfp = await User.findOneAndUpdate({
-                        _id: req.user._id
-                    }, {
-                        pfp: req.files[0].path,
-                        banner: req.files[1].path
+                    imgur.uploadImageFile({
+                        image: fs.readFileSync(req.files[1].path),
+                        title: 'an image uploaded to siddes.com',
+                        description: 'an image uploaded to siddes.com'
+                    }, async function (err, res) {
+                        if (res.status == 200) {
+                            var updatepfp = await User.findOneAndUpdate({
+                                _id: req.user._id
+                            }, {
+                                banner: res.data.link
+                            });
+
+                            updatepfp
+                        }
+                    });
+
+                    imgur.uploadImageFile({
+                        image: fs.readFileSync(req.files[0].path),
+                        title: 'an image uploaded to siddes.com',
+                        description: 'an image uploaded to siddes.com'
+                    }, async function (err, res) {
+                        if (res.status == 200) {
+                            var updatepfp = await User.findOneAndUpdate({
+                                _id: req.user._id
+                            }, {
+                                pfp: res.data.link
+                            });
+
+                            updatepfp
+                        }
                     });
                 }
             }

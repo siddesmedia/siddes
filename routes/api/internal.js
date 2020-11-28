@@ -71,7 +71,10 @@ router.post('/api/comments/:amount/:id', async function (req, res, next) {
 
 router.get('/api/latest/:amount', async function (req, res, next) {
     try {
-        const posts = await Post.find().sort({
+        const posts = await Post.find({
+            approved: true,
+            sensitive: false
+        }).sort({
             date: -1
         }).limit(eval(req.params.amount))
 

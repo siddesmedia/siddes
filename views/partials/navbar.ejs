@@ -42,7 +42,8 @@
         <button class="sidebarbutton" onclick="url('/home')"><i class="fa fa-home"></i></button>
         <% if(loggedin == true) { %>
         <button class="sidebarbutton" onclick="newPost('show')"><i class="fa fa-pen"></i></button>
-        <button class="sidebarbutton" onclick="messages('open')" id="showmessagesleftbar"><i class="fa fa-envelope"></i></button>
+        <button class="sidebarbutton" onclick="messages('open')" id="showmessagesleftbar"><i
+                class="fa fa-envelope"></i></button>
         <button class="sidebarbutton" onclick="url('/account/edit')"><i class="fa fa-cog"></i></button>
         <button class="sidebarbutton" onclick="url('/logout')"><i class="fas fa-sign-out-alt"></i></button>
         <% } else if(loggedin == false) { %>
@@ -57,8 +58,8 @@
         <span id="premiumsidebar"></span><br><br>
         <span class="sidebarleftbottom">
             <% if(loggedin == true) { %>
-            <button class="sidebarbutton" onclick="url('/account')" style="padding: 5px;"><img width="40px"
-                    src="/account/pfp"></button>
+            <button class="sidebarbutton" onclick="url('/account')" style="padding: 5px;">
+                <img width="40px" src="/account/pfp"></button>
             <% } %>
         </span>
     </span>
