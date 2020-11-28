@@ -66,13 +66,13 @@
     <form action="/follow/new" method="POST" class="section">
         <input type="text" name="username" value="<%= user._id %>" class="hidden">
         <button type="submit" class="button">Follow</button>
-        <button onclick="adddirect('<%= user._id %>')" class="button">Message</button>
+        <button onclick="adddirect('<%= user._id %>')" class="button" type="button">Message</button><br>
     </form>
     <% } else { %>
     <form action="/follow/remove" method="POST" class="section">
         <input type="text" name="username" value="<%= user._id %>" class="hidden">
         <button class="button" type="submit">Unfollow</button>
-        <button onclick="adddirect('<%= user._id %>')" class="button">Message</button>
+        <button onclick="adddirect('<%= user._id %>')" class="button" type="button">Message</button><br>
     </form>
     <% }} %>
     <p class="section">
