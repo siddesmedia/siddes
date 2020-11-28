@@ -12,6 +12,7 @@ const JSON5 = require('json5')
 const funcs = require('../config/functions');
 const multer = require('multer');
 const path = require('path');
+const imgur = require('../config/imgur');
 const {
     forwardAuthenticated
 } = require('../config/auth');
@@ -609,6 +610,7 @@ router.post('/post/new', uploadimage.single('image'), async function (req, res, 
         var owner = req.user._id;
         var media = false;
         var date = Date.now()
+        var mediaid;
 
         if (req.file) {
             media = true
@@ -645,15 +647,32 @@ router.post('/post/new', uploadimage.single('image'), async function (req, res, 
                             file: 'usergenerated/images/' + req.file.filename
                         })
 
-                        newMedia.save().then(media => {})
+                        mediaid = newMedia._id
+
+                        newMedia.save().then(media => {
+
+                        })
                     }
                 })
 
+            // imgur upload is a mess... needs updated
             if (media == true) {
                 await sharp(path.join(__dirname, '../', req.file.path))
-                    .resize(300)
+                    .resize(400)
                     .toFile(path.join(__dirname, '../', 'usergenerated/images/' + req.file.filename))
                 fs.unlinkSync(path.join(__dirname, '../', 'usergenerated/imageslarge/' + req.file.filename))
+                imgur.uploadImageFile({
+                    image: fs.readFileSync(path.join(__dirname, '../', 'usergenerated/images/' + req.file.filename)),
+                    title: 'an image uploaded to siddes.com',
+                    description: 'an image uploaded to siddes.com'
+                }, async function (err, res) {
+                    if (res.status == 200) {
+                        await Media.findByIdAndUpdate(mediaid, {
+                            file: res.data.link
+                        })
+                    }
+                });
+                fs.unlinkSync(path.join(__dirname, '../', 'usergenerated/images/' + req.file.filename))
             }
         }
     }
@@ -721,16 +740,36 @@ router.post('/account/edit', uploadpfp.any(), async function (req, res, next) {
             if (req.files) {
                 if (req.files.length == 1) {
                     if (req.files[0].fieldname == 'banner') {
-                        var updatepfp = await User.findOneAndUpdate({
-                            _id: req.user._id
-                        }, {
-                            banner: req.files[0].path
+                        imgur.uploadImageFile({
+                            image: fs.readFileSync(req.files[0].path),
+                            title: 'an image uploaded to siddes.com',
+                            description: 'an image uploaded to siddes.com'
+                        }, async function (err, res) {
+                            if (res.status == 200) {
+                                var updatepfp = await User.findOneAndUpdate({
+                                    _id: req.user._id
+                                }, {
+                                    banner: res.data.link
+                                });
+
+                                updatepfp
+                            }
                         });
                     } else {
-                        var updatepfp = await User.findOneAndUpdate({
-                            _id: req.user._id
-                        }, {
-                            pfp: req.files[0].path
+                        imgur.uploadImageFile({
+                            image: fs.readFileSync(req.files[0].path),
+                            title: 'an image uploaded to siddes.com',
+                            description: 'an image uploaded to siddes.com'
+                        }, async function (err, res) {
+                            if (res.status == 200) {
+                                var updatepfp = await User.findOneAndUpdate({
+                                    _id: req.user._id
+                                }, {
+                                    pfp: res.data.link
+                                });
+
+                                updatepfp
+                            }
                         });
                     }
                 } else if (req.files.length == 2) {

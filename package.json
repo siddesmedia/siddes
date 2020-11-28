@@ -33,6 +33,8 @@
     "fs": "0.0.1-security",
     "git-data-extractor": "^1.0.0",
     "http": "0.0.1-security",
+    "imgur-api.js": "^2.10.6",
+    "imgurwrap": "0.0.4",
     "json5": "^2.1.3",
     "lodash": "^4.17.20",
     "mongoose": "^5.10.8",

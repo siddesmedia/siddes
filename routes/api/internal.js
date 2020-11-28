@@ -7,6 +7,7 @@ const Comment = require('../../models/Comment');
 const User = require('../../models/User');
 const Directs = require('../../models/Directs');
 const funcs = require('../../config/functions');
+const Media = require('../../models/Media');
 
 router.get('/api/get/username/:id', async function (req, res, next) {
 
@@ -269,6 +270,24 @@ router.get('/api/liked/:postid', async function (req, res, next) {
     } catch (err) {
         res.json({
             liked: false
+        })
+    }
+});
+
+router.get('/getimage/:id', async function (req, res, next) {
+    const media = await Media.findOne({
+        parentid: req.params.id
+    })
+
+    try {
+        return res.json({
+            success: true,
+            img: media.file
+        })
+    } catch (err) {
+        res.json({
+            success: false,
+            err: err
         })
     }
 });

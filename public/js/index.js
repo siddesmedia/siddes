@@ -37,6 +37,12 @@ function share(id) {
     return document.getElementById('sharemodal').classList.remove('hidden')
 }
 
+function getmedia(elem, id) {
+    $.getJSON("/getimage/" + id, function (json) {
+        document.getElementById(elem).setAttribute("src", json.img)
+    })
+}
+
 function adddirect(id) {
     $.post('/api/dms/create', {
         id: id

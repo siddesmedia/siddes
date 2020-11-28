@@ -37,7 +37,10 @@
                     <%= posts[i].body %>
                 </p>
                 <% if(posts[i].media == true) { %>
-                <img class="postimage" src="/usergenerated/images/<%= posts[i]._id %>" loading="lazy"><br>
+                <img class="postimage" id="img_<%= posts[i]._id %>" src="" loading="lazy"><br>
+                <script>
+                    getmedia('img_<%= posts[i]._id %>', '<%= posts[i]._id %>')
+                </script>
                 <span>
                     <a href="/usergenerated/images/<%= posts[i]._id %>" download class="postbody smalltext">Download
                         Image</a>
