@@ -917,6 +917,10 @@ body {
     .postcommentinput {
         display: none;
     }
+
+    .sidebarbutton {
+        display: none;
+    }
 }
 
 @media only screen and (max-width: 445px) {}

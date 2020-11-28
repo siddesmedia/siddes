@@ -157,7 +157,7 @@ const User = new mongoose.Schema({
         type: Boolean,
         unique: false,
         required: true,
-        default: false
+        default: true
     },
     bot: {
         type: Boolean,
