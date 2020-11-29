@@ -420,6 +420,44 @@ router.get('/:username/following', async function (req, res, next) {
     }
 });
 
+router.get('/:username/followers', async function (req, res, next) {
+
+    var userObject = await User.exists({
+        username: req.params.username
+    })
+
+    if (userObject == false) {
+        next()
+    } else {
+        var about;
+        var username;
+        var user = await User.findOne({
+            username: req.params.username
+        })
+
+        username = req.params.username
+
+        var followers = await User.find({
+            following: user._id.toString()
+        })
+
+        about = {
+            title: username + ' Followers - ' + Name,
+            template: 'pages/account/followers',
+            name: Name,
+            loggedin: funcs.loggedin(req.user),
+            moderator: funcs.moderator(req.user),
+            navbar: true,
+            footer: true,
+
+            // user data being loaded
+            username: username,
+            followers: followers
+        };
+        return res.render('base', about);
+    }
+});
+
 router.get('/s/:postid', async function (req, res, next) {
 
     try {
@@ -487,8 +525,6 @@ router.get('/:username/:page', async function (req, res, next) {
         var user = await User.findOne({
             username: req.params.username
         })
-
-        console.log(user._id)
 
         var followercount = await User.find({
             following: user._id.toString()

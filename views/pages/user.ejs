@@ -55,47 +55,48 @@
 <div>
     <p class="section">
         <a class="accountlinks" href="/<%= user.username %>/following">Following:
-            <span><%= user.following.length %></span></a> - Followers:
-        <span><%= followers %></span>
-    </p>
-    <% if (sameuser == true) { %>
-    <a class="accountlinks section" href="/account/edit">Edit Account</a>
-    <% } %>
-    <% if (sameuser == false) { %>
-    <% if(follows == false) { %>
-    <form action="/follow/new" method="POST" class="section">
-        <input type="text" name="username" value="<%= user._id %>" class="hidden">
-        <button type="submit" class="button">Follow</button>
-        <button onclick="adddirect('<%= user._id %>')" class="button" type="button">Message</button><br>
-    </form>
-    <% } else { %>
-    <form action="/follow/remove" method="POST" class="section">
-        <input type="text" name="username" value="<%= user._id %>" class="hidden">
-        <button class="button" type="submit">Unfollow</button>
-        <button onclick="adddirect('<%= user._id %>')" class="button" type="button">Message</button><br>
-    </form>
-    <% }} %>
-    <p class="section">
-        <b>Bio:
-        </b>
-        <span class="biotext"><%= user.description %></span>
-    </p>
-    <span class="section">
-        <% if(moderator == true) { %>
-        <% if(user.uploadbanned == true) { %>
-        <button class="button" onclick="removeuploadban('<%= user._id %>')">Mod: Remove Upload Ban</button>
+            <span><%= user.following.length %></span></a> - <a class="accountlinks"
+            href="/<%= user.username %>/followers">Followers:
+            <span><%= followers %></span>
+        </a>
+        <% if (sameuser == true) { %>
+        <a class="accountlinks section" href="/account/edit">Edit Account</a>
+        <% } %>
+        <% if (sameuser == false) { %>
+        <% if(follows == false) { %>
+        <form action="/follow/new" method="POST" class="section">
+            <input type="text" name="username" value="<%= user._id %>" class="hidden">
+            <button type="submit" class="button">Follow</button>
+            <button onclick="adddirect('<%= user._id %>')" class="button" type="button">Message</button><br>
+        </form>
         <% } else { %>
-        <button class="button" onclick="uploadban('<%= user._id %>')">Mod: Upload Ban</button>
-        <% } %>
-        <% } %>
-        <% if(admin == true) { %>
-        <% if(user.suspended == true) { %>
-        <button class="button" onclick="unsuspend('<%= user._id %>')">Admin: Unsuspend Account</button>
-        <% } else { %>
-        <button class="button" onclick="suspend('<%= user._id %>')">Admin: Suspend Account</button>
-        <% } %>
-        <% } %>
-    </span>
+        <form action="/follow/remove" method="POST" class="section">
+            <input type="text" name="username" value="<%= user._id %>" class="hidden">
+            <button class="button" type="submit">Unfollow</button>
+            <button onclick="adddirect('<%= user._id %>')" class="button" type="button">Message</button><br>
+        </form>
+        <% }} %>
+        <p class="section">
+            <b>Bio:
+            </b>
+            <span class="biotext"><%= user.description %></span>
+        </p>
+        <span class="section">
+            <% if(moderator == true) { %>
+            <% if(user.uploadbanned == true) { %>
+            <button class="button" onclick="removeuploadban('<%= user._id %>')">Mod: Remove Upload Ban</button>
+            <% } else { %>
+            <button class="button" onclick="uploadban('<%= user._id %>')">Mod: Upload Ban</button>
+            <% } %>
+            <% } %>
+            <% if(admin == true) { %>
+            <% if(user.suspended == true) { %>
+            <button class="button" onclick="unsuspend('<%= user._id %>')">Admin: Unsuspend Account</button>
+            <% } else { %>
+            <button class="button" onclick="suspend('<%= user._id %>')">Admin: Suspend Account</button>
+            <% } %>
+            <% } %>
+        </span>
 </div>
 <% if(user.suspended == true) { %>
 <h3 class="headerred">Suspended</h3>

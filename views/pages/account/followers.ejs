@@ -1,0 +1,10 @@
+<h3 class="noheader"><a class="nostyle" href="/<%= username %>">@<%= username %></a> is Being Followed by
+    <%= followers.length %> People</h3>
+<% for(var i = 0; i < followers.length; i++) { %>
+<div class="postcontainer">
+    <div class="postdiv">
+        <p class="postowner"><a class="postownerlink" href="/account/<%= followers[i]._id %>"
+                id="followerusername<%= i %>">@<%= followers[i].username %></a></p>
+    </div>
+</div>
+<% } %>
