@@ -648,9 +648,11 @@ router.post('/post/new', uploadimage.single('image'), async function (req, res, 
                     description: 'an image uploaded to siddes.com'
                 }, async function (err, res) {
                     if (res.status == 200) {
-                        await Media.findByIdAndUpdate(mediaid, {
+                        var updatemedia = await Media.findByIdAndUpdate(mediaid, {
                             file: res.data.link
                         })
+
+                        updatemedia
                     }
                 });
                 fs.unlinkSync(path.join(__dirname, '../', 'usergenerated/images/' + req.file.filename))
