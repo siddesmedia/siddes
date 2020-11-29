@@ -488,8 +488,10 @@ router.get('/:username/:page', async function (req, res, next) {
             username: req.params.username
         })
 
+        console.log(user._id)
+
         var followercount = await User.find({
-            following: user._id
+            following: user._id.toString()
         })
 
         followers = followercount.length.toString()
