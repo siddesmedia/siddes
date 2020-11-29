@@ -155,8 +155,10 @@ router.post('/api/dms/create', async function (req, res, next) {
     try {
         const id = req.body.id
         const user = await User.findById(req.user._id)
+        const user2 = await User.findById(id)
 
         const directsarray = user.directmessages
+        const directsarray2 = user2.directmessages
 
         if (directsarray.includes(id) == true) {
 
@@ -165,11 +167,23 @@ router.post('/api/dms/create', async function (req, res, next) {
             funcs.addtofeed(id, "Someone started a DM with you!", 'javascript:messages("open")', 'Click me to view the messages!')
         }
 
+        if (directsarray2.includes(req.user._id) == true) {
+
+        } else {
+            directsarray2.push(req.user._id)
+            funcs.addtofeed(req.user._id, "Someone started a DM with you!", 'javascript:messages("open")', 'Click me to view the messages!')
+        }
+
         const updatedms = await User.findByIdAndUpdate(req.user._id, {
             directmessages: directsarray
         })
 
+        const updatedms2 = await User.findByIdAndUpdate(id, {
+            directmessages: directsarray2
+        })
+
         updatedms
+        updatedms2
 
         return res.send({
             success: true
