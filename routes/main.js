@@ -638,12 +638,8 @@ router.post('/post/new', uploadimage.single('image'), async function (req, res, 
 
             // imgur upload is a mess... needs updated
             if (media == true) {
-                await sharp(path.join(__dirname, '../', req.file.path))
-                    .resize(400)
-                    .toFile(path.join(__dirname, '../', 'usergenerated/images/' + req.file.filename))
-                fs.unlinkSync(path.join(__dirname, '../', 'usergenerated/imageslarge/' + req.file.filename))
                 imgur.uploadImageFile({
-                    image: fs.readFileSync(path.join(__dirname, '../', 'usergenerated/images/' + req.file.filename)),
+                    image: fs.readFileSync(path.join(__dirname, '../', 'usergenerated/imageslarge/' + req.file.filename)),
                     title: 'an image uploaded to siddes.com',
                     description: 'an image uploaded to siddes.com'
                 }, async function (err, res) {
@@ -655,7 +651,6 @@ router.post('/post/new', uploadimage.single('image'), async function (req, res, 
                         updatemedia
                     }
                 });
-                fs.unlinkSync(path.join(__dirname, '../', 'usergenerated/images/' + req.file.filename))
             }
         }
     }
