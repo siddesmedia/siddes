@@ -717,6 +717,46 @@ router.post('/comment/new', async function (req, res, next) {
         updateownersfeed;
 
         const newComment = new Comment({
+            reply: false,
+            body: body,
+            parentid: parentid,
+            owner: owner,
+            date: date
+        })
+
+        newComment
+            .save()
+            .then(user => {
+                res.redirect('/s/' + parentid);
+            })
+    }
+})
+
+router.post('/comment/reply', async function (req, res, next) {
+
+    if (!req.user) {
+        res.redirect('/login')
+    } else {
+        var postowner;
+        var updateownersfeed;
+        var body = req.body.body;
+        var parentid = req.body.parentid;
+        var owner = req.user._id;
+        var date = Date.now()
+        postowner = await funcs.getpostowner(parentid)
+
+        if (body.length == 0) {
+            var car;
+        } else {
+            funcs.addtofeed(postowner, "Someone commented on your post!", '/s/' + req.body.parentid, body)
+        }
+
+
+        updateownersfeed;
+
+        const newComment = new Comment({
+            reply: true,
+            parentcomment: req.body.parent,
             body: body,
             parentid: parentid,
             owner: owner,

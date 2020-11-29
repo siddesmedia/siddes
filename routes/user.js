@@ -84,7 +84,9 @@ router.post('/signup', (req, res) => {
         });
     } else {
         User.findOne({
-            username: username
+            username: {
+                '$regex': new RegExp(username, 'i')
+            }
         }).then(user => {
             if (user) {
                 return res.redirect(url.format({

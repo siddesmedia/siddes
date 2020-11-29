@@ -6,10 +6,20 @@ const Comment = new mongoose.Schema({
         unique: false,
         required: true
     },
+    reply: {
+        type: Boolean,
+        unique: false,
+        required: true
+    },
     parentid: {
         type: String,
         unique: false,
         required: true
+    },
+    parentcomment: {
+        type: String,
+        unique: false,
+        required: false
     },
     owner: {
         type: String,

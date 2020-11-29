@@ -213,6 +213,28 @@ function unsuspend(id) {
     })
 }
 
+function verify(id) {
+    $.getJSON("/admin/verify/" + id, function (json) {
+        if (json.success == true) {
+            alert('success')
+            window.location = window.location
+        } else {
+            alert('error')
+        }
+    })
+}
+
+function unverify(id) {
+    $.getJSON("/admin/unverify/" + id, function (json) {
+        if (json.success == false) {
+            alert('success')
+            window.location = window.location
+        } else {
+            alert('error')
+        }
+    })
+}
+
 async function getusername(id, userid) {
     $.getJSON("/api/get/username/" + userid, function (json) {
         if (json.username == "[banned]") {
@@ -244,6 +266,55 @@ async function haveiliked(elemid, likecount, postid, loggedin) {
 
 function url(path) {
     window.location = path
+}
+
+function showreplies(elem, id) {
+    $.post('/comments/reply/get/' + id, function (data) {
+        document.getElementById(elem).classList.remove('hidden')
+        var html = `<br><button onclick="replycommenthide('${elem}')" class="button">Hide Replies</button><br><br>`
+        if (data.success == true) {
+            var comments = data.posts
+            for (i = 0; i < data.posts.length; i++) {
+                html = html + `
+                <div class="commentcontainer">
+                    <div class="expandcommentdiv">
+                        <p class="commentsowner">
+                            <a class="postownerlink"
+                            href = "/account/${comments[i].owner}"
+                                id="comment_${i}_${comments[i].owner}">View Poster</a>
+                        </p>
+                        <p class="commentsbody">${comments[i].body}</p>
+                        <button class="button">${comments[i].date.toLocaleString()}</button>
+                    </div>
+                </div><br>`
+                document.getElementById(`${elem}`).innerHTML = html
+
+                getusername(`comment_${i}_${comments[i].owner}`, `${comments[i].owner}`)
+            }
+
+            if (data.posts.length == 0) {
+                html = html + `<p class='section'>There are no comments.</p>`
+            }
+
+            html = html + `<button class="button" onclick="hidecomments('expand_${postid}')">Hide Comments</button>`
+
+            if (comments.length == 20) {
+                html = html + `<a class='section' href="/s/${postid}#comments">View More</a>`
+            }
+
+            document.getElementById(`${elem}`).innerHTML = html
+        } else {
+
+        }
+    })
+}
+
+function replycomment(id) {
+    document.getElementById(id).classList.remove('hidden')
+}
+
+function replycommenthide(id) {
+    document.getElementById(id).classList.add('hidden')
 }
 
 function expandcomments(postid) {
@@ -331,11 +402,11 @@ function hidecomments(postid) {
 
 async function like(postid, elemid, likecount) {
     if (loggedinbool == "true") {
-        document.getElementById(elemid).innerHTML = "<button onclick='unlike(\"" + postid + '", "' + elemid + '", "' + eval(likecount + 1) + '")\' "type="button" class="postlike red button" id="i_' + elemid + '">Unlike - ' + eval(eval(likecount) + 1) + "</button>";
+        document.getElementById(elemid).innerHTML = "<button onclick='unlike(\"" + postid + '", "' + elemid + '", ' + eval(likecount + 1) + ')\' "type="button" class="postlike red button" id="i_' + elemid + '">Unlike - ' + eval(eval(likecount) + 1) + "</button>";
         $.post("/like/new", {
             postid: postid
         }, function (data, status, jqXHR) {
-            return document.getElementById(elemid).innerHTML = "<button onclick='unlike(\"" + postid + '", "' + elemid + '", "' + eval(likecount + 1) + '")\' "type="button" class="postlike red button" id="i_' + elemid + '">Unlike - ' + eval(eval(likecount) + 1) + "</button>";
+            return document.getElementById(elemid).innerHTML = "<button onclick='unlike(\"" + postid + '", "' + elemid + '", ' + eval(likecount + 1) + ')\' "type="button" class="postlike red button" id="i_' + elemid + '">Unlike - ' + eval(eval(likecount) + 1) + "</button>";
         });
     } else {
         window.location = "/login";

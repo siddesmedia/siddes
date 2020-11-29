@@ -45,7 +45,7 @@ body {
 .newposttext {
     padding: 5px;
     width: 98%;
-    height: 410px;
+    height: 200px;
     resize: none;
     margin: auto;
     border: none;
@@ -150,8 +150,7 @@ body {
 }
 
 .postbox {
-    top: 12.5%;
-    bottom: 12.5%;
+    top: 8.5%;
     left: 12.5%;
     right: 12.5%;
     z-index: 1000;
@@ -915,10 +914,6 @@ body {
 
     .postcomment,
     .postcommentinput {
-        display: none;
-    }
-
-    .sidebarbutton {
         display: none;
     }
 }

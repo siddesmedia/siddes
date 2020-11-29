@@ -89,6 +89,26 @@ router.get('/api/latest/:amount', async function (req, res, next) {
     }
 });
 
+router.post('/comments/reply/get/:id', async function (req, res, next) {
+    try {
+        const comments = await Comment.find({
+            reply: true,
+            parentcomment: req.params.id
+        }).sort({
+            date: -1
+        })
+
+        return res.send({
+            success: true,
+            posts: comments
+        })
+    } catch (err) {
+        res.json({
+            success: false
+        })
+    }
+});
+
 router.post('/api/get/dms', async function (req, res, next) {
     try {
         const user = await User.findById(req.user._id)

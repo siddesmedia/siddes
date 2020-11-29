@@ -95,6 +95,11 @@
             <% } else { %>
             <button class="button" onclick="suspend('<%= user._id %>')">Admin: Suspend Account</button>
             <% } %>
+            <% if(user.verified == true) { %>
+            <button class="button" onclick="unverify('<%= user._id %>')">Admin: Unverify</button>
+            <% } else { %>
+            <button class="button" onclick="verify('<%= user._id %>')">Admin: Verify</button>
+            <% } %>
             <% } %>
         </span>
 </div>

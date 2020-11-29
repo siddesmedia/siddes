@@ -1,3 +1,15 @@
+<style>
+    .postcomment {
+        display: inline !important;
+        margin-left: 0;
+    }
+
+    .postcommentinput {
+        display: inline !important;
+        margin-right: 0;
+        max-width: 375px;
+    }
+</style>
 <div class="postdiv">
     <br>
     <% if(moderator == true) { %>
@@ -35,8 +47,8 @@
     <% }} %>
 
     <span class="idcard">
-        <img id="pfp_<%= post.owner %>" src="/account/<%= post.owner %>/pfp" class="postownerimage left"
-            style="margin-right:5px;">
+        <img id="pfp_<%= post.owner %>" src="/account/<%= post.owner %>/pfp" class="left pfp"
+            style="margin-right:5px;width: 45px; height: 45px; border-radius: 25px;overflow:hidden">
         <script>
             getpfp('pfp_<%= post.owner %>', '<%= post.owner %>')
         </script>
@@ -89,10 +101,10 @@
 </div>
 <div>
     <form action="/comment/new" method="POST">
-        <input name="body" type="text" style="width:30%" autocomplete="off" class="postcommentinput input section"
+        <input name="body" type="text" style="width:60%" autocomplete="off" class="postcommentinput input section"
             required="required" placeholder="Thoughts...">
         <input name="parentid" type="text" style="width:0%" class="hidden" value="<%= post._id %>" required="required">
-        <button type="submit" class="postcomment button">Post Comment</button>
+        <button type="submit" class="postcomment button">Post</button>
     </form>
 </div>
 <br>
@@ -101,21 +113,53 @@
     <p class="headerred">There are no comments :(</p>
     <% } else { %>
     <% for(var i = 0; i < comments.length; i++) { %>
+    <% if(comments[i].reply == true) {} else { %>
     <div class="commentcontainer">
         <div class="postdiv">
             <p class="commentsowner">
                 <a class="postownerlink" href="/account/<%= comments[i].owner %>"
                     id="comment_<%= i %>_<%= comments[i].owner %>">View Poster</a>
             </p>
-            <p class="commentsbody"><%= comments[i].body %></p>
+            <p class="commentsbody" id="comments_<%= comments[i]._id %>"><%= comments[i].body %></p>
             <button class="button"><%= comments[i].date.toLocaleString() %></button>
+            <button class="button"
+                onclick="showreplies('comment_replies_<%= comments[i]._id %>', '<%= comments[i]._id %>')">Show
+                Replies</button>
+            <button class="button right"
+                onclick="replycomment('comment_reply_box_<%= comments[i]._id %>')">Reply</button>
+            <div class="commentcontainer hidden" id='comment_reply_box_<%= comments[i]._id %>'>
+                <br>
+                <div class="expandcommentdiv">
+                    <form action="/comment/reply" method="POST">
+                        <input name="body" type="text"
+                            style="width:100%;padding-top:5px;margin:5px;height:20px;margin-left: 0;max-width: 100%;"
+                            autocomplete="off" class="postcommentinput input section" required="required"
+                            placeholder="Thoughts...">
+                        <input name="parentid" type="text" style="width:0%" class="hidden" value="<%= post._id %>"
+                            required="required">
+                        <input name="parent" type="text" style="width:0%" class="hidden" value="<%= comments[i]._id %>"
+                            required="required">
+                        <br><bR>
+                        <div class="">
+                            <button type="submit" class="postcomment button">Post</button>
+                            <button type="button" class="postcomment button"
+                                onclick="replycommenthide('comment_reply_box_<%= comments[i]._id %>')">Hide</button>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div id="comment_replies_<%= comments[i]._id %>">
+
+            </div>
         </div>
     </div>
     <script>
+        replacepostlinks('comments_<%= comments[i]._id %>')
         getusername("comment_<%= i %>_<%= comments[i].owner %>", "<%= comments[i].owner %>")
         haveiliked('likebutton_<%= post._id %>', '<%= post.likes.length %>', '<%= post._id %>', '<%= loggedin %>')
     </script>
-    <% } %>
+    <% }} %>
     <% } %>
 </div>
 <script>

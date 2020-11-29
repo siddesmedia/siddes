@@ -95,6 +95,64 @@ router.get('/admin/suspend/:id/:reason', async function (req, res, next) {
     }
 });
 
+router.get('/admin/verify/:id', async function (req, res, next) {
+    if (!req.user) {
+        return res.redirect('/login')
+    }
+    if (req.user.admin == false) {
+        if (req.user.moderator == false) {
+            return res.redirect('/account')
+        }
+    }
+    try {
+        const updateuserwithban = await User.findByIdAndUpdate(req.params.id, {
+            verified: true
+        })
+
+        updateuserwithban
+
+        funcs.addtofeed(req.params.id, "You have been verified", '/account', 'Go to your account.')
+
+        res.json({
+            success: true
+        })
+    } catch (err) {
+
+        res.json({
+            success: false
+        })
+    }
+});
+
+router.get('/admin/unverify/:id', async function (req, res, next) {
+    if (!req.user) {
+        return res.redirect('/login')
+    }
+    if (req.user.admin == false) {
+        if (req.user.moderator == false) {
+            return res.redirect('/account')
+        }
+    }
+    try {
+        const updateuserwithban = await User.findByIdAndUpdate(req.params.id, {
+            verified: false
+        })
+
+        updateuserwithban
+
+        funcs.addtofeed(req.params.id, "An admin has unverified you.", '/account', 'Go to your account.')
+
+        res.json({
+            success: true
+        })
+    } catch (err) {
+
+        res.json({
+            success: false
+        })
+    }
+});
+
 router.get('/admin/viewappeals', async function (req, res, next) {
     if (!req.user) {
         return res.redirect('/login')

@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2020 - Present Jude Wilson on Behalf of Social Media
+    Copyright (c) 2020 - Present Jude Wilson on Behalf of Siddes
 
     All other use is prohibited without permission.
 */
@@ -31,20 +31,19 @@ body {
 }
 
 .nostylea {
-    color: black;
+    color: white;
     text-decoration: none;
 }
 
 .badge {
     font-size: 10px;
-    border: 1px black solid;
+    border: 1px white solid;
     padding: 2px;
 }
 
 .newposttext {
-    padding: 0;
-    width: 100%;
-    height: 400px;
+    background-color: rgb(32, 32, 32);
+    color: grey;
 }
 
 .colwhite {
@@ -59,6 +58,21 @@ body {
     margin-left: 10px;
 }
 
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 90%;
+    margin: auto;
+}
+
+td,
+th {
+    border: 1px solid rgb(199, 199, 199);
+    text-align: left;
+    padding: 8px;
+    color: rgb(199, 199, 199);
+}
+
 .dotted {
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABZJREFUeNpi2r9//38gYGAEESAAEGAAasgJOgzOKCoAAAAASUVORK5CYII=);
 }
@@ -70,10 +84,41 @@ body {
     z-index: 1;
     top: 0;
     right: 0;
-    background-color: white;
+    background-color: rgb(14, 14, 14);
     overflow-x: hidden;
     padding-top: 20px;
-    border-left: 1px gray solid;
+    border-left: 2px rgb(36, 36, 36) solid;
+}
+
+.sidebarleft {
+    height: 100%;
+    width: 20%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: rgb(14, 14, 14);
+    overflow-x: hidden;
+    padding-top: 20px;
+    border-right: 2px rgb(36, 36, 36) solid;
+}
+
+.sidebarbutton {
+    padding: 13px;
+    width: 90%;
+    display: block;
+    margin: auto;
+    margin-bottom: 8px;
+    border-radius: 35px;
+    border: none;
+    background-color: rgb(53, 53, 53);
+    color: rgb(173, 173, 173);
+    transition: 1s;
+}
+
+.sidebarbutton:hover {
+    background-color: rgb(39, 39, 39);
+    color: rgb(102, 102, 102);
 }
 
 /*.sidebar input {
@@ -84,7 +129,7 @@ body {
 .footer a,
 .sidetext {
     padding-left: 15px;
-    color: black;
+    color: white;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     text-decoration: none;
     transition: 0.3s;
@@ -92,7 +137,7 @@ body {
 
 .sidebar a:hover,
 .footer a:hover {
-    color: black;
+    color: white;
     text-decoration: underline;
     transition: 0.3s;
 }
@@ -109,31 +154,70 @@ body {
     border: none;
     border-radius: 25px;
     margin-top: 30px;
-    background-color: var(--retro-red);
+    background-color: var(--red);
     padding-bottom: 20px;
 }
 
 .repostbadge {
-    background-color: white;
-    border: 1px var(--retro-red) solid;
+    background-color: black;
+    border: 1px var(--red) solid;
     border-radius: 2px;
-    color: var(--retro-red);
+    color: var(--red);
     font-size: 6px;
     padding: 1px;
 }
 
-.post-box {
-    z-index: 1000;
-    position: fixed;
-    background-color: var(--main-bg);
+.postbox {
     top: 12.5%;
     bottom: 12.5%;
     left: 12.5%;
     right: 12.5%;
+    z-index: 1000;
+    position: fixed;
     border: 1px solid black;
+    background-color: black;
+    color: white;
     border-radius: 25px;
     padding: 15px;
 }
+
+.sharebox {
+    z-index: 1000;
+    position: fixed;
+    top: 30%;
+    height: 200px;
+    max-height: 200px;
+    left: 12.5%;
+    right: 12.5%;
+    border: 1px solid black;
+    background-color: black;
+    color: white;
+    border-radius: 25px;
+    padding: 15px;
+}
+
+.sharemodaltitle {
+    color: white;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.shareicon {
+    color: white;
+    width: 40px;
+}
+
+.closepopup {
+    border: none;
+    background-color: rgb(32, 32, 32);
+    border-radius: 25px;
+    color: grey;
+}
+
+/*.fullbodyblur {
+    width: 100%;
+    filter: blur(10px);
+    height: 100%;
+}*/
 
 .left {
     float: left;
@@ -145,7 +229,7 @@ body {
 
 .postimage {
     width: 300px;
-    border: 2px rgb(236, 236, 236) solid;
+    border: 2px rgb(32, 32, 32) solid;
     border-radius: 25px;
 }
 
@@ -155,8 +239,7 @@ body {
     overflow: hidden;
     margin-left: 25px;
     border-radius: 20000px;
-    border: 2px rgb(236, 236, 236) solid;
-    top: 175px;
+    border: 2px rgb(32, 32, 32) solid;
     position: absolute;
 }
 
@@ -187,68 +270,84 @@ body {
 .postdiv {
     padding: 10px;
     padding-top: 0;
-    border-top: 2px rgb(236, 236, 236) solid;
+    border-top: 2px rgb(32, 32, 32) solid;
     transition: 1s;
 }
 
 .postdivnohover {
     padding: 10px;
     padding-top: 0;
-    border-bottom: 2px rgb(236, 236, 236) solid;
+    border-bottom: 2px rgb(32, 32, 32) solid;
     transition: 1s;
 }
 
 .postdiv:hover {
     padding: 10px;
     padding-top: 0;
-    border-top: 2px rgb(173, 173, 173) solid;
+    border-top: 2px rgb(44, 44, 44) solid;
 }
 
 .roundpostdiv {
     margin: 15px;
-    border: 2px var(--retro-red) solid;
+    border: 2px var(--red) solid;
     padding: 10px;
     transition: 1s;
-    -webkit-box-shadow: 10px 10px 0px 0px rgba(0, 0, 0, 0.75);
-    -moz-box-shadow: 10px 10px 0px 0px rgba(0, 0, 0, 0.75);
-    box-shadow: 10px 10px 0px 0px rgba(0, 0, 0, 0.75);
+    -webkit-box-shadow: 10px 10px 0px 0px rgba(255, 255, 255, 0.75);
+    -moz-box-shadow: 10px 10px 0px 0px rgba(255, 255, 255, 0.75);
+    box-shadow: 10px 10px 0px 0px rgba(255, 255, 255, 0.75);
 }
 
 .postownerlink {
     font-weight: bolder;
-    color: black !important;
+    color: rgb(185, 185, 185) !important;
     text-decoration: none;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: small;
 }
 
+p,
+label {
+    color: white !important;
+
+}
+
 .postownerlink:hover {
     font-weight: bolder;
-    color: black;
+    color: white;
     text-decoration: underline;
     font-size: small;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-.postownerlink {}
-
 .postbody {
     font-size: medium;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: rgb(185, 185, 185);
 }
+
+.expandcommentdiv {
+    background-color: rgb(36, 36, 36);
+    padding: 5px;
+    padding-top: 1px;
+    border-radius: 10px;
+}
+
+.idcard {}
 
 .postmeta {}
 
 .button,
 .input {
-    background-color: rgb(236, 236, 236);
+    background-color: rgb(53, 53, 53);
     border-radius: 100px;
     border: none;
-    color: grey;
+    color: rgb(173, 173, 173);
     /* rgb(90, 90, 90) */
     padding: 4px;
     animation: 2s;
     transition: 0.3s;
+    -webkit-appearance: none;
+
 }
 
 .commentsbody {
@@ -256,31 +355,74 @@ body {
 }
 
 .postcomment:hover {
-    background-color: rgb(196, 232, 255);
+    background-color: rgb(67, 183, 255);
+    color: black;
     transition: 0.3s;
 }
 
 .postlike:hover {
-    background-color: rgb(255, 196, 196);
+    background-color: rgb(255, 73, 73);
+    color: black;
     transition: 0.3s;
 }
 
 .postrepost:hover {
-    background-color: rgb(196, 255, 201);
+    background-color: rgb(75, 255, 90);
+    color: black;
+    transition: 0.3s;
+}
+
+.postshare:hover {
+    background-color: rgb(255, 239, 146);
+    color: black;
     transition: 0.3s;
 }
 
 .postcommentinput:hover {
     background-color: rgb(246, 212, 255);
+    color: black !important;
     transition: 0.3s;
 }
 
 .postdiv input {
-    background-color: rgb(236, 236, 236);
+    background-color: rgb(32, 32, 32);
     border-radius: 100px;
     border: none;
     color: grey;
     padding: 4px;
+}
+
+.fullsection ul li,
+.fullsection p,
+.fullsection h4 {
+    color: rgb(201, 201, 201) !important;
+}
+
+.biotext {
+    color: rgb(182, 182, 182);
+}
+
+.accountlinks {
+    color: rgb(182, 182, 182);
+    font-weight: bolder;
+    text-decoration: none;
+    border-bottom: none;
+}
+
+.versionlink {
+    background: none !important;
+    border: none;
+    padding: 0 !important;
+    margin: 0 !important;
+    font-size: medium;
+    color: white;
+}
+
+.accountlinks:hover {
+    color: rgb(182, 182, 182);
+    font-weight: bolder;
+    text-decoration: none;
+    border-bottom: 1px solid;
 }
 
 /* hashtag and metions in text */
@@ -288,7 +430,7 @@ body {
     position: relative;
     text-decoration: none;
     display: inline-block;
-    color: black;
+    color: white;
     padding: 0 1px;
     transition: color ease 0.3s;
 }
@@ -301,12 +443,12 @@ body {
     height: 5%;
     left: 0;
     bottom: 0;
-    background-color: var(--retro-red);
+    background-color: var(--red);
     transition: all ease 0.3s;
 }
 
 .hashtag:hover {
-    color: white;
+    color: black;
 }
 
 .hashtag:hover::after {
@@ -317,7 +459,7 @@ body {
     position: relative;
     text-decoration: none;
     display: inline-block;
-    color: black;
+    color: white;
     padding: 0 1px;
     transition: color ease 0.3s;
 }
@@ -330,12 +472,12 @@ body {
     height: 5%;
     left: 0;
     bottom: 0;
-    background-color: var(--retro-blue);
+    background-color: var(--blue);
     transition: all ease 0.3s;
 }
 
 .mention:hover {
-    color: white;
+    color: black;
 }
 
 .mention:hover::after {
@@ -346,7 +488,7 @@ body {
     position: relative;
     text-decoration: none;
     display: inline-block;
-    color: black;
+    color: white;
     padding: 0 1px;
     transition: color ease 0.3s;
 }
@@ -359,12 +501,12 @@ body {
     height: 5%;
     left: 0;
     bottom: 0;
-    background-color: var(--retro-brown);
+    background-color: var(--green);
     transition: all ease 0.3s;
 }
 
 .link:hover {
-    color: white;
+    color: black;
 }
 
 .link:hover::after {
@@ -372,23 +514,24 @@ body {
 }
 
 .red {
-    background-color: var(--retro-blue);
+    background-color: rgb(255, 85, 85);
+    color: black;
 }
 
 /* badges */
 .devbadge {
-    background-color: var(--retro-blue);
+    background-color: var(--blue);
 }
 
 /* navbar/footer */
 .navbar {
-    background-color: var(--retro-brown);
-    border: 5px var(--retro-brown) solid;
+    background: rgb(14, 14, 14);
+    border: 5px rgb(14, 14, 14) solid;
     padding: 10px;
 }
 
 .navbar a {
-    color: rgb(0, 0, 0);
+    color: white;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     text-decoration: none;
     /*transition: 0.3s;*/
@@ -399,6 +542,7 @@ body {
 .navbar input {}
 
 .navbar a:hover {
+    color: white;
     text-decoration: none;
     border-bottom: 1px white solid;
     /*transition: 0.3s;*/
@@ -411,7 +555,7 @@ body {
     position: relative;
     text-decoration: none;
     display: inline-block;
-    color: black;
+    color: white;
     padding: 0 1px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     transition: color ease 0.3s;
@@ -426,12 +570,12 @@ body {
     height: 5%;
     left: 0;
     bottom: 0;
-    background-color: var(--retro-red);
+    background-color: var(--blue);
     transition: all ease 0.3s;
 }
 
 .header:hover {
-    color: white;
+    color: black;
 }
 
 .header:hover::after {
@@ -443,7 +587,7 @@ body {
     position: relative;
     text-decoration: none;
     display: inline-block;
-    color: black;
+    color: white;
     padding: 0 1px;
     transition: color ease 0.3s;
     margin-left: 25px;
@@ -457,7 +601,7 @@ body {
     height: 5%;
     left: 0;
     bottom: 0;
-    background-color: var(--retro-blue);
+    background-color: var(--red);
     transition: all ease 0.3s;
 }
 
@@ -472,7 +616,7 @@ body {
 
 .sensitivepost {
     padding: 20px;
-    border: 2px rgb(236, 236, 236) solid;
+    border: 2px rgb(32, 32, 32) solid;
     border-radius: 25px;
     margin: 10px;
     margin-bottom: 2px;
@@ -480,7 +624,7 @@ body {
 
 .embed {
     padding: 15px;
-    border: 2px rgb(236, 236, 236) solid;
+    border: 2px rgb(32, 32, 32) solid;
     border-radius: 25px;
 }
 
@@ -513,7 +657,7 @@ body {
 }
 
 .error {
-    color: rgb(0, 0, 0);
+    color: white;
     background-color: rgb(255, 97, 97);
     padding: 5px;
     border-radius: 25px;
@@ -533,7 +677,7 @@ body {
     position: relative;
     text-decoration: none;
     display: inline-block;
-    color: black;
+    color: white;
     padding: 0 1px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     transition: color ease 0.3s;
@@ -550,7 +694,7 @@ body {
 }
 
 .fullsection {
-    border-top: 2px rgb(236, 236, 236) solid;
+    border-top: 2px rgb(32, 32, 32) solid;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     padding-left: 25px;
     padding-right: 25px;
@@ -558,7 +702,7 @@ body {
 }
 
 .fullsection:hover {
-    border-top: 2px rgb(173, 173, 173) solid;
+    border-top: 2px rgb(99, 99, 99) solid;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     padding-left: 25px;
     padding-right: 25px;
@@ -583,40 +727,64 @@ body {
     border-top: 1px grey solid;
 }
 
-@media only screen and (max-width: 840px) {
-    .sidebar {
-        display: none;
-    }
-
-    body {
-        width: 100%;
-    }
+.messagesbutton {
+    background-color: black !important;
 }
 
-@media only screen and (max-width: 1030px) {
-    .modbuttons {
-        display: none;
-    }
+.messagesnav {
+    background-color: rgb(56, 56, 56);
+    color: white;
 }
 
-@media only screen and (max-width: 445px) {
-    .seeallcommentsbutton {
-        display: none;
-    }
+.messagecolnav {
+    background-color: rgb(75, 75, 75);
+    color: white;
 }
 
-@media only screen and (max-width: 350px) {
-    .commentform {
-        display: none;
-    }
-
-    .seeallcommentsbutton {
-        display: block;
-    }
+.messagebox {
+    background-color: rgb(56, 56, 56);
+    border: 1px rgb(56, 56, 56) solid;
 }
 
-@media only screen and (min-width: 841px) {
-    body {
-        width: 80%;
-    }
+.messagesection {
+    border-left: 1px rgb(83, 83, 83) solid !important;
+}
+
+.dmbox {}
+
+.chatselect {}
+
+.chat {
+    background-color: rgb(56, 56, 56);
+    color: white;
+    border-bottom: 1px rgb(78, 78, 78) solid;
+}
+
+.messagesx {}
+
+.messagesx button {
+    color: white;
+}
+
+.dmbottombar {
+    border-top: 1px rgb(56, 56, 56) solid;
+    background-color: rgb(56, 56, 56);
+}
+
+.dminput {
+    background-color: rgb(75, 75, 75);
+    color: white;
+}
+
+
+.messages {}
+
+.message {
+    background-color: rgb(190, 190, 190);
+    color: rgb(0, 0, 0);
+}
+
+.dmsend {
+    background-color: rgb(75, 75, 75);
+    color: white;
 }
