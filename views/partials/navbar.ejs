@@ -1,5 +1,10 @@
 <div class="sidebar">
     <span class="sidebartextsection">
+        <form action="/search" method="GET" style="width: 100%;">
+            <input name="q" type="text" class="input" placeholder="Search <%= name %>"
+                style="width: 90%;margin-bottom: 8px;margin:auto;display: block;">
+        </form>
+        <br>
         <span id="thelatestcontainer">
             <button class="sidebarbutton" style="text-align: left;border-radius: 10px;">
                 The Latest
@@ -9,6 +14,16 @@
                 </div>
             </button>
         </span>
+        <span id="thelatestcontainer">
+            <button class="sidebarbutton" style="text-align: left;border-radius: 10px;">
+                Boards
+                <br><br>
+                <div class="expandcommentdiv boards" style="width: 95%;display: block;margin: auto;">
+
+                </div>
+            </button>
+        </span>
+        <br>
 
         <p class="sidetext smalltext">
             &copy; 2020
@@ -32,34 +47,42 @@
 </div>
 <script>
     showlatestposts('latest')
+    showboards('boards')
 </script>
 <div class="sidebarleft">
-    <form action="/search" method="GET" style="width: 100%;margin:auto;display: block;">
-        <input name="q" type="text" class="input" placeholder="Search <%= name %>"
-            style="width: 90%;margin-bottom: 8px;">
-    </form>
     <span class="sidebartextsection">
-        <button class="sidebarbutton" onclick="url('/home')"><i class="fa fa-home"></i></button>
         <% if(loggedin == true) { %>
-        <button class="sidebarbutton" onclick="newPost('show')"><i class="fa fa-pen"></i></button>
-        <button class="sidebarbutton" onclick="messages('open')" id="showmessagesleftbar"><i
-                class="fa fa-envelope"></i></button>
-        <button class="sidebarbutton" onclick="url('/account/edit')"><i class="fa fa-cog"></i></button>
-        <button class="sidebarbutton" onclick="url('/logout')"><i class="fas fa-sign-out-alt"></i></button>
+        <button class="sidebarbutton" onclick="url('/home/0')"><i class="fa fa-home"></i></button>
+        <button class="sidebarbutton" onclick="url('/notifications')"><i class="fa fa-bell"></i></button>
+        <button class="sidebarbutton" onclick="url('/latest')"><i class="fa fa-clock"></i></button>
         <% } else if(loggedin == false) { %>
+        <button class="sidebarbutton" onclick="url('/latest')"><i class="fa fa-clock"></i></button>
         <button class="sidebarbutton" onclick="url('/login')"><i class="fas fa-sign-in-alt"></i></button>
         <button class="sidebarbutton" onclick="url('/signup')"><i class="fas fa-user-plus"></i></button>
         <% } %>
         <% if(moderator == true) { %>
         <button class="sidebarbutton" onclick="url('/mod')"><i class="fas fa-gavel"></i></button>
         <% } %>
-        <button class="sidebarbutton" onclick="url('/latest')"><i class="fa fa-clock"></i></button>
         <button class="sidebarbutton" onclick="showmenu('show')" id="showmenu"><i class="fa fa-bars"></i></button>
         <span id="premiumsidebar"></span><br><br>
-        <span class="sidebarleftbottom">
+        <span class="sidebarleftbottom" onclick="leftmenu()">
             <% if(loggedin == true) { %>
-            <button class="sidebarbutton" onclick="url('/account')" style="padding: 5px;">
-                <img width="40px" src="/account/pfp"></button>
+            <button class="sidebarbutton profileclick" style="padding: 5px;">
+                <img width="40px" src="/account/pfp" class="">
+            </button>
+            <button class="sidebarbutton hidden" id="leftmenusection">
+                <span class="">
+                    <% if(loggedin == true) { %>
+                    <a class="button linkbutton" href='javascript:newPost("show")'><i class="fa">New
+                            Post</i></a><br><br>
+                    <a class="button linkbutton" href='javascript:messages("open")'><i
+                            class="fa">Messages</i></a><br><br>
+                    <a class="button linkbutton" href='/account/edit'><i class="fa">Settings</i></a><br><br>
+                    <a class="button linkbutton" href='/account'><i class="fa">Account</i></a><br><br>
+                    <a class="button linkbutton" href='/logout'><i class="fa">Logout</i></a><br>
+                    <% } %>
+                </span>
+            </button>
             <% } %>
         </span>
     </span>

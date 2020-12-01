@@ -68,8 +68,10 @@
         <% } %>
     </span>
     <div>
-        <p class="postbody" id="postbody">
-            <%= post.body.toString() %>
+        <p class="postbody">
+            <pre class="postbody" id="postbody">
+<%= post.body %>
+            </pre>
         </p>
         <% if(post.media == true) { %>
         <img class="postimage" id="img_<%= post._id %>" src="" loading="lazy"><br>

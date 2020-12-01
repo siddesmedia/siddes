@@ -16,6 +16,17 @@ const Post = new mongoose.Schema({
         unique: false,
         required: true
     },
+    boardonly: {
+        type: Boolean,
+        unique: false,
+        required: false,
+        default: false
+    },
+    board: {
+        type: String,
+        unique: false,
+        required: false
+    },
     date: {
         type: Date,
         unique: false,

@@ -1,5 +1,12 @@
 /*
-    Copyright (c) 2020 - Present Jude Wilson on Behalf of Siddes
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v7.0.29,
+* Autoprefixer: v9.7.6
+* Browsers: last 4 version
+*/
+
+/*
+    Copyright (c) 2020 - Present Jude Wilson on Behalf of Social Media
 
     All other use is prohibited without permission.
 */
@@ -9,16 +16,21 @@
 }
 
 body {
-    margin: 0;
+    display: block;
+    margin: 0 auto;
     padding: 0;
+    background-color: rgb(20, 20, 20);
+}
+
+a {
+    color: rgb(151, 151, 151);
 }
 
 :root {
-    --retro-pink: rgb(212, 180, 183);
-    --retro-yello: rgb(225, 233, 186);
-    --retro-red: rgb(253, 97, 97);
-    --retro-blue: rgb(187, 210, 208);
-    --retro-brown: rgb(209, 183, 134);
+    --main-bg: black;
+    --red: rgb(218, 0, 0);
+    --blue: rgb(0, 145, 255);
+    --green: rgb(0, 136, 73);
 }
 
 .hidden {
@@ -51,6 +63,7 @@ body {
 }
 
 .blurred {
+    -webkit-filter: blur(8px);
     filter: blur(8px);
 }
 
@@ -81,7 +94,6 @@ th {
     height: 100%;
     width: 20%;
     position: fixed;
-    z-index: 1;
     top: 0;
     right: 0;
     background-color: rgb(14, 14, 14);
@@ -113,6 +125,8 @@ th {
     border: none;
     background-color: rgb(53, 53, 53);
     color: rgb(173, 173, 173);
+    -webkit-transition: 1s;
+    -o-transition: 1s;
     transition: 1s;
 }
 
@@ -132,6 +146,8 @@ th {
     color: white;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     text-decoration: none;
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
     transition: 0.3s;
 }
 
@@ -139,6 +155,8 @@ th {
 .footer a:hover {
     color: white;
     text-decoration: underline;
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
     transition: 0.3s;
 }
 
@@ -168,17 +186,8 @@ th {
 }
 
 .postbox {
-    top: 12.5%;
-    bottom: 12.5%;
-    left: 12.5%;
-    right: 12.5%;
-    z-index: 1000;
-    position: fixed;
     border: 1px solid black;
     background-color: black;
-    color: white;
-    border-radius: 25px;
-    padding: 15px;
 }
 
 .sharebox {
@@ -271,6 +280,8 @@ th {
     padding: 10px;
     padding-top: 0;
     border-top: 2px rgb(32, 32, 32) solid;
+    -webkit-transition: 1s;
+    -o-transition: 1s;
     transition: 1s;
 }
 
@@ -278,6 +289,8 @@ th {
     padding: 10px;
     padding-top: 0;
     border-bottom: 2px rgb(32, 32, 32) solid;
+    -webkit-transition: 1s;
+    -o-transition: 1s;
     transition: 1s;
 }
 
@@ -291,9 +304,10 @@ th {
     margin: 15px;
     border: 2px var(--red) solid;
     padding: 10px;
+    -webkit-transition: 1s;
+    -o-transition: 1s;
     transition: 1s;
     -webkit-box-shadow: 10px 10px 0px 0px rgba(255, 255, 255, 0.75);
-    -moz-box-shadow: 10px 10px 0px 0px rgba(255, 255, 255, 0.75);
     box-shadow: 10px 10px 0px 0px rgba(255, 255, 255, 0.75);
 }
 
@@ -344,7 +358,10 @@ label {
     color: rgb(173, 173, 173);
     /* rgb(90, 90, 90) */
     padding: 4px;
+    -webkit-animation: 2s;
     animation: 2s;
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
     transition: 0.3s;
     -webkit-appearance: none;
 
@@ -357,30 +374,40 @@ label {
 .postcomment:hover {
     background-color: rgb(67, 183, 255);
     color: black;
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
     transition: 0.3s;
 }
 
 .postlike:hover {
     background-color: rgb(255, 73, 73);
     color: black;
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
     transition: 0.3s;
 }
 
 .postrepost:hover {
     background-color: rgb(75, 255, 90);
     color: black;
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
     transition: 0.3s;
 }
 
 .postshare:hover {
     background-color: rgb(255, 239, 146);
     color: black;
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
     transition: 0.3s;
 }
 
 .postcommentinput:hover {
     background-color: rgb(246, 212, 255);
     color: black !important;
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
     transition: 0.3s;
 }
 
@@ -432,6 +459,8 @@ label {
     display: inline-block;
     color: white;
     padding: 0 1px;
+    -webkit-transition: color ease 0.3s;
+    -o-transition: color ease 0.3s;
     transition: color ease 0.3s;
 }
 
@@ -444,6 +473,8 @@ label {
     left: 0;
     bottom: 0;
     background-color: var(--red);
+    -webkit-transition: all ease 0.3s;
+    -o-transition: all ease 0.3s;
     transition: all ease 0.3s;
 }
 
@@ -461,6 +492,8 @@ label {
     display: inline-block;
     color: white;
     padding: 0 1px;
+    -webkit-transition: color ease 0.3s;
+    -o-transition: color ease 0.3s;
     transition: color ease 0.3s;
 }
 
@@ -473,6 +506,8 @@ label {
     left: 0;
     bottom: 0;
     background-color: var(--blue);
+    -webkit-transition: all ease 0.3s;
+    -o-transition: all ease 0.3s;
     transition: all ease 0.3s;
 }
 
@@ -490,6 +525,8 @@ label {
     display: inline-block;
     color: white;
     padding: 0 1px;
+    -webkit-transition: color ease 0.3s;
+    -o-transition: color ease 0.3s;
     transition: color ease 0.3s;
 }
 
@@ -502,6 +539,8 @@ label {
     left: 0;
     bottom: 0;
     background-color: var(--green);
+    -webkit-transition: all ease 0.3s;
+    -o-transition: all ease 0.3s;
     transition: all ease 0.3s;
 }
 
@@ -558,6 +597,8 @@ label {
     color: white;
     padding: 0 1px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    -webkit-transition: color ease 0.3s;
+    -o-transition: color ease 0.3s;
     transition: color ease 0.3s;
     margin-left: 25px;
 }
@@ -571,6 +612,8 @@ label {
     left: 0;
     bottom: 0;
     background-color: var(--blue);
+    -webkit-transition: all ease 0.3s;
+    -o-transition: all ease 0.3s;
     transition: all ease 0.3s;
 }
 
@@ -589,6 +632,8 @@ label {
     display: inline-block;
     color: white;
     padding: 0 1px;
+    -webkit-transition: color ease 0.3s;
+    -o-transition: color ease 0.3s;
     transition: color ease 0.3s;
     margin-left: 25px;
 }
@@ -602,6 +647,8 @@ label {
     left: 0;
     bottom: 0;
     background-color: var(--red);
+    -webkit-transition: all ease 0.3s;
+    -o-transition: all ease 0.3s;
     transition: all ease 0.3s;
 }
 
@@ -680,6 +727,8 @@ label {
     color: white;
     padding: 0 1px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    -webkit-transition: color ease 0.3s;
+    -o-transition: color ease 0.3s;
     transition: color ease 0.3s;
     margin-left: 25px;
 }
@@ -698,6 +747,8 @@ label {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     padding-left: 25px;
     padding-right: 25px;
+    -webkit-transition: 1s;
+    -o-transition: 1s;
     transition: 1s;
 }
 
@@ -723,9 +774,15 @@ label {
     border-bottom: 1px grey solid;
 }
 
+.mobilesearch {
+    background-color: rgb(32, 32, 32);
+}
+
 .footer {
     border-top: 1px grey solid;
 }
+
+/* messages box */
 
 .messagesbutton {
     background-color: black !important;

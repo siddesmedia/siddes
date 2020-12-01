@@ -1,4 +1,11 @@
 /*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v7.0.29,
+* Autoprefixer: v9.7.6
+* Browsers: last 4 version
+*/
+
+/*
     Copyright (c) 2020 - Present Jude Wilson on Behalf of Social Media
 
     All other use is prohibited without permission.
@@ -57,6 +64,7 @@ body {
 }
 
 .blurred {
+    -webkit-filter: blur(8px);
     filter: blur(8px);
 }
 
@@ -68,11 +76,23 @@ body {
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABZJREFUeNpi2r9//38gYGAEESAAEGAAasgJOgzOKCoAAAAASUVORK5CYII=);
 }
 
+topofpagemobile {
+    margin-top: 40px;
+}
+
+.profilemore {
+    display: none;
+}
+
+.profileclick:hover .profilemore {
+    display: block;
+}
+
 .sidebar {
     height: 100%;
     width: 20%;
     position: fixed;
-    z-index: 1;
+    z-index: 1000000000;
     top: 0;
     right: 0;
     background-color: white;
@@ -85,7 +105,7 @@ body {
     height: 100%;
     width: 100% !important;
     position: fixed;
-    z-index: 1;
+    z-index: 1000000;
     top: 0;
     right: 0;
     background-color: white;
@@ -106,6 +126,8 @@ body {
     color: black;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     text-decoration: none;
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
     transition: 0.3s;
 }
 
@@ -113,6 +135,8 @@ body {
     color: black;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     text-decoration: none;
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
     transition: 0.3s;
 }
 
@@ -121,6 +145,8 @@ body {
 .footer a:hover {
     color: black;
     text-decoration: underline;
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
     transition: 0.3s;
 }
 
@@ -153,7 +179,7 @@ body {
     top: 8.5%;
     left: 12.5%;
     right: 12.5%;
-    z-index: 1000;
+    z-index: 10000000000;
     position: fixed;
     border: 1px solid grey;
     background-color: rgb(240, 240, 240);
@@ -163,13 +189,37 @@ body {
 }
 
 .sharebox {
-    z-index: 1000;
+    z-index: 10000000000;
     position: fixed;
     top: 30%;
     height: 200px;
     max-height: 200px;
     left: 12.5%;
     right: 12.5%;
+    border: 1px solid grey;
+    background-color: rgb(240, 240, 240);
+    color: black;
+    border-radius: 25px;
+    padding: 15px;
+}
+
+.alerttext {
+    font-family: Arial, Helvetica, sans-serif;
+    overflow: scroll;
+    margin-top: 10px;
+    padding: 10px;
+    padding-left: 0;
+    height: 220px;
+    border-radius: 5px;
+}
+
+.customalertbox {
+    z-index: 10000000000;
+    position: fixed;
+    top: 30%;
+    height: 300px;
+    left: 20%;
+    right: 20%;
     border: 1px solid grey;
     background-color: rgb(240, 240, 240);
     color: black;
@@ -247,6 +297,8 @@ body {
     padding: 10px;
     padding-top: 0;
     border-top: 2px rgb(236, 236, 236) solid;
+    -webkit-transition: 1s;
+    -o-transition: 1s;
     transition: 1s;
 }
 
@@ -254,6 +306,8 @@ body {
     padding: 10px;
     padding-top: 0;
     border-bottom: 2px rgb(236, 236, 236) solid;
+    -webkit-transition: 1s;
+    -o-transition: 1s;
     transition: 1s;
 }
 
@@ -267,9 +321,10 @@ body {
     margin: 15px;
     border: 2px var(--red) solid;
     padding: 10px;
+    -webkit-transition: 1s;
+    -o-transition: 1s;
     transition: 1s;
     -webkit-box-shadow: 10px 10px 0px 0px rgba(0, 0, 0, 0.75);
-    -moz-box-shadow: 10px 10px 0px 0px rgba(0, 0, 0, 0.75);
     box-shadow: 10px 10px 0px 0px rgba(0, 0, 0, 0.75);
 }
 
@@ -311,8 +366,11 @@ body {
     color: grey;
     /* rgb(90, 90, 90) */
     padding: 4px;
+    -webkit-animation: 2s;
     animation: 2s;
     font-size: small;
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
     transition: 0.3s;
     -webkit-appearance: none;
 
@@ -350,26 +408,36 @@ body {
 
 .postcomment:hover {
     background-color: rgb(196, 232, 255);
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
     transition: 0.3s;
 }
 
 .postlike:hover {
     background-color: rgb(255, 196, 196);
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
     transition: 0.3s;
 }
 
 .postrepost:hover {
     background-color: rgb(196, 255, 201);
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
     transition: 0.3s;
 }
 
 .postshare:hover {
     background-color: rgb(255, 239, 146);
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
     transition: 0.3s;
 }
 
 .postcommentinput:hover {
     background-color: rgb(246, 212, 255);
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
     transition: 0.3s;
 }
 
@@ -388,6 +456,8 @@ body {
     display: inline-block;
     color: black;
     padding: 0 1px;
+    -webkit-transition: color ease 0.3s;
+    -o-transition: color ease 0.3s;
     transition: color ease 0.3s;
 }
 
@@ -400,6 +470,8 @@ body {
     left: 0;
     bottom: 0;
     background-color: var(--red);
+    -webkit-transition: all ease 0.3s;
+    -o-transition: all ease 0.3s;
     transition: all ease 0.3s;
 }
 
@@ -417,6 +489,8 @@ body {
     display: inline-block;
     color: black;
     padding: 0 1px;
+    -webkit-transition: color ease 0.3s;
+    -o-transition: color ease 0.3s;
     transition: color ease 0.3s;
 }
 
@@ -429,6 +503,8 @@ body {
     left: 0;
     bottom: 0;
     background-color: var(--blue);
+    -webkit-transition: all ease 0.3s;
+    -o-transition: all ease 0.3s;
     transition: all ease 0.3s;
 }
 
@@ -446,6 +522,8 @@ body {
     display: inline-block;
     color: black;
     padding: 0 1px;
+    -webkit-transition: color ease 0.3s;
+    -o-transition: color ease 0.3s;
     transition: color ease 0.3s;
 }
 
@@ -458,6 +536,8 @@ body {
     left: 0;
     bottom: 0;
     background-color: var(--green);
+    -webkit-transition: all ease 0.3s;
+    -o-transition: all ease 0.3s;
     transition: all ease 0.3s;
 }
 
@@ -513,6 +593,8 @@ body {
     color: black;
     padding: 0 1px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    -webkit-transition: color ease 0.3s;
+    -o-transition: color ease 0.3s;
     transition: color ease 0.3s;
     margin-left: 25px;
 }
@@ -526,6 +608,8 @@ body {
     left: 0;
     bottom: 0;
     background-color: var(--blue);
+    -webkit-transition: all ease 0.3s;
+    -o-transition: all ease 0.3s;
     transition: all ease 0.3s;
 }
 
@@ -544,6 +628,8 @@ body {
     display: inline-block;
     color: black;
     padding: 0 1px;
+    -webkit-transition: color ease 0.3s;
+    -o-transition: color ease 0.3s;
     transition: color ease 0.3s;
     margin-left: 25px;
 }
@@ -557,6 +643,8 @@ body {
     left: 0;
     bottom: 0;
     background-color: var(--red);
+    -webkit-transition: all ease 0.3s;
+    -o-transition: all ease 0.3s;
     transition: all ease 0.3s;
 }
 
@@ -635,6 +723,8 @@ body {
     color: black;
     padding: 0 1px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    -webkit-transition: color ease 0.3s;
+    -o-transition: color ease 0.3s;
     transition: color ease 0.3s;
     margin-left: 25px;
 }
@@ -653,6 +743,8 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     padding-left: 25px;
     padding-right: 25px;
+    -webkit-transition: 1s;
+    -o-transition: 1s;
     transition: 1s;
 }
 
@@ -697,6 +789,8 @@ body {
     border: none;
     background-color: rgb(236, 236, 236);
     color: grey;
+    -webkit-transition: 1s;
+    -o-transition: 1s;
     transition: 1s;
 }
 
@@ -729,7 +823,7 @@ body {
     right: 0px;
     bottom: 0px;
     margin-bottom: 0 !important;
-    z-index: 2000;
+    z-index: 10000000000;
     width: 200px !important;
     border-radius: 0 !important;
     border-top-left-radius: 10px !important;
@@ -758,7 +852,7 @@ body {
     width: 600px;
     right: 0px;
     bottom: 0px;
-    z-index: 2000;
+    z-index: 10000000000;
     border-top-left-radius: 10px !important;
     border: 1px rgb(204, 204, 204) solid;
 }
@@ -771,11 +865,16 @@ body {
 .dmbox {
     position: relative;
     height: 290px;
+    overflow: scroll;
 }
 
 .chatselect {
     padding: 0;
     margin: 0;
+}
+
+.messageright {
+    background-color: rgb(137, 137, 255) !important;
 }
 
 .chat {
@@ -803,7 +902,7 @@ body {
     width: 420px;
     background-color: rgb(204, 204, 204);
     padding: 2px;
-    z-index: 3000;
+    z-index: 100000000000;
 }
 
 .dminput {
@@ -820,10 +919,18 @@ body {
     list-style: none;
     padding: 0;
     margin: 0 5px;
-    z-index: 1;
+    z-index: 100000000000;
     bottom: 40px;
     overflow: scroll;
     height: 100%;
+}
+
+.messagediv {
+    width: 100%;
+    position: relative;
+    border: 1px transparent solid;
+    padding: 5px;
+    z-index: 10000000000;
 }
 
 .message {
@@ -831,6 +938,9 @@ body {
     padding: 5px;
     border-radius: 3px;
     color: black;
+    margin-right: 5px;
+    margin-top: 5px;
+    width: 60%;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
@@ -843,13 +953,30 @@ body {
     background-color: white;
 }
 
+.mobilesearch {
+    width: 80%;
+    float: right;
+    position: fixed;
+    top: 0;
+    right: 0;
+    background-color: rgb(190, 190, 190);
+    z-index: 100000;
+    padding: 10px;
+}
+
 * {
+    -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
 
 .column {
     float: left;
     width: 50%;
+}
+
+.linkbutton {
+    font-family: Arial, Helvetica, sans-serif;
+    text-decoration: none;
 }
 
 .dmimageselect {
@@ -860,6 +987,10 @@ body {
     content: "";
     display: table;
     clear: both;
+}
+
+.mobile {
+    display: none;
 }
 
 @media only screen and (max-width: 606px) {
@@ -881,6 +1012,10 @@ body {
 
     .sidebar {
         display: none;
+    }
+
+    .mobile {
+        display: block;
     }
 
     #dropdown {

@@ -7,6 +7,8 @@
 var loggedinbool;
 var uploadsbanned = undefined;
 var myid = ''
+var openeddm
+var storage = window.localStorage
 
 changetheme()
 
@@ -20,8 +22,65 @@ function setup() {
     }
 }
 
+function updates() {
+    if (storage.getItem('1.0.7-notes-dismissed') == 'yes') {
+        return
+    }
+    customalert(`
+<h3 class="header nobottompadmar">Update V1.0.7</h3>
+
+Client Side
+* added robotstxt for seo and crawler permissions
+* added sitemap for seo and crawlers
+* added meta information in the base ejs template for better seo
+* on big screens, the search bar is now on the right sidebar
+* on small screens, the search bar is on the top of the screen as a nav
+* all the rarely used buttons are in a hover state on your profile icon in the bottom left
+* fixed posts not formatting correctly (eg: line breaks)
+* your home feed is now posts and stuff made by users you follow
+* dms now sort and look correct
+* there is a list of the latest three boards on the right
+* admins can create new boards
+* you can find boards at /b/:boardname
+
+Server Side
+* created the boards url definition (/b/:boardname or /board/:boardid (redirects to /b/:boardname))
+* posts can now be 1000 characters long (used to be 265)
+* fixed routes for notifications
+* /home is now posts by users you follow
+* dms now update live every one second
+* admins can create new boards
+* boards routing done
+
+Notes
+* from now on, if you are worried about legal issues, check for a warant canary in the source code of the site
+        
+* please experiment and use the new dms
+* boards can onnly be created by admins, this is to prevent thousands of useless boards being made. we don't want to be a reddit clone.
+    `)
+}
+
+function leftmenu() {
+    var classlist = document.getElementById('leftmenusection').className.split(/\s+/)
+    if (classlist.includes('hidden')) {
+        return document.getElementById('leftmenusection').classList.remove('hidden')
+    } else {
+        return document.getElementById('leftmenusection').classList.add('hidden')
+    }
+}
+
+function closealert() {
+    document.getElementById('alertbox').classList.add('hidden')
+    storage.setItem('1.0.7-notes-dismissed', 'yes');
+}
+
+function customalert(text) {
+    document.getElementById('alertbox').classList.remove('hidden')
+    document.getElementById('alerttext').innerHTML = "<pre>" + text + "</pre>"
+}
+
 function replacepostlinks(id) {
-    return (document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#(\S*)/g, "<a href='/tag/$1' class='hashtag'>#$1</a>").replace(/@(\S*)/g, "<a href='/$1' class='mention'>@$1</a>").replace(/http:\/\/(\S*)/g, "<a href='http://$1' class='link'>http://$1</a>").replace(/https:\/\/(\S*)/g, "<a href='https://$1' class='link'>https://$1</a>"));
+    return (document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#(\S*)/g, "<a href='/tag/$1' class='hashtag'>#$1</a>").replace(/@(\S*)/g, "<a href='/$1' class='mention'>@$1</a>").replace(/http:\/\/(\S*)/g, "<a href='http://$1' rel='noopener noreferrer' target='_blank' class='link'>http://$1</a>").replace(/https:\/\/(\S*)/g, "<a href='https://$1' rel='noopener noreferrer' target='_blank' class='link'>https://$1</a>"));
 }
 
 function analytics() {
@@ -61,7 +120,7 @@ function messages(toggle) {
                 var usernames = data.usernames
 
                 for (i = 0; i < ids.length; i++) {
-                    html = html + `<button class="chat" onclick="openmessage('${ids[i]}')">@${usernames[i]}</button>`
+                    html = html + `<button class="chat" onclick="openmessage('${ids[i]}'); changechatname('${ids[i]}')">@${usernames[i]}</button>`
                 }
             } else {
                 html = `<p class='section'>Nothing here...</p>`
@@ -76,7 +135,14 @@ function messages(toggle) {
     }
 }
 
+function changechatname(id) {
+    $.getJSON('/api/get/username/' + id, function (data) {
+        document.getElementById('chattitle').innerText = '@' + data.username
+    })
+}
+
 function openmessage(id) {
+    openeddm = id
     $.post('/api/fetch/dms', {
         id: id
     }, function (data) {
@@ -88,15 +154,21 @@ function openmessage(id) {
                 } else {
                     var float = "left"
                 }
-                html = html + `<br><li class="message ${float}">${data.dms[i].message}</li><br>`
+                html = html + `<div class="messagediv"><li class="message ${float} message${float}">${data.dms[i].message}</li></div><br><br>`
             }
 
             document.getElementById('sendmessage').setAttribute('onclick', `sendmessage('${id}')`)
-            return document.getElementById('messagescontainer').innerHTML = html
+            document.getElementById('messagescontainer').innerHTML = html
+            document.getElementById('messagescontainer').scrollIntoView();
+            setTimeout('reopendms()', 1000);
         } else {
 
         }
     })
+}
+
+function reopendms() {
+    openmessage(openeddm)
 }
 
 var encodeHtmlEntity = function (str) {
@@ -113,8 +185,9 @@ function sendmessage(id) {
         to: id,
         message: encodeHtmlEntity(message)
     }, function (data) {
-        return document.getElementById('messagescontainer').innerHTML = document.getElementById('messagescontainer').innerHTML + `<br><li class="message right">${encodeHtmlEntity(message)}</li><br>`
+        return document.getElementById('messagescontainer').innerHTML = document.getElementById('messagescontainer').innerHTML + `<div class="messagediv"><li class="message right messageright">${encodeHtmlEntity(message)}</li></div><br><br>`
     })
+    document.getElementById('sendmessageinput').value = ""
 }
 
 function changetheme() {
@@ -391,7 +464,30 @@ function showlatestposts(divclass) {
                 getmedia("latest_img_" + latestimgids[i], latestimgids[i])
             }
         } else {
-            alert('error')
+            console.log('error')
+        }
+    })
+}
+
+function showboards(divclass) {
+    $.getJSON('/api/boards/10', function (json) {
+        if (json.success == true) {
+            var boards = json.boards
+            var html = ''
+            for (i = 0; i < boards.length; i++) {
+                html = html + `
+                <div style="width:100%;border-bottom:2px grey solid;cursor:pointer;" onclick="url('/b/${boards[i].name}')">
+                    <p class="commentsbody">${boards[i].name}</p>
+                </div>
+                `
+            }
+
+            var elements = document.getElementsByClassName(divclass)
+            for (i = 0; i < elements.length; i++) {
+                elements[i].innerHTML = html
+            }
+        } else {
+            console.log('error')
         }
     })
 }

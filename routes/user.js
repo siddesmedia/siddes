@@ -42,7 +42,19 @@ router.post('/signup', (req, res) => {
     } = req.body;
     let errors = [];
 
-    const prohibitedusername = ["login", "signup", "latest", "company", "/"];
+    const prohibitedusername = ["login", "signup", "latest", "company"];
+    const prohibitedincludes = ["@", "/", "!", "#", "$", "%", "^", "&", "*", "(", ")", "-", "=", "+", "[", "]", "{", "}", "|", "\\", "`", "\"", "~", "'", ":", ";", ",", "<", ">", ",", "."]
+
+    for (i = 0; i < prohibitedincludes.length; i++) {
+        if (username.includes(prohibitedincludes[i]) == true) {
+            return res.redirect(url.format({
+                pathname: "/signup",
+                query: {
+                    "error": "That username is not allowed"
+                }
+            }))
+        } else {}
+    }
 
     if (prohibitedusername.includes(username.toLowerCase()) == true) {
         return res.redirect(url.format({

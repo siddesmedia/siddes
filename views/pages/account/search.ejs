@@ -1,5 +1,7 @@
 <h1 class="header"><%= searchterm %></h1><br>
-<a href="/search?q=<%= searchterm %>" class="header">Search posts for <i><%= searchterm %></i></a>
+<a href="/account/search?q=<%= searchterm %>" class="button linkbutton marleft10">Users</a>
+<a href="/tag/<%= searchterm %>" class="button linkbutton">Hashtags</a>
+<a href="/search?q=<%= searchterm %>" class="button linkbutton">Search</i></a>
 <br><br>
 <div id="users">
     <% if(users.length == 0) { %>

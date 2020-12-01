@@ -3,6 +3,7 @@ const router = express.Router()
 require('dotenv').config()
 const Name = process.env.NAME
 const Post = require('../models/Post');
+const Board = require('../models/Board');
 const Comment = require('../models/Comment');
 const {
     forwardAuthenticated
@@ -62,6 +63,54 @@ router.get('/admin/report', async function (req, res, next) {
         mediacount: mediacount
     };
     return res.render('base', about);
+});
+
+router.get('/admin/board/create', async function (req, res, next) {
+
+    if (!req.user) {
+        return res.redirect('/login')
+    }
+    if (req.user.admin == false) {
+        return res.redirect('/account')
+    }
+
+    const about = {
+        title: 'Create Board - ' + Name,
+        template: 'pages/admin/board/create',
+        name: Name,
+        loggedin: funcs.loggedin(req.user),
+        moderator: funcs.moderator(req.user),
+        navbar: true,
+        footer: true
+    };
+    return res.render('base', about);
+});
+
+router.post('/admin/board/create', async function (req, res, next) {
+
+    if (!req.user) {
+        return res.redirect('/login')
+    }
+    if (req.user.admin == false) {
+        return res.redirect('/account')
+    }
+
+    var name = req.body.name
+    var description = req.body.description
+    var moderators = req.body.moderators
+    var topic = req.body.topic
+
+    var newboard = new Board({
+        name: name,
+        description: description,
+        moderators: moderators.split(','),
+        locked: false,
+        topic: topic
+    })
+
+    newboard.save().then(board => {
+        res.redirect(`/b/${board.name}`)
+    })
 });
 
 router.get('/admin/suspend/:id/:reason', async function (req, res, next) {

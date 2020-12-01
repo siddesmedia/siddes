@@ -1,0 +1,13 @@
+<form action="/b/<%= boardname %>/submit" method="POST" enctype="multipart/form-data" style="margin: 10px;">
+    <h3 class="sharemodaltitle">
+        New Post in <%= boardname %>
+    </h3>
+    <textarea type="text" placeholder="Your thoughts..." name="body" required class="newposttext" maxlength="1000"
+        id="newpostinput" rows="1"></textarea><br>
+    <p id="newpostcount" class="noheader charcount right">0</p><br>
+    <input type="text" class="hidden" name="boardid" value="<%= board %>">
+    <label for="image" class="input" style="width: 50%; cursor: pointer;"><i class="fa fa-camera input"></i></label>
+    <input type="file" accept="image/*" class="input hidden" name="image" style="width: 50%;" value="Upload Image"
+        id="image">
+    <button type="submit" class="button">Post</button>
+</form>

@@ -3,6 +3,41 @@
     <p class="noheader smalltext">Shhhhh (this is a secret page!)</p>
 </span>
 <div class="fullsection">
+    <h4>1.0.7 (Beta)</h4>
+    <p>Public Beta</p>
+    <ul>
+        <p>Client Side</p>
+        <li>added robotstxt for seo and crawler permissions</li>
+        <li>added sitemap for seo and crawlers</li>
+        <li>added meta information in the base ejs template for better seo</li>
+        <li>on big screens, the search bar is now on the right sidebar</li>
+        <li>on small screens, the search bar is on the top of the screen as a nav</li>
+        <li>all the rarely used buttons are in a hover state on your profile icon in the bottom left</li>
+        <li>fixed posts not formatting correctly (eg: line breaks)</li>
+        <li>your home feed is now posts and stuff made by users you follow</li>
+        <li>dms now sort and look correct</li>
+        <li>there is a list of the latest three boards on the right</li>
+        <li>admins can create new boards</li>
+        <li>you can find boards at /b/:boardname</li>
+
+        <p>Server Side</p>
+        <li>created the boards url definition (/b/:boardname or /board/:boardid (redirects to /b/:boardname))</li>
+        <li>posts can now be 1000 characters long (used to be 265)</li>
+        <li>fixed routes for notifications</li>
+        <li>/home is now posts by users you follow</li>
+        <li>dms now update live every one second</li>
+        <li>admins can create new boards</li>
+        <li>boards routing done</li>
+
+        <p>Notes</p>
+        <li>from now on, if you are worried about legal issues, check for a warant canary in the source code of the site
+        </li>
+        <li>please experiment and use the new dms</li>
+        <li>boards can onnly be created by admins, this is to prevent thousands of useless boards being made. we don't
+            want to be a reddit clone.</li>
+    </ul>
+</div>
+<div class="fullsection">
     <h4>1.0.6 (Beta)</h4>
     <p>Public Beta</p>
     <ul>

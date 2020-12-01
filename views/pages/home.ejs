@@ -1,20 +1,33 @@
 <h3 class="header">Home Feed</h3>
-<% for(i=0;i < feed.length;i++) { %>
-<div class="postdiv">
-    <div style="cursor: pointer;" onclick="window.location='<%= feedlinks[i] %>'">
-        <p class="postowner">
-            <a class="postownerlink">
-                <%= feedtype[i] %>
-            </a>
-        </p>
-        <p class="postbody">
-            "<%= feed[i] %>"
-        </p>
-    </div>
+<br>
+<div id="posts" class="tab">
+    <%- include('../partials/posts') %>
+    <% if(posts.length == 0) { %>
+    <p class="headerred">Nothing in your home feed. Start following people to get stuff in your feed!</p>
+    <% } %>
 </div>
-<% } %>
-<% if(feed.length == 0) { %>
-<p class="section">There is currently nothing in your feed, interact with the site to start getting noticed!</p>
-<% } else { %>
-<p class="section">That's the bottom!</p>
-<% } %>
+<div style="display: flex;justify-content: center;" class="postdiv">
+    <style>
+        .pagination {
+            padding-left: 10px;
+            padding-right: 10px;
+            margin: 5px;
+        }
+    </style>
+    <% if(page == 0) { %>
+    <button onclick="window.location='/latest/<%= page-1 %>'" disabled class="button pagination">...</button>
+    <% if (lastpage == true ) { %>
+    <button onclick="window.location='/latest/<%= eval(page)+1 %>'" class="button pagination" disabled>...</button>
+    <% } else { %>
+    <button onclick="window.location='/latest/<%= eval(page)+1 %>'" class="button pagination"
+        rel="next"><%= eval(page)+2 %></button>
+    <% } %>
+    <% } else if (lastpage == true ) { %>
+    <button onclick="window.location='/latest/<%= page-1 %>'" class="button pagination" rel="prev"><%= page %></button>
+    <button onclick="window.location='/latest/<%= eval(page)+1 %>'" class="button pagination" disabled>...</button>
+    <% } else { %>
+    <button onclick="window.location='/latest/<%= page-1 %>'" class="button pagination"><%= page %></button>
+    <button onclick="window.location='/latest/<%= eval(page)+1 %>'" class="button pagination"
+        rel="next"><%= eval(page)+2 %></button>
+    <% } %>
+</div>

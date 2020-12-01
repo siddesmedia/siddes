@@ -26,10 +26,11 @@ const uploadpfp = multer({
     }
 });
 const analytics = require('../middleware/simple-lytics')
+const url = require('url');
 
 router.get('/', async function (req, res, nect) {
     if (funcs.loggedin(req.user) == true) {
-        res.redirect('/home')
+        res.redirect('/notifications')
     } else {
         res.redirect('/latest/0/')
     }
@@ -122,12 +123,67 @@ router.get('/latest/:page', async function (req, res, next) {
     return res.render('base', about);
 });
 
-router.get('/home', async function (req, res, next) {
+router.get('/home/:page', async function (req, res, next) {
+    if (!req.user) {
+        return res.redirect('/latest')
+    }
+
+    if (isNaN(req.params.page) == true) {
+        next()
+    }
+
+    const user = await User.findById(req.user._id)
+
+    var posts;
+    if (isNaN(req.query.limit) == false) {
+        if (req.query < 40) {
+            posts = await Post.find({
+                owner: user.following
+            }).sort({
+                date: -1
+            }).skip(req.params.page * eval(req.query.limit)).limit(eval(req.query.limit));
+        } else {
+            posts = await Post.find({
+                owner: user.following
+            }).sort({
+                date: -1
+            }).skip(req.params.page * 20).limit(20);
+        }
+    } else {
+        posts = await Post.find({
+            owner: user.following
+        }).sort({
+            date: -1
+        }).skip(req.params.page * 20).limit(20);
+    }
+
+    var lastpage = false;
+
+    if (posts.length < 20) {
+        lastpage = true
+    }
+
+    const about = {
+        title: 'Home Feed - ' + Name,
+        template: 'pages/home',
+        name: Name,
+        loggedin: funcs.loggedin(req.user),
+        moderator: funcs.moderator(req.user),
+        navbar: true,
+        footer: true,
+        page: req.params.page,
+        posts: posts,
+        lastpage: lastpage
+    };
+    return res.render('base', about);
+});
+
+router.get('/notifications', async function (req, res, next) {
 
     if (req.user) {
         const about = {
-            title: 'Home - ' + Name,
-            template: 'pages/home',
+            title: 'Notifications - ' + Name,
+            template: 'pages/notifications',
             name: Name,
             loggedin: funcs.loggedin(req.user),
             moderator: funcs.moderator(req.user),
@@ -635,7 +691,7 @@ router.post('/post/new', uploadimage.single('image'), async function (req, res, 
             media = true
         }
 
-        if (body.length > 265) {
+        if (body.length > 1000) {
             return res.json({
                 error: 'body too long'
             })
@@ -646,7 +702,8 @@ router.post('/post/new', uploadimage.single('image'), async function (req, res, 
             owner: owner,
             media: media,
             date: date,
-            repost: req.body.repost
+            repost: req.body.repost,
+            boardonly: false
         })
 
         if (req.user.uploadbanned == true || req.user.suspended == true) {
@@ -781,6 +838,39 @@ router.post('/account/edit', uploadpfp.any(), async function (req, res, next) {
         var description = req.body.description;
         var theme = req.body.theme;
 
+        const prohibitedincludes = ["@", "/", "!", "#", "$", "%", "^", "&", "*", "(", ")", "-", "=", "+", "[", "]", "{", "}", "|", "\\", "`", "\"", "~", "'", ":", ";", ",", "<", ">", ",", "."]
+        const prohibitedusername = ["login", "signup", "latest", "company"];
+
+        for (i = 0; i < prohibitedincludes.length; i++) {
+            if (username.includes(prohibitedincludes[i]) == true) {
+                return res.redirect(url.format({
+                    pathname: "/account/edit",
+                    query: {
+                        "error": "That username is not allowed"
+                    }
+                }))
+            } else {}
+        }
+
+        if (prohibitedusername.includes(username) == true) {
+            return res.redirect(url.format({
+                pathname: "/account/edit",
+                query: {
+                    "error": "That username is not allowed"
+                }
+            }))
+        }
+
+        var usernameexists = await User.exists({
+            username: {
+                '$regex': new RegExp(username, 'i')
+            }
+        })
+
+        if (usernameexists == true) {
+            username = req.user.username
+        }
+
         var update = await User.findOneAndUpdate({
             _id: req.user._id
         }, {
@@ -866,7 +956,6 @@ router.post('/account/edit', uploadpfp.any(), async function (req, res, next) {
         } catch (err) {
             var dog
         }
-
         res.redirect('/account/' + req.user._id)
     }
 })

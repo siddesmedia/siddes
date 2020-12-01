@@ -1,0 +1,32 @@
+.boardtag {
+    background-color: rgb(0, 38, 255);
+    color: white;
+    border-radius: 10px;
+    padding: 3px;
+}
+
+.boardnav {
+    position: relative;
+    position: fixed;
+    right: 20%;
+    left: 20%;
+    background-color: black;
+    border-bottom: 1px rgb(0, 0, 0) solid;
+    z-index: 1000000000;
+}
+
+.boardposts {
+    padding-top: 95px;
+}
+
+.boardnewpost {
+    right: -9%;
+    bottom: 30%;
+    position: absolute;
+}
+
+@media only screen and (max-width: 840px) {
+    .boardnav {
+        right: 0%;
+    }
+}

@@ -4,6 +4,7 @@ require('dotenv').config()
 const Name = process.env.NAME
 const Post = require('../../models/Post');
 const Comment = require('../../models/Comment');
+const Board = require('../../models/Board');
 const User = require('../../models/User');
 const Directs = require('../../models/Directs');
 const funcs = require('../../config/functions');
@@ -89,6 +90,23 @@ router.get('/api/latest/:amount', async function (req, res, next) {
     }
 });
 
+router.get('/api/boards/:amount', async function (req, res, next) {
+    try {
+        const boards = await Board.find().sort({
+            id: -1
+        }).limit(eval(req.params.amount))
+
+        return res.send({
+            success: true,
+            boards: boards
+        })
+    } catch (err) {
+        res.json({
+            success: false
+        })
+    }
+});
+
 router.post('/comments/reply/get/:id', async function (req, res, next) {
     try {
         const comments = await Comment.find({
@@ -140,24 +158,11 @@ router.post('/api/fetch/dms', async function (req, res, next) {
         const id = req.body.id
 
         var dms = await Directs.find({
-            sender: myid,
-            res: id
+            sender: [myid, id],
+            res: [myid, id]
         }).sort({
-            date: -1
+            date: 1
         })
-
-        var dms2 = await Directs.find({
-            sender: id,
-            res: myid
-        }).sort({
-            date: -1
-        })
-
-        var dms = dms.concat(dms2)
-
-        dms.sort(function (a, b) {
-            return eval(a.date) - eval(b.date)
-        });
 
         return res.send({
             success: true,

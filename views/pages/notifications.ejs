@@ -1,0 +1,20 @@
+<h3 class="header">Notifications</h3>
+<% for(i=0;i < feed.length;i++) { %>
+<div class="postdiv">
+    <div style="cursor: pointer;" onclick="window.location='<%= feedlinks[i] %>'">
+        <p class="postowner">
+            <a class="postownerlink">
+                <%= feedtype[i] %>
+            </a>
+        </p>
+        <p class="postbody">
+            "<%= feed[i] %>"
+        </p>
+    </div>
+</div>
+<% } %>
+<% if(feed.length == 0) { %>
+<p class="section">There is currently nothing in your feed, interact with the site to start getting noticed!</p>
+<% } else { %>
+<p class="section">That's the bottom!</p>
+<% } %>

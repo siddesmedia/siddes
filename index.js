@@ -57,6 +57,8 @@ if (process.env.ENV == "p" || process.env.ENV == "production") {
     app.use('/', apidocs);
     const main = require('./routes/main')
     app.use('/', main);
+    const board = require('./routes/board')
+    app.use('/', board);
     const errors = require('./routes/errors')
     app.use('/', errors);
 }

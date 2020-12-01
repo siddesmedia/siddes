@@ -1,0 +1,14 @@
+<h3 class="header">Create a Board</h3><br>
+<form action="/admin/board/create" method="POST" class="noheader">
+    <label style="font-family: helvetica;" for="name">Name</label><br>
+    <input name="name" class="input" type="text" placeholder="Name..." required><br><br>
+    <label style="font-family: helvetica;" for="description">Description</label><br>
+    <input name="description" class="input" type="text" placeholder="Description..." required><br><br>
+    <label style="font-family: helvetica;" for="moderators">Moderators IDs (seperated by comma, optional)</label><br>
+    <input name="moderators" class="input" type="text" placeholder="Moderators..."><br><br>
+    <label style="font-family: helvetica;" for="topic">Topic</label><br>
+    <select name="topic" id="topic">
+        <option value="Sports">Sports</option>
+    </select>
+    <button type="submit">Create</button>
+</form>

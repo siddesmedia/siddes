@@ -1,3 +1,13 @@
+<div class="mobile">
+    <div class="mobilesearch">
+        <form action="/search" method="GET" style="width: 100%;">
+            <input name="q" type="text" class="input left" placeholder="Search <%= name %>"
+                style="width: 79%;margin-bottom: 8px;margin:auto;display: block;">
+            <button style="width: 20%;margin-bottom: 8px;margin:auto;display: block;" type="submit"
+                class="button right">Search</button>
+        </form>
+    </div>
+</div>
 <!-- post popup -->
 <div id="postModal" class="hidden postbox">
     <div id="newpostform">
@@ -8,7 +18,7 @@
                 <button onclick="newPost('hide')" class="right closepopup" id="share_close" type="button">X</button>
             </h3>
             <textarea type="text" placeholder="Your thoughts..." name="body" required class="newposttext"
-                maxlength="265" id="newpostinput" rows="1"></textarea><br>
+                maxlength="1000" id="newpostinput" rows="1"></textarea><br>
             <p id="newpostcount" class="noheader charcount right">0</p><br>
             <input type="text" class="hidden" name="repost" value="false">
             <label for="image" class="input" style="width: 50%; cursor: pointer;"><i
@@ -65,7 +75,7 @@
             </div>
         </div>
         <div class="column messagesection" style="width: 70%;border-left: 1px rgb(204, 204, 204) solid;">
-            <div class="messagecolnav">Chat</div>
+            <div class="messagecolnav" id="chattitle">Select Someone</div>
             <div class="dmbox">
                 <ul class="messages" id="messagescontainer">
                 </ul>
@@ -79,6 +89,16 @@
             </div>
         </div>
     </div>
+</div>
+
+<!-- custom alert box -->
+<div id="alertbox" class="customalertbox hidden">
+    <h3 class="sharemodaltitle nobottompadmar">
+        Alert
+        <button onclick="closealert()" class="right closepopup" id="share_close" type="button">X</button>
+    </h3>
+    <p class="alerttext" id="alerttext">
+    </p>
 </div>
 
 <script src="/js/newpost.js"></script>

@@ -1,0 +1,12 @@
+User-agent: *
+Crawl-delay: 15
+Disallow: /login/
+Disallow: /signup/
+Disallow: /report/
+Disallow: /mod/*
+Disallow: /mod/
+Disallow: /admin/
+Disallow: /admin/*
+Disallow: /embed/*
+Disallow: /api/
+Disallow: /api/*
