@@ -33,11 +33,9 @@
                     <span class="repostbadge">Repost</span>
                     <% } else {} %>
                 </p>
-                <p class="postbody">
-                    <pre class="postbody" id="post_<%= posts[i]._id %>">
+                <pre class="postbody" id="post_<%= posts[i]._id %>">
 <%= posts[i].body %>
-                    </pre>
-                </p>
+                </pre>
                 <% if(posts[i].media == true) { %>
                 <img class="postimage" id="img_<%= posts[i]._id %>" src="" loading="lazy"><br>
                 <script>
