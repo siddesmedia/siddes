@@ -103,5 +103,5 @@ io.sockets.on('connection', function (socket) {
 });
 
 http.listen(port, function () {
-    console.log('social media is live at: http://localhost:' + port);
+    console.log(process.env.NAME + ' is live at: http://localhost:' + port);
 });

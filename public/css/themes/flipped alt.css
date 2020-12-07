@@ -13,17 +13,23 @@
 
 * {
     word-wrap: break-word;
+    color: black;
 }
 
 body {
     display: block;
     margin: 0 auto;
     padding: 0;
-    background-color: rgb(20, 20, 20);
+    background-color: white;
+    color: black;
 }
 
 a {
-    color: rgb(151, 151, 151);
+    color: black
+}
+
+img {
+    background-color: transparent;
 }
 
 :root {
@@ -38,7 +44,8 @@ a {
 }
 
 .nostyle {
-    color: grey;
+    color: white;
+    background-color: transparent;
     text-decoration: none;
 }
 
@@ -96,7 +103,7 @@ th {
     position: fixed;
     top: 0;
     right: 0;
-    background-color: rgb(14, 14, 14);
+    background-color: white;
     overflow-x: hidden;
     padding-top: 20px;
     border-left: 2px rgb(36, 36, 36) solid;
@@ -109,7 +116,7 @@ th {
     z-index: 1;
     top: 0;
     left: 0;
-    background-color: rgb(14, 14, 14);
+    background-color: white;
     overflow-x: hidden;
     padding-top: 20px;
     border-right: 2px rgb(36, 36, 36) solid;
@@ -123,7 +130,7 @@ th {
     margin-bottom: 8px;
     border-radius: 35px;
     border: none;
-    background-color: rgb(53, 53, 53);
+    background-color: black;
     color: rgb(173, 173, 173);
     -webkit-transition: 1s;
     -o-transition: 1s;
@@ -131,8 +138,14 @@ th {
 }
 
 .sidebarbutton:hover {
-    background-color: rgb(39, 39, 39);
+    background-color: rgb(31, 31, 31);
     color: rgb(102, 102, 102);
+}
+
+.fa,
+.fas {
+    background-color: transparent !important;
+    color: white;
 }
 
 /*.sidebar input {
@@ -143,7 +156,7 @@ th {
 .footer a,
 .sidetext {
     padding-left: 15px;
-    color: white;
+    color: black;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     text-decoration: none;
     -webkit-transition: 0.3s;
@@ -153,7 +166,7 @@ th {
 
 .sidebar a:hover,
 .footer a:hover {
-    color: white;
+    color: black;
     text-decoration: underline;
     -webkit-transition: 0.3s;
     -o-transition: 0.3s;
@@ -176,28 +189,56 @@ th {
     padding-bottom: 20px;
 }
 
-.repostbadge {
+.postbox {
+    border: 1px solid white;
     background-color: black;
-    border: 1px var(--red) solid;
-    border-radius: 2px;
-    color: var(--red);
-    font-size: 6px;
-    padding: 1px;
 }
 
-.postbox {
-    border: 1px solid black;
+.charcount {
+    background-color: black;
+    color: white !important;
+}
+
+div#newpostform form {
+    background-color: black;
+}
+
+div#newpostform form button[type=submit].button,
+div#newpostform form label[for=image].input,
+div#newpostform form label[for=image].input i {
+    background-color: white;
+    color: black;
+}
+
+h3.sharemodaltitle {
     background-color: black;
 }
 
 .sharebox {
-    z-index: 1000;
+    z-index: 10000000000;
     position: fixed;
     top: 30%;
     height: 200px;
     max-height: 200px;
     left: 12.5%;
     right: 12.5%;
+    border: 1px solid black;
+    background-color: black;
+    color: white;
+    border-radius: 25px;
+    padding: 15px;
+}
+
+#alerttext pre *,
+#alerttext pre {
+    color: white !important;
+}
+
+.customalertbox {
+    z-index: 10000000000;
+    position: fixed;
+    top: 30%;
+    height: 300px;
     border: 1px solid black;
     background-color: black;
     color: white;
@@ -217,16 +258,29 @@ th {
 
 .closepopup {
     border: none;
-    background-color: rgb(32, 32, 32);
+    background-color: white;
     border-radius: 25px;
-    color: grey;
+    color: black;
 }
 
 /*.fullbodyblur {
     width: 100%;
     filter: blur(10px);
     height: 100%;
-}*/
+}
+*/
+
+.latest div,
+.latest div p {
+    background-color: transparent;
+    color: white !important;
+}
+
+.boards div,
+.boards div p {
+    background-color: transparent;
+    color: white !important;
+}
 
 .left {
     float: left;
@@ -238,7 +292,7 @@ th {
 
 .postimage {
     width: 300px;
-    border: 2px rgb(32, 32, 32) solid;
+    border: 1px black solid;
     border-radius: 25px;
 }
 
@@ -285,6 +339,10 @@ th {
     transition: 1s;
 }
 
+.footer .row .column .section a {
+    color: black;
+}
+
 .postdivnohover {
     padding: 10px;
     padding-top: 0;
@@ -313,7 +371,7 @@ th {
 
 .postownerlink {
     font-weight: bolder;
-    color: rgb(185, 185, 185) !important;
+    color: black !important;
     text-decoration: none;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: small;
@@ -321,8 +379,17 @@ th {
 
 p,
 label {
-    color: white !important;
+    color: black !important;
 
+}
+
+i {
+    background-color: transparent !important;
+}
+
+.linkbutton {
+    background-color: black !important;
+    border: none;
 }
 
 .postownerlink:hover {
@@ -334,9 +401,7 @@ label {
 }
 
 .postbody {
-    font-size: medium;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    color: rgb(185, 185, 185);
+    color: rgb(255, 255, 255);
 }
 
 .expandcommentdiv {
@@ -352,10 +417,10 @@ label {
 
 .button,
 .input {
-    background-color: rgb(53, 53, 53);
+    background-color: black;
     border-radius: 100px;
     border: none;
-    color: rgb(173, 173, 173);
+    color: white;
     /* rgb(90, 90, 90) */
     padding: 4px;
     -webkit-animation: 2s;
@@ -369,6 +434,7 @@ label {
 
 .commentsbody {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: transparent;
 }
 
 .postcomment:hover {
@@ -422,15 +488,16 @@ label {
 .fullsection ul li,
 .fullsection p,
 .fullsection h4 {
-    color: rgb(201, 201, 201) !important;
+    color: black !important;
 }
 
 .biotext {
-    color: rgb(182, 182, 182);
+    color: black;
 }
 
-.accountlinks {
-    color: rgb(182, 182, 182);
+.accountlinks,
+.accountlinks span {
+    color: rgb(39, 39, 39);
     font-weight: bolder;
     text-decoration: none;
     border-bottom: none;
@@ -445,8 +512,61 @@ label {
     color: white;
 }
 
+.dmboxweb span.chatselect .chat {
+    color: black;
+    background-color: white;
+    border-bottom: 1px black solid
+}
+
+.dmboxweb .messages#messagescontainer {
+    margin: 0;
+    bottom: 30px !important;
+}
+
+label[for=pfp].input,
+label[for=banner].input {
+    color: white !important;
+}
+
+.boardtag {
+    background-color: var(--blue) !important;
+}
+
+.boardsubmit .sharemodaltitle,
+.boardsubmit .charcount {
+    background-color: white;
+    color: black !important;
+    margin-top: 20px;
+}
+
+div.boardnav p.noheader {
+    color: white !important;
+}
+
+div.boardnav button.button {
+    background-color: white;
+    color: black !important;
+}
+
+button.section.button {
+    color: white !important;
+}
+
+#bottom {
+    background-color: transparent;
+}
+
+#tables_tab * {
+    color: black;
+    border-color: black;
+}
+
+pre.postbody {
+    color: black;
+}
+
 .accountlinks:hover {
-    color: rgb(182, 182, 182);
+    color: black;
     font-weight: bolder;
     text-decoration: none;
     border-bottom: 1px solid;
@@ -490,7 +610,7 @@ label {
     position: relative;
     text-decoration: none;
     display: inline-block;
-    color: white;
+    color: black;
     padding: 0 1px;
     -webkit-transition: color ease 0.3s;
     -o-transition: color ease 0.3s;
@@ -523,7 +643,7 @@ label {
     position: relative;
     text-decoration: none;
     display: inline-block;
-    color: white;
+    color: black;
     padding: 0 1px;
     -webkit-transition: color ease 0.3s;
     -o-transition: color ease 0.3s;
@@ -552,6 +672,10 @@ label {
     height: 100%;
 }
 
+#thelatestcontainer .sidebarbutton {
+    color: white !important;
+}
+
 .red {
     background-color: rgb(255, 85, 85);
     color: black;
@@ -570,7 +694,7 @@ label {
 }
 
 .navbar a {
-    color: white;
+    color: black;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     text-decoration: none;
     /*transition: 0.3s;*/
@@ -594,7 +718,7 @@ label {
     position: relative;
     text-decoration: none;
     display: inline-block;
-    color: white;
+    color: black;
     padding: 0 1px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     -webkit-transition: color ease 0.3s;
@@ -611,7 +735,7 @@ label {
     height: 5%;
     left: 0;
     bottom: 0;
-    background-color: var(--blue);
+    background-color: var(--blue) !important;
     -webkit-transition: all ease 0.3s;
     -o-transition: all ease 0.3s;
     transition: all ease 0.3s;
@@ -630,7 +754,7 @@ label {
     position: relative;
     text-decoration: none;
     display: inline-block;
-    color: white;
+    color: black;
     padding: 0 1px;
     -webkit-transition: color ease 0.3s;
     -o-transition: color ease 0.3s;
@@ -646,7 +770,7 @@ label {
     height: 5%;
     left: 0;
     bottom: 0;
-    background-color: var(--red);
+    background-color: var(--red) !important;
     -webkit-transition: all ease 0.3s;
     -o-transition: all ease 0.3s;
     transition: all ease 0.3s;
@@ -724,7 +848,7 @@ label {
     position: relative;
     text-decoration: none;
     display: inline-block;
-    color: white;
+    color: black;
     padding: 0 1px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     -webkit-transition: color ease 0.3s;
@@ -763,6 +887,7 @@ label {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     margin-left: 25px;
     margin-right: 25px;
+    color: black;
 }
 
 .borderbottom {
@@ -775,57 +900,81 @@ label {
 }
 
 .mobilesearch {
-    background-color: rgb(32, 32, 32);
+    background-color: black;
+}
+
+.mobilesearch input.input,
+.mobilesearch button.button {
+    background-color: white;
+    color: black;
 }
 
 .footer {
     border-top: 1px grey solid;
 }
 
-/* messages box */
-
 .messagesbutton {
     background-color: black !important;
 }
 
 .messagesnav {
-    background-color: rgb(56, 56, 56);
+    background-color: black;
     color: white;
+    border-bottom: 1px white solid;
+}
+
+.messagediv {
+    background-color: transparent;
 }
 
 .messagecolnav {
-    background-color: rgb(75, 75, 75);
+    background-color: black;
     color: white;
 }
 
 .messagebox {
-    background-color: rgb(56, 56, 56);
-    border: 1px rgb(56, 56, 56) solid;
+    background-color: black;
+    padding: 0;
+    margin: 0;
+    border-top: 1px white solid;
+    border-left: 1px white solid;
 }
 
 .messagesection {
     border-left: 1px rgb(83, 83, 83) solid !important;
 }
 
-.dmbox {}
+.dmbox {
+    background-color: black;
+    border-top: 1px white solid;
+}
 
 .chatselect {}
 
 .chat {
-    background-color: rgb(56, 56, 56);
+    background-color: black;
     color: white;
     border-bottom: 1px rgb(78, 78, 78) solid;
 }
 
-.messagesx {}
+.messagesx {
+    color: white;
+    background-color: transparent;
+}
 
 .messagesx button {
     color: white;
+    background-color: transparent;
+}
+
+.dmimageselect {
+    color: white !important;
+    background-color: transparent;
 }
 
 .dmbottombar {
-    border-top: 1px rgb(56, 56, 56) solid;
-    background-color: rgb(56, 56, 56);
+    border-top: 1px black solid;
+    background-color: black;
 }
 
 .dminput {
@@ -834,7 +983,9 @@ label {
 }
 
 
-.messages {}
+.messages {
+    background-color: black;
+}
 
 .message {
     background-color: rgb(190, 190, 190);

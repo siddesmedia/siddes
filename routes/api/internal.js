@@ -152,6 +152,75 @@ router.post('/api/get/dms', async function (req, res, next) {
     }
 });
 
+router.post('/api/board/follow', async function (req, res, next) {
+    try {
+        const user = await User.findById(req.user._id)
+        const boardid = req.body.board
+
+        const followedboards = user.boards
+
+        if (followedboards.includes(boardid)) {
+
+        } else {
+            followedboards.push(boardid)
+        }
+
+        const updatewithfollowedboards = await User.findByIdAndUpdate(req.user._id, {
+            boards: followedboards
+        })
+
+        updatewithfollowedboards
+
+        return res.json({
+            success: true
+        })
+    } catch (err) {
+        res.json({
+            success: false,
+            error: err
+        })
+    }
+});
+
+router.get('/api/get/board/name/:id', async function (req, res, next) {
+    const board = await Board.findById(req.params.id)
+
+    res.json({
+        success: true,
+        name: board.name
+    })
+})
+
+router.post('/api/board/unfollow', async function (req, res, next) {
+    try {
+        const user = await User.findById(req.user._id)
+        const boardid = req.body.board
+
+        const followedboards = user.boards
+
+        if (followedboards.includes(boardid)) {
+            followedboards.splice(followedboards.indexOf(boardid), 1)
+        } else {
+
+        }
+
+        const updatewithfollowedboards = await User.findByIdAndUpdate(req.user._id, {
+            boards: followedboards
+        })
+
+        updatewithfollowedboards
+
+        return res.json({
+            success: true
+        })
+    } catch (err) {
+        res.json({
+            success: false,
+            error: err
+        })
+    }
+});
+
 router.post('/api/fetch/dms', async function (req, res, next) {
     try {
         const myid = req.user._id

@@ -19,6 +19,24 @@ const uploadimage = multer({
     }
 });
 
+router.get('/boards/explore', async function (req, res, next) {
+    const boards = await Board.find()
+
+    const about = {
+        title: 'Explore Boards - ' + Name,
+        template: 'pages/board/explore',
+        name: Name,
+        loggedin: funcs.loggedin(req.user),
+        moderator: funcs.moderator(req.user),
+        admin: funcs.admin(req.user),
+        navbar: true,
+        footer: false,
+
+        boards: boards
+    };
+    return res.render('base', about);
+})
+
 router.get('/b/:name', async function (req, res, next) {
 
     var boardexists = await Board.exists({
@@ -28,13 +46,23 @@ router.get('/b/:name', async function (req, res, next) {
     if (boardexists == false) {
         next()
     } else {
+        var following = null
+
         var name = req.params.name
 
         var board = await Board.findOne({
             name: name
         })
 
-        console.log(board._id)
+        if (!req.user) {
+            following = false
+        } else {
+            const user = await User.findById(req.user._id)
+
+            if (user.boards.includes(board._id)) {
+                following = true
+            }
+        }
 
         var posts = await Post.find({
             boardonly: true,
@@ -55,10 +83,73 @@ router.get('/b/:name', async function (req, res, next) {
 
             // user data being loaded
             board: board,
+            following: following,
             posts: posts
         };
         return res.render('base', about);
     }
+});
+
+router.get('/b/insides', async function (req, res, next) {
+    res.redirect('/b/insides/0')
+})
+
+router.get('/b/insides/:page', async function (req, res, next) {
+    if (!req.user) {
+        return res.redirect('/boards/explore')
+    }
+
+    if (isNaN(req.params.page) == true) {
+        next()
+    }
+
+    const user = await User.findById(req.user._id)
+
+    var posts;
+    if (isNaN(req.query.limit) == false) {
+        if (req.query < 40) {
+            posts = await Post.find({
+                boardonly: true,
+                board: user.boards
+            }).sort({
+                date: -1
+            }).skip(req.params.page * eval(req.query.limit)).limit(eval(req.query.limit));
+        } else {
+            posts = await Post.find({
+                boardonly: true,
+                board: user.boards
+            }).sort({
+                date: -1
+            }).skip(req.params.page * 20).limit(20);
+        }
+    } else {
+        posts = await Post.find({
+            boardonly: true,
+            board: user.boards
+        }).sort({
+            date: -1
+        }).skip(req.params.page * 20).limit(20);
+    }
+
+    var lastpage = false;
+
+    if (posts.length < 20) {
+        lastpage = true
+    }
+
+    const about = {
+        title: 'Boards Feed - ' + Name,
+        template: 'pages/board/insides',
+        name: Name,
+        loggedin: funcs.loggedin(req.user),
+        moderator: funcs.moderator(req.user),
+        navbar: true,
+        footer: true,
+        page: req.params.page,
+        posts: posts,
+        lastpage: lastpage
+    };
+    return res.render('base', about);
 });
 
 router.get('/b/:name/submit', async function (req, res, next) {
@@ -90,13 +181,28 @@ router.get('/b/:name/submit', async function (req, res, next) {
     }
 });
 
+router.get('/board/:id', async function (req, res, next) {
+
+    var boardexists = await Board.exists({
+        _id: req.params.id
+    })
+
+    if (boardexists == false) {
+        next()
+    } else {
+        const boarddoesexist = await Board.findById(req.params.id)
+
+        res.redirect('/b/' + boarddoesexist.name)
+    }
+});
+
 router.post('/b/:name/submit', uploadimage.single('image'), async function (req, res, next) {
 
     var boardexists = await Board.exists({
         name: req.params.name
     })
 
-    if (!req.user) {
+    if (!req.user || boardexists == false) {
         return res.redirect('/account')
     } else {
         var body = req.body.body;

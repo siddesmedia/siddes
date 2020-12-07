@@ -1,0 +1,99 @@
+<pre id="info">
+Siddes is a privacy first social media bringing in features like twitter, instagram, and reddit.
+We do not track users and never will. Read more about the company at https://siddes.com/company/about
+
+<button onclick="hidedomain()">hide domain</button>
+<button onclick="showdomain()">show domain</button>
+<button onclick="link()" id="linkpaths">link paths</button>
+<button onclick="window.location = window.location">reset</button>
+
+index of static items:
+video:
+    NA
+
+image:
+    /img/favicon.jpg
+    /img/fbi.png
+    /img/info.txt
+    /img/logo_high_res.png
+
+icons:
+    /img/icons/beta.png
+    /img/icons/developer.png
+    /img/icons/facebook.svg
+    /img/icons/heart.svg
+    /img/icons/mail.svg
+    /img/icons/premium.png
+    /img/icons/retweet.svg
+    /img/icons/share.svg
+    /img/icons/staff.png
+    /img/icons/text.svg
+    /img/icons/twitter.svg
+    /img/icons/verified.png
+
+other image:
+    /img/roadmap/ideas/boards.svg
+
+css:
+    /css/partials/board.css
+    /css/themes/dark.css
+    /css/themes/flipped%20alt.css
+    /css/themes/light.css
+    /css/main.css
+
+js:
+    /js/Chart.min.js
+    /js/index.js
+    /js/moment.js
+    /js/newpost.js
+
+other:
+    /robots.txt
+    /sitemap.xml
+    /developer.txt                  (if you wanna know about me, the lead and only developer)
+    /info.html                      (this file)
+    /files/privacypolicy.pdf
+    /files/termsofservice.pdf
+
+list of easter eggs:
+    /ee.txt
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+</pre>
+
+<script>
+    var oldinfo
+    showdomain()
+
+    function hidedomain() {
+        document.getElementById('info').innerHTML =
+            document.getElementById('info').innerHTML.replace(/https\:\/\/siddes\.com\//g, "/")
+    }
+
+    function showdomain() {
+        document.getElementById('info').innerHTML = document.getElementById('info').innerHTML.replace(/    \//g,
+            "    https://siddes.com/")
+    }
+
+    function link() {
+        document.getElementById('linkpaths').innerHTML = 'unlink paths'
+        document.getElementById('linkpaths').setAttribute('onclick', 'unlink()')
+
+        oldinfo = document.getElementById('info').innerHTML
+
+        document.getElementById('info').innerHTML = document.getElementById('info').innerHTML.replace(
+            /https:\/\/siddes\.com\/(\S*)/g,
+            "<a href='https://siddes.com/$1' target='_blank'>https://siddes.com/$1</a>")
+
+        document.getElementById('info').innerHTML = document.getElementById('info').innerHTML.replace(
+            /    \/(\S*)/g,
+            "    <a href='https://siddes.com/$1' target='_blank'>/$1</a>")
+    }
+
+    function unlink() {
+        document.getElementById('info').innerHTML = oldinfo
+
+        document.getElementById('linkpaths').innerHTML = 'link paths'
+        document.getElementById('linkpaths').setAttribute('onclick', 'link()')
+    }
+</script>

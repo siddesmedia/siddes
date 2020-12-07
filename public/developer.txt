@@ -1,0 +1,26 @@
+Hi. My name is Alec Wilson (@404) and I am the lead and only developer working on Siddes.
+I code this site really whenever I have free time because it is fun. I love bringing new
+features for users like @j and @a. Those guys are cool.
+
+Actual stuff about me:
+I love coding in my free time now it is mostly on this site. I am still in school and don't
+actually have a CS degree. I taught myself everything starting with HTML and CSS. Then Jav-
+-ascript. After I learned Javascript, I started getting into exploring around GitHub, I found
+an open-source project called Nodetube which was mostly written Javascript but I did not know
+that it was Node.js. So I asked them what this "type" of Javascript was and the maintainer
+told me Node.js. So I sat down for two weeks and taught myself the understandings of server
+side code and the basics of Node.js. After that is history. I love code and it is fun.
+
+About six months later, me and my brother (@x) started building Siddes. We did it because we
+are both privacy freaks and realized that there was not many privacy based social networks.
+Here we are.
+
+Other stuff about me:
+Editor:             VS Code
+Device:             MacBook Air 2019
+Siddes Stack:       MERN
+Website:            alecw.net
+Main Language:      English, Node.js
+Contact:            jude@alecw.net or shoot me a DM on Siddes
+GitHub:             @mr-winson
+Date of Writing:    December 3rd, 2020

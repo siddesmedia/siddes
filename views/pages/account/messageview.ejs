@@ -1,0 +1,42 @@
+<span class="messagescolnav"><a class="colwhite" href="/account/messages" style="text-decoration: none;">&lt;</a> <span
+        class="right" id="chattitle"></span></span>
+<div class="dmboxweb">
+    <ul class="messages" id="messagescontainer">
+    </ul>
+    <br><br>
+    <span class="dmbottombar">
+        <label for="dmimageselect" class="dmimageselect">Images</label>
+        <input class="hidden" id="dmimageselect" type="file">
+        <input class="dminput" required id="sendmessageinput" placeholder="Message...">
+        <button class="dmsend right" type="submit" id="sendmessage">Send</button>
+    </span>
+</div>
+<script>
+    var myid = '<%= myid %>'
+    openmessage('<%= id %>', true)
+    changechatname('<%= id %>')
+    document.getElementById('bottom').scrollIntoView()
+</script>
+<style>
+    #messagestuff {
+        display: none;
+    }
+
+    .dmbottombar {
+        position: fixed;
+        width: 100%;
+        left: 0;
+    }
+
+    .messages {
+        top: 5%;
+    }
+
+    body {
+        width: 100% !important;
+    }
+
+    main {
+        width: 100%;
+    }
+</style>

@@ -27,6 +27,7 @@ const uploadpfp = multer({
 });
 const analytics = require('../middleware/simple-lytics')
 const url = require('url');
+const mongoose = require('mongoose');
 
 router.get('/', async function (req, res, nect) {
     if (funcs.loggedin(req.user) == true) {
@@ -83,7 +84,7 @@ router.get('/account/:id/banner', async function (req, res, next) {
 router.get('/latest/:page', async function (req, res, next) {
 
     if (isNaN(req.params.page) == true) {
-        next()
+        return next()
     }
     var posts;
     if (isNaN(req.query.limit) == false) {
@@ -359,26 +360,6 @@ router.get('/account/search', async function (req, res, next) {
     return res.render('base', about);
 });
 
-router.get('/account/new', async function (req, res, next) {
-
-    if (!req.user) {
-        return res.redirect('/login')
-    }
-
-    const about = {
-        title: 'New Post ' + ' - ' + Name,
-        template: 'pages/account/new',
-        name: Name,
-        loggedin: funcs.loggedin(req.user),
-        moderator: funcs.moderator(req.user),
-        navbar: true,
-        footer: true,
-        repost: req.query.repost,
-        text: req.query.text
-    };
-    return res.render('base', about);
-});
-
 router.get('/account/clear', async function (req, res, next) {
 
     if (!req.user) {
@@ -394,6 +375,109 @@ router.get('/account/clear', async function (req, res, next) {
             footer: true,
         };
         return res.render('base', about);
+    }
+})
+
+router.get('/account/repost', async function (req, res, next) {
+
+    if (!req.user) {
+        res.redirect('/login')
+    } else {
+        try {
+            var repostid = req.query.postid
+
+            var repostitem = await Post.findById(repostid)
+
+            var newpost = new Post({
+                body: repostitem.body,
+                owner: req.user._id,
+                media: repostitem.media,
+                date: Date.now(),
+                repost: true,
+                boardonly: repostitem.boardonly,
+                board: repostitem.board
+            })
+
+            if (repostitem.media == true) {
+                var repostmedia = await Media.findOne({
+                    parentid: repostitem._id
+                })
+
+                var newmedia = new Media({
+                    owner: repostmedia.owner,
+                    parentid: newpost._id,
+                    file: repostmedia.file
+                })
+
+                newmedia.save()
+            }
+
+            newpost.save().then(post => {
+                res.redirect('/s/' + newpost._id)
+            })
+        } catch (err) {
+            console.log(err)
+            return res.send('Internal Server Error', 500)
+        }
+    }
+})
+
+router.get('/account/messages', async function (req, res, next) {
+    if (!req.user) {
+        return res.redirect('/login')
+    }
+
+    try {
+        const user = await User.findById(req.user._id)
+        const dm_id_array = user.directmessages
+        const dm_username_array = []
+
+        for (i = 0; i < dm_id_array.length; i++) {
+            var tempuser = await User.findById(dm_id_array[i])
+            dm_username_array.push(tempuser.username)
+        }
+
+        about = {
+            title: 'Messages - ' + Name,
+            template: 'pages/account/messages',
+            name: Name,
+            loggedin: funcs.loggedin(req.user),
+            moderator: funcs.moderator(req.user),
+            navbar: true,
+            footer: false,
+
+            // user data being loaded
+            success: true,
+            ids: dm_id_array,
+            id: req.user._id,
+            usernames: dm_username_array
+        };
+        return res.render('base', about);
+    } catch (err) {
+
+    }
+})
+
+router.get('/account/messages/:id', async function (req, res, next) {
+    if (!req.user) {
+        return res.redirect('/login')
+    }
+
+    try {
+        about = {
+            title: 'Messages - ' + Name,
+            template: 'pages/account/messageview',
+            name: Name,
+            loggedin: funcs.loggedin(req.user),
+            moderator: funcs.moderator(req.user),
+            navbar: false,
+            footer: false,
+            id: req.params.id,
+            myid: req.user._id
+        };
+        return res.render('base', about);
+    } catch (err) {
+
     }
 })
 
@@ -1003,7 +1087,6 @@ router.post('/follow/remove', async function (req, res, next) {
         if (!newFollowing.includes(username)) {
             return res.redirect('/account/' + username);
         } else {
-
             newFollowing.splice(newFollowing.indexOf(req.body.username), 1)
 
             var update = await User.findOneAndUpdate({

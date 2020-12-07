@@ -13,7 +13,7 @@ const Media = new mongoose.Schema({
     },
     file: {
         type: String,
-        unique: true,
+        unique: false,
         required: true
     }
 });

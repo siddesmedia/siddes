@@ -94,6 +94,12 @@ const User = new mongoose.Schema({
         required: true,
         default: []
     },
+    boards: {
+        type: Array,
+        unique: false,
+        required: true,
+        default: []
+    },
     feed: {
         type: Array,
         unique: false,

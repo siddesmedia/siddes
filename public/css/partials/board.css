@@ -12,7 +12,7 @@
     left: 20%;
     background-color: black;
     border-bottom: 1px rgb(0, 0, 0) solid;
-    z-index: 1000000000;
+    z-index: 100000;
 }
 
 .boardposts {

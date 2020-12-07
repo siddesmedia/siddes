@@ -1,0 +1,34 @@
+<h3 class="header">Insides Feed</h3>
+<br>
+<div id="posts" class="tab">
+    <%- include('../../partials/posts') %>
+    <% if(posts.length == 0) { %>
+    <p class="headerred">Hey, you don't follow any board. Click <a href="/boards/explore">here</a> to find some boards
+        to follow!</p>
+    <% } %>
+</div>
+<div style="display: flex;justify-content: center;" class="postdiv">
+    <style>
+        .pagination {
+            padding-left: 10px;
+            padding-right: 10px;
+            margin: 5px;
+        }
+    </style>
+    <% if(page == 0) { %>
+    <button onclick="window.location='/latest/<%= page-1 %>'" disabled class="button pagination">...</button>
+    <% if (lastpage == true ) { %>
+    <button onclick="window.location='/latest/<%= eval(page)+1 %>'" class="button pagination" disabled>...</button>
+    <% } else { %>
+    <button onclick="window.location='/latest/<%= eval(page)+1 %>'" class="button pagination"
+        rel="next"><%= eval(page)+2 %></button>
+    <% } %>
+    <% } else if (lastpage == true ) { %>
+    <button onclick="window.location='/latest/<%= page-1 %>'" class="button pagination" rel="prev"><%= page %></button>
+    <button onclick="window.location='/latest/<%= eval(page)+1 %>'" class="button pagination" disabled>...</button>
+    <% } else { %>
+    <button onclick="window.location='/latest/<%= page-1 %>'" class="button pagination"><%= page %></button>
+    <button onclick="window.location='/latest/<%= eval(page)+1 %>'" class="button pagination"
+        rel="next"><%= eval(page)+2 %></button>
+    <% } %>
+</div>

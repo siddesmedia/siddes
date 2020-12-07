@@ -16,7 +16,9 @@
         </span>
         <span id="thelatestcontainer">
             <button class="sidebarbutton" style="text-align: left;border-radius: 10px;">
-                Boards
+                <span onclick="url('/b/insides')">
+                    Insides
+                </span>
                 <br><br>
                 <div class="expandcommentdiv boards" style="width: 95%;display: block;margin: auto;">
 
@@ -34,16 +36,26 @@
             <a class="navfooanoleftpad" href="/account/developer/home">
                 Developer
             </a>
-            •
+            <!--•
             <a class="navfooanoleftpad" href="/account/developer/docs">
                 Contact
-            </a>
+            </a>-->
             •
             <button class="versionlink smalltext" onclick="window.location.href='/company/releases'">
                 Beta V<span id="version"></span>
             </button>
-        </p>
+        </p><br><br><br>
     </span>
+</div>
+<div class="mobile">
+    <div class="mobilesearch">
+        <form action="/search" method="GET" style="width: 100%;">
+            <input name="q" type="text" class="input left" placeholder="Search <%= name %>"
+                style="width: 79%;margin-bottom: 8px;margin:auto;display: block;">
+            <button style="width: 20%;margin-bottom: 8px;margin:auto;display: block;" type="submit"
+                class="button right">Search</button>
+        </form>
+    </div>
 </div>
 <script>
     showlatestposts('latest')
@@ -57,6 +69,7 @@
         <button class="sidebarbutton" onclick="url('/latest')"><i class="fa fa-clock"></i></button>
         <% } else if(loggedin == false) { %>
         <button class="sidebarbutton" onclick="url('/latest')"><i class="fa fa-clock"></i></button>
+        <button class="sidebarbutton" onclick="url('/boards/explore')"><i class="fa">Boards</i></button>
         <button class="sidebarbutton" onclick="url('/login')"><i class="fas fa-sign-in-alt"></i></button>
         <button class="sidebarbutton" onclick="url('/signup')"><i class="fas fa-user-plus"></i></button>
         <% } %>
@@ -64,7 +77,7 @@
         <button class="sidebarbutton" onclick="url('/mod')"><i class="fas fa-gavel"></i></button>
         <% } %>
         <button class="sidebarbutton" onclick="showmenu('show')" id="showmenu"><i class="fa fa-bars"></i></button>
-        <span id="premiumsidebar"></span><br><br>
+        <span id="premiumsidebar"></span><br><br><br><br>
         <span class="sidebarleftbottom" onclick="leftmenu()">
             <% if(loggedin == true) { %>
             <button class="sidebarbutton profileclick" style="padding: 5px;">
@@ -75,6 +88,7 @@
                     <% if(loggedin == true) { %>
                     <a class="button linkbutton" href='javascript:newPost("show")'><i class="fa">New
                             Post</i></a><br><br>
+                    <a class="button linkbutton" href='/b/insides'><i class="fa">Insides</i></a><br><br>
                     <a class="button linkbutton" href='javascript:messages("open")'><i
                             class="fa">Messages</i></a><br><br>
                     <a class="button linkbutton" href='/account/edit'><i class="fa">Settings</i></a><br><br>
@@ -87,6 +101,7 @@
         </span>
     </span>
 </div>
+
 <div class="sidebar sidebarextension hidden" id="sidebarext">
     <form action="/search" method="GET"
         style="width: 90%;margin-left: auto;margin-right: auto;display: block;padding: 5px;">
@@ -113,10 +128,18 @@
         <a href="/company/tos">Terms of Service</a><br>
         <a href="/company/pp">Privacy Policy</a><br>
         <span id="premiumsidebarext"></span><br><br>
-        <button class="sidebarbutton" style="text-align: left;border-radius: 10px;width: 35%;">
+        <button class="sidebarbutton" style="text-align: left;border-radius: 10px;width: 60%;">
             The Latest
             <br><br>
             <div class="expandcommentdiv latest" style="width: 95%;display: block;margin: auto;">
+
+            </div>
+        </button>
+        <br>
+        <button class="sidebarbutton" style="text-align: left;border-radius: 10px;width: 60%;">
+            Boards
+            <br><br>
+            <div class="expandcommentdiv boards" style="width: 95%;display: block;margin: auto;">
 
             </div>
         </button>

@@ -1,0 +1,22 @@
+<link rel="stylesheet" href="/css/partials/board.css">
+<h3 class="header">Explore Insides</h3>
+<br>
+<div id="users">
+    <% for(var i = 0; i < boards.length; i++) { %>
+    <div class="postcontainer">
+        <div class="postdiv">
+            <div style="cursor: pointer;" onclick="window.location='/b/<%= boards[i].name %>'">
+                <p class="postowner">
+                    <a class="postownerlink" href="/b/<%= boards[i].name %>">
+                        @<%= boards[i].name %>
+                    </a>
+                    <button class="boardtag button"><%= boards[i].topic %></button>
+                </p>
+                <p>
+                    <%= boards[i].description %>
+                </p>
+            </div>
+        </div>
+    </div>
+    <% } %>
+</div>

@@ -20,16 +20,16 @@
     <label for="theme">Theme:</label><br>
     <select name="theme" id="reason" required class="input">
         <optgroup label='Theme'>
-            <% if(user.theme == 'retro') { %>
-            <!--<option>retro</option>-->
+            <% if(user.theme == 'flipped alt') { %>
+            <option selected>flipped alt</option>
             <option>light</option>
             <option>dark</option>
             <% } else if(user.theme == 'light') { %>
-            <!--<option>retro</option>-->
+            <option>flipped alt</option>
             <option selected>light</option>
             <option>dark</option>
             <% } else { %>
-            <!--<option>retro</option>-->
+            <option>flipped alt</option>
             <option>light</option>
             <option selected>dark</option>
             <% } %>

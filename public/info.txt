@@ -1,1 +1,0 @@
-all static items have moved to static-cdn.siddes.com

@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="/css/partials/board.css">
 <div id="posts">
     <% for(var i = 0; i < posts.length; i++) { %>
     <div class="postcontainer">
@@ -31,6 +32,14 @@
                     </a>
                     <% if(posts[i].repost == 'true') { %>
                     <span class="repostbadge">Repost</span>
+                    <% } else {} %>
+                    <% if(posts[i].boardonly == true) { %>
+                    <span class="repostbadge boardtag" id="board_<%= posts[i].board %>_<%= posts[i]._id %>"
+                        style="border: none;" onclick="url('/board/<%= posts[i].board %>')"></span>
+
+                    <script>
+                        getboardname('board_<%= posts[i].board %>_<%= posts[i]._id %>', '<%= posts[i].board %>')
+                    </script>
                     <% } else {} %>
                 </p>
                 <pre class="postbody" id="post_<%= posts[i]._id %>">
@@ -68,8 +77,7 @@
 
                         <% }} %>
                     </span>
-                    <button
-                        onclick="window.location='/account/new?text=<%- encodeURIComponent(posts[i].body) %>&repost=true'"
+                    <button onclick="window.location='/account/repost?postid=<%- posts[i]._id %>&repost=true'"
                         type="button" class="postrepost button">Repost</button>
                     <button onclick="share('<%= posts[i]._id %>')" type="button" class="postshare button">Share</button>
                     <span id="likebutton_<%= posts[i]._id %>">

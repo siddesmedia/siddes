@@ -1,8 +1,13 @@
 <link rel="stylesheet" href="/css/partials/board.css">
 <div class="boardnav">
     <h3 class="noheader nobottompadmar colwhite" style="color: white;"><%= board.name %></h3>
-    <button style="margin-left: 15px" class="button" onclick="follow('<%= board._id %>')">Follow
+    <% if (following == true) { %>
+    <button style="margin-left: 15px" class="button" onclick="unfollowboard('<%= board._id %>')">Unfollow
         <%= board.name %></button>
+    <% } else { %>
+    <button style="margin-left: 15px" class="button" onclick="followboard('<%= board._id %>')">Follow
+        <%= board.name %></button>
+    <% } %>
     <button class="button" onclick="url('/b/<%= board.name %>/submit')">New Post in <%= board.name %></button>
     <button class="boardtag button"><%= board.topic %></button>
     <br>

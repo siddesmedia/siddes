@@ -11,3 +11,8 @@
     padding-top: 1px;
     border-radius: 10px;
 }
+
+.chat {
+    background-color: rgb(236, 236, 236) !important;
+    border: none !important;
+}

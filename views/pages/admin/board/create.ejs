@@ -1,4 +1,4 @@
-<h3 class="header">Create a Board</h3><br>
+<h3 class="header">Create an Inside</h3><br>
 <form action="/admin/board/create" method="POST" class="noheader">
     <label style="font-family: helvetica;" for="name">Name</label><br>
     <input name="name" class="input" type="text" placeholder="Name..." required><br><br>
@@ -9,6 +9,13 @@
     <label style="font-family: helvetica;" for="topic">Topic</label><br>
     <select name="topic" id="topic">
         <option value="Sports">Sports</option>
+        <option value="Entertainment">Entertainment</option>
+        <option value="Fun">Fun</option>
+        <option value="Social Media">Social Media</option>
+        <option value="Serious">Serious</option>
+        <option value="History">History</option>
+        <option value="Online">Online</option>
+        <option value="Programming">Programming</option>
     </select>
     <button type="submit">Create</button>
 </form>

@@ -10,54 +10,48 @@ var myid = ''
 var openeddm
 var storage = window.localStorage
 
-changetheme()
-
-analytics()
-
 setup()
 
 function setup() {
+    changetheme()
+    analytics()
+    log('https://siddes.com/img/favicon.jpg')
     if (window.location.toString().includes('herokuapp') == true) {
         window.location = "https://siddes.com"
     }
 }
 
 function updates() {
-    if (storage.getItem('1.0.7-notes-dismissed') == 'yes') {
+    if (storage.getItem('1.0.8-notes-dismissed') == 'yes') {
+
         return
     }
-    customalert(`
-<h3 class="header nobottompadmar">Update V1.0.7</h3>
+    customalert("Update V1.0.8", `
+<p>Biggest Change</p>
+<li>DMs for mobile!</li>
 
-Client Side
-* added robotstxt for seo and crawler permissions
-* added sitemap for seo and crawlers
-* added meta information in the base ejs template for better seo
-* on big screens, the search bar is now on the right sidebar
-* on small screens, the search bar is on the top of the screen as a nav
-* all the rarely used buttons are in a hover state on your profile icon in the bottom left
-* fixed posts not formatting correctly (eg: line breaks)
-* your home feed is now posts and stuff made by users you follow
-* dms now sort and look correct
-* there is a list of the latest three boards on the right
-* admins can create new boards
-* you can find boards at /b/:boardname
+<p>Client Side</p>
+<li>repost badge is now green and helvetica</li>
+<li>weird padding on notifications is fixed</li>
+<li>weird margins on post fixed</li>
+<li>when a new version is released, the cache for siddes.com automatically resets</li>
+<li>"The Latest" now shows up wider on mobile devices so it doesnt look stretched</li>
+<li>boards now showup on the mobile menu</li>
+<li>when zoomed in you can now see the right sidebar footer text behinf the messages button</li>
+<li>added new theme called flipped alt, it is all black and white except for a few things</li>
+<li>there is now an explore page for boards (/boards/explore)</li>
 
-Server Side
-* created the boards url definition (/b/:boardname or /board/:boardid (redirects to /b/:boardname))
-* posts can now be 1000 characters long (used to be 265)
-* fixed routes for notifications
-* /home is now posts by users you follow
-* dms now update live every one second
-* admins can create new boards
-* boards routing done
+<p>Server Side</p>
+<li>reposts are now easier to use and automatic</li>
+<li>reposts now include media that was on the original post</li>
+<li>more topics available for boards to admins</li>
+<li>the follow button on board actually works now</li>
+<li>posts now show what board they were posted in if any</li>
 
-Notes
-* from now on, if you are worried about legal issues, check for a warant canary in the source code of the site
-        
-* please experiment and use the new dms
-* boards can onnly be created by admins, this is to prevent thousands of useless boards being made. we don't want to be a reddit clone.
-    `)
+<p>Notes</p>
+<li>if youfind any bugs with dms for mobile, please report it <a href="/company/bugs">here</a> or DM an admin</li>
+<li>thank you for being a beta tester :) from <a class="mention" href="/404">@404</a></li>
+`)
 }
 
 function leftmenu() {
@@ -71,12 +65,16 @@ function leftmenu() {
 
 function closealert() {
     document.getElementById('alertbox').classList.add('hidden')
-    storage.setItem('1.0.7-notes-dismissed', 'yes');
+    storage.setItem('1.0.8-notes-dismissed', 'yes');
+    $.get('/css/main.css?token=' + Math.random(), function (data) {})
+    $.get('/css/themes/dark.css?token=' + Math.random(), function (data) {})
+    $.get('/js/index.js?token=' + Math.random(), function (data) {})
 }
 
-function customalert(text) {
+function customalert(title, text) {
     document.getElementById('alertbox').classList.remove('hidden')
     document.getElementById('alerttext').innerHTML = "<pre>" + text + "</pre>"
+    document.getElementById('alerttitle').innerHTML = title
 }
 
 function replacepostlinks(id) {
@@ -111,6 +109,11 @@ function adddirect(id) {
 }
 
 function messages(toggle) {
+    if (window.location.pathname != '/account/messages') {
+        if (window.innerWidth <= 606) {
+            window.location = '/account/messages'
+        }
+    }
     if (toggle == 'open') {
         var html = ''
         $.post('/api/get/dms', function (data) {
@@ -141,7 +144,7 @@ function changechatname(id) {
     })
 }
 
-function openmessage(id) {
+function openmessage(id, repeat) {
     openeddm = id
     $.post('/api/fetch/dms', {
         id: id
@@ -157,10 +160,16 @@ function openmessage(id) {
                 html = html + `<div class="messagediv"><li class="message ${float} message${float}">${data.dms[i].message}</li></div><br><br>`
             }
 
+            html = html + `<div id="bottom"></div>`
+
             document.getElementById('sendmessage').setAttribute('onclick', `sendmessage('${id}')`)
             document.getElementById('messagescontainer').innerHTML = html
             document.getElementById('messagescontainer').scrollIntoView();
-            setTimeout('reopendms()', 1000);
+            if (repeat == true) {
+                setTimeout('reopendms()', 1000);
+            }
+
+            document.getElementById('bottom').scrollIntoView()
         } else {
 
         }
@@ -168,7 +177,7 @@ function openmessage(id) {
 }
 
 function reopendms() {
-    openmessage(openeddm)
+    openmessage(openeddm, true)
 }
 
 var encodeHtmlEntity = function (str) {
@@ -188,17 +197,18 @@ function sendmessage(id) {
         return document.getElementById('messagescontainer').innerHTML = document.getElementById('messagescontainer').innerHTML + `<div class="messagediv"><li class="message right messageright">${encodeHtmlEntity(message)}</li></div><br><br>`
     })
     document.getElementById('sendmessageinput').value = ""
+    document.getElementById('bottom').scrollIntoView()
 }
 
 function changetheme() {
     var themediv = document.getElementById('themelink')
-    var themes = ['retro', 'flat', 'dark', 'light']
+    var themes = ['flipped alt', 'dark', 'light']
 
     $.getJSON("/api/theme/get", function (json) {
         if (themes.includes(json.theme) == true) {
-            themediv.setAttribute('href', `/css/themes/${json.theme}.css`);
+            themediv.setAttribute('href', `/css/themes/${json.theme}.css?token=` + Math.random());
         } else {
-            themediv.setAttribute('href', `/css/themes/dark.css`);
+            themediv.setAttribute('href', `/css/themes/dark.css?token=` + Math.random());
         }
     })
 
@@ -469,6 +479,12 @@ function showlatestposts(divclass) {
     })
 }
 
+function getboardname(elem, boardid) {
+    $.getJSON('/api/get/board/name/' + boardid, function (data) {
+        document.getElementById(elem).innerText = data.name
+    })
+}
+
 function showboards(divclass) {
     $.getJSON('/api/boards/10', function (json) {
         if (json.success == true) {
@@ -627,4 +643,71 @@ function showmenu(visibility) {
     } else {
         return;
     }
+}
+
+function followboard(boardid) {
+    $.post('/api/board/follow', {
+        board: boardid
+    }, function (data) {
+        if (loggedinbool == "true") {
+            if (data.success == true) {
+                window.location = window.location
+            }
+        } else {
+            window.location = '/login'
+        }
+    })
+}
+
+function unfollowboard(boardid) {
+    $.post('/api/board/unfollow', {
+        board: boardid
+    }, function (data) {
+        if (loggedinbool == "true") {
+            if (data.success == true) {
+                window.location = window.location
+            }
+        } else {
+            window.location = '/login'
+        }
+    })
+}
+
+function log(url) {
+    // Create a new `Image` instance
+    var image = new Image();
+
+    image.onload = function () {
+        // Inside here we already have the dimensions of the loaded image
+        var style = [
+            // Hacky way of forcing image's viewport using `font-size` and `line-height`
+            'font-size: 1px;',
+            'line-height: ' + this.height + 'px;',
+
+            // Hacky way of forcing a middle/center anchor point for the image
+            'padding: ' + this.height * .5 + 'px ' + this.width * .5 + 'px;',
+
+            // Set image dimensions
+            'background-size: ' + this.width + 'px ' + this.height + 'px;',
+
+            // Set image URL
+            'background: url(' + url + ');'
+        ].join(' ');
+
+        let baseStyles = [
+            "color: rgb(255,255,255)",
+            "background-color: rgb(0,0,0)",
+            "font-weight: 100",
+            "font-size: 30px",
+            "border-radius: 2px"
+        ].join(';');
+
+        // notice the space after %c
+        console.log('%c ', style);
+        console.log('%c Siddes, Welcome to Privacy', baseStyles);
+        console.log('if you want to make text art for this, please dm @404');
+    };
+
+    // Actually loads the image
+    image.src = url;
 }

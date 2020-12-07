@@ -13,6 +13,12 @@
 
 * {
     word-wrap: break-word;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+::-webkit-scrollbar {
+    display: none;
 }
 
 body {
@@ -167,11 +173,12 @@ topofpagemobile {
 }
 
 .repostbadge {
-    background-color: white;
+    background-color: transparent;
     border: 1px var(--red) solid;
     border-radius: 2px;
     color: var(--red);
-    font-size: 6px;
+    font-size: 10px;
+    font-family: Arial, Helvetica, sans-serif;
     padding: 1px;
 }
 
@@ -355,6 +362,13 @@ topofpagemobile {
     white-space: -pre-wrap;
     white-space: -o-pre-wrap;
     word-wrap: break-word;
+    color: black;
+}
+
+.feedbody {
+    font-size: medium;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: 400;
 }
 
 .postownerimage {
@@ -847,6 +861,7 @@ topofpagemobile {
     background-color: rgb(223, 223, 223);
     padding: 10px;
     width: 100%;
+    z-index: 100000000000 !important;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
@@ -979,6 +994,11 @@ topofpagemobile {
     width: 50%;
 }
 
+.dontshrinkcolumn {
+    float: left;
+    width: 50%;
+}
+
 .linkbutton {
     font-family: Arial, Helvetica, sans-serif;
     text-decoration: none;
@@ -1001,7 +1021,6 @@ topofpagemobile {
 @media only screen and (max-width: 606px) {
 
     #messagesbox,
-    #showmessagesbottom,
     #showmessagesleftbar {
         display: none;
     }
@@ -1017,6 +1036,11 @@ topofpagemobile {
 
     .sidebar {
         display: none;
+    }
+
+    .column {
+        width: 100%;
+        border-top: 1px black solid;
     }
 
     .mobile {

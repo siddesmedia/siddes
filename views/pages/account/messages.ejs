@@ -1,0 +1,18 @@
+<div class="dmboxweb">
+    <h3 class="header">Messages</h3>
+    <span class="chatselect" style="background-color: grey;">
+        <% for(i=0; i < ids.length; i++) { %>
+        <button class="chat" onclick="url('/account/messages/<%= ids[i] %>#bottom')">@<%= usernames[i] %></button>
+        <% } %>
+    </span>
+</div>
+<style>
+    #messagestuff {
+        display: none;
+    }
+
+    .chat {
+        background-color: rgb(37, 37, 37);
+        border: none;
+    }
+</style>
