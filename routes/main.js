@@ -738,11 +738,7 @@ router.get('/usergenerated/images/:parentid', async function (req, res, next) {
         const mediaitem = await Media.findOne({
             parentid: req.params.parentid
         })
-        if (fs.existsSync(path.join(__dirname, '..', mediaitem.file)) == false) {
-            return res.sendFile(path.join(__dirname, '../usergenerated/images/notfound.jpeg'))
-        } else {
-            res.sendFile(path.join(__dirname, '..', mediaitem.file))
-        }
+        res.redirect(mediaitem.file)
     } catch (err) {
         res.sendFile(path.join(__dirname, '../usergenerated/images/notfound.jpeg'))
     }

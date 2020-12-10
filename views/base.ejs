@@ -45,6 +45,8 @@
     <link rel="stylesheet" href="/css/main.css">
     <link id="themelink" rel="stylesheet" href="/css/themes/dark.css">
     <script src="/js/index.js"></script>
+    <script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+    <noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif" alt="" /></noscript>
 </head>
 
 <body>
@@ -56,6 +58,9 @@
         <%- include('partials/navbar') %>
         <% } else {} %>
     </header>
+    <section>
+        <%- include('partials/top-navbar') %>
+    </section>
     <main>
         <%- include(template) %>
     </main>

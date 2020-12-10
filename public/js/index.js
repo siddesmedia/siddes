@@ -202,7 +202,7 @@ function sendmessage(id) {
 
 function changetheme() {
     var themediv = document.getElementById('themelink')
-    var themes = ['flipped alt', 'dark', 'light']
+    var themes = ['flipped alt', 'dark', 'light', "black"]
 
     $.getJSON("/api/theme/get", function (json) {
         if (themes.includes(json.theme) == true) {

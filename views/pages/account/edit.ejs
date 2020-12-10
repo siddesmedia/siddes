@@ -23,14 +23,22 @@
             <% if(user.theme == 'flipped alt') { %>
             <option selected>flipped alt</option>
             <option>light</option>
+            <option>black</option>
             <option>dark</option>
             <% } else if(user.theme == 'light') { %>
             <option>flipped alt</option>
             <option selected>light</option>
+            <option>black</option>
+            <option>dark</option>
+            <% } else if(user.theme == 'black') { %>
+            <option>flipped alt</option>
+            <option>light</option>
+            <option selected>black</option>
             <option>dark</option>
             <% } else { %>
             <option>flipped alt</option>
             <option>light</option>
+            <option>black</option>
             <option selected>dark</option>
             <% } %>
         </optgroup>
