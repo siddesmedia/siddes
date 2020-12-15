@@ -12,16 +12,28 @@ const statusoptions = {
     path: '/company/status',
     title: `${process.env.NAME} Status`
 }
+const session = require('express-session');
+const RedisStore = require('connect-redis')(session);
+const redis = require('redis')
+const redisClient = redis.createClient()
 
 app.use(require('serve-static')('./public'));
 app.use(require('cookie-parser')());
 app.use(require('body-parser').urlencoded({
     extended: true
 }));
-app.use(require('express-session')({
-    secret: 'keyboard warrior cat',
-    resave: true,
-    saveUninitialized: true
+app.use(session({
+    store: new RedisStore({
+        client: redisClient
+    }),
+    url: process.env.REDIS_URL,
+    secret: 'i sware i didnt ship development code to production... i sware',
+    name: '',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        secure: false
+    },
 }));
 app.set('views', 'views');
 app.set('view engine', 'ejs');
