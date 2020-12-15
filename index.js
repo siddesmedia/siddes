@@ -15,7 +15,7 @@ const statusoptions = {
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const redis = require('redis')
-const redisClient = redis.createClient()
+const redisClient = redis.createClient(process.env.REDIS_URL)
 
 app.use(require('serve-static')('./public'));
 app.use(require('cookie-parser')());
