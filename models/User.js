@@ -179,7 +179,7 @@ const User = new mongoose.Schema({
     notificationson: {
         type: String,
         unique: false,
-        required: true
+        required: false
     },
     twitterlink: {
         type: String,
