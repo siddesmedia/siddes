@@ -8,6 +8,7 @@ var loggedinbool;
 var uploadsbanned = undefined;
 var myid = ''
 var openeddm
+var imguplwrn = 0
 var storage = window.localStorage
 
 setup()
@@ -21,36 +22,68 @@ function setup() {
     }
 }
 
+window.addEventListener('load', () => {
+    registerSW();
+});
+var worker
+
+// Register the Service Worker 
+function registerSW() {
+    worker = new Worker('/sw.js')
+}
+
 function updates() {
-    if (storage.getItem('1.0.8-notes-dismissed') == 'yes') {
+    if (storage.getItem('1.0.9-notes-dismissed') == 'yes') {
 
         return
     }
-    customalert("Update V1.0.8", `
+    customalert("Update V1.0.9", `
 <p>Biggest Change</p>
-<li>DMs for mobile!</li>
+<li>notifications</li>
+
+<p>Notification Notes</p>
+<li>notifications are only available for chromium on macOS, Windows, Linux, and Android</li>
+<li>a list of chromium browsers:
+<ul>
+<li><a href="https://chrome.google.com">Chrome</a></li>
+<li><a href="https://brave.com/">Brave Browser</a></li>
+<li><a href="https://www.chromium.org/getting-involved/download-chromium">Chromium</a></li>
+<li><a href="https://www.microsoft.com/en-us/edge">Microsoft Edge</a></li>
+<li><a href="https://vivaldi.com/">Vivaldi</a></li>
+<li><a href="https://www.epicbrowser.com/">Epic Browser</a></li>
+</ul>
+</li>
 
 <p>Client Side</p>
-<li>repost badge is now green and helvetica</li>
-<li>weird padding on notifications is fixed</li>
-<li>weird margins on post fixed</li>
-<li>when a new version is released, the cache for siddes.com automatically resets</li>
-<li>"The Latest" now shows up wider on mobile devices so it doesnt look stretched</li>
-<li>boards now showup on the mobile menu</li>
-<li>when zoomed in you can now see the right sidebar footer text behinf the messages button</li>
-<li>added new theme called flipped alt, it is all black and white except for a few things</li>
-<li>there is now an explore page for boards (/boards/explore)</li>
+<li>added bottom popup for notifications</li>
+<li>created notifications service worker (recieve notifications)</li>
+<li>old dark theme now called black</li>
+<li>new dark theme is now a little more blue</li>
+<li>renamed themes and added new ones
+<ul>
+<li>dark -> midnight</li>
+<li>light -> flashlight</li>
+<li>flipped alt</li>
+<li>+ocean dark</li>
+</ul>
+</li>
+<li>service worker thread now communicates with the main javascript thread to disp[lay notifications at bottom
+   of screen</li>
+<li>added spots for account linking in settings</li>
+<li>added links for accounts that are linked</li>
+<li>fixed insides nav overflowing on mobile devices and pushing nav over top post</li>
+<li>added pwa for easy installation from chromium browsers</li>
 
 <p>Server Side</p>
-<li>reposts are now easier to use and automatic</li>
-<li>reposts now include media that was on the original post</li>
-<li>more topics available for boards to admins</li>
-<li>the follow button on board actually works now</li>
-<li>posts now show what board they were posted in if any</li>
+<li>sending notifications through <a
+       href="https://developers.google.com/web/fundamentals/push-notifications/web-push-protocol">vapid</a>
+</li>
+<li>fixed hashtag searches retunring polluted results</li>
+<li>account linking is now saved</li>
 
 <p>Notes</p>
-<li>if youfind any bugs with dms for mobile, please report it <a href="/company/bugs">here</a> or DM an admin</li>
-<li>thank you for being a beta tester :) from <a class="mention" href="/404">@404</a></li>
+<li>notifications are still considered a flag (experimental) feature inside chromium, if they do not work, turn
+   them to the "ask (default)" preference and it will prompt you again for notifications</li>
 `)
 }
 
@@ -65,10 +98,9 @@ function leftmenu() {
 
 function closealert() {
     document.getElementById('alertbox').classList.add('hidden')
-    storage.setItem('1.0.8-notes-dismissed', 'yes');
+    storage.setItem('1.0.9-notes-dismissed', 'yes');
     $.get('/css/main.css?token=' + Math.random(), function (data) {})
     $.get('/css/themes/dark.css?token=' + Math.random(), function (data) {})
-    $.get('/js/index.js?token=' + Math.random(), function (data) {})
 }
 
 function customalert(title, text) {
@@ -91,6 +123,7 @@ function share(id) {
     document.getElementById('share_facebook_link').setAttribute('href', "https://www.facebook.com/sharer/sharer.php?u=https://www.siddes.com/s/" + id);
     document.getElementById('share_email_link').setAttribute('href', "mailto:email@example.com?subject=You won't believe what I found on Siddes!&body=Here it is: https://www.siddes.com/s/" + id);
     document.getElementById('share_link').setAttribute('value', "https://siddes.com/s/" + id);
+    document.getElementById('share_iframe').value = document.getElementById('share_iframe').value.replace('{{postid}}', id)
     return document.getElementById('sharemodal').classList.remove('hidden')
 }
 
@@ -190,6 +223,32 @@ var encodeHtmlEntity = function (str) {
 
 function sendmessage(id) {
     var message = document.getElementById('sendmessageinput').value
+    var selected = document.getElementById("dmimageselect").value
+
+    if (selected != '' && imguplwrn == 0) {
+        imguplwrn++
+        var selected = document.getElementById("dmimageselect").value = ''
+        return alert('no image... dont do it agin warning one')
+    }
+
+    if (selected != '' && imguplwrn == 1) {
+        imguplwrn++
+        var selected = document.getElementById("dmimageselect").value = ''
+        return alert('uh oh warning two')
+    }
+
+    if (selected != '' && imguplwrn == 2) {
+        imguplwrn++
+        var selected = document.getElementById("dmimageselect").value = ''
+        return customalert('do not do it again', 'you understand? warning three')
+    }
+
+    if (selected != '' && imguplwrn == 3) {
+        imguplwrn++
+        var selected = document.getElementById("dmimageselect").value = ''
+        return window.location = '/logout'
+    }
+
     $.post('/api/message/send', {
         to: id,
         message: encodeHtmlEntity(message)
@@ -202,13 +261,13 @@ function sendmessage(id) {
 
 function changetheme() {
     var themediv = document.getElementById('themelink')
-    var themes = ['flipped alt', 'dark', 'light', "black"]
+    var themes = ['flipped alt', 'ocean dark', 'flashlight', "midnight"]
 
     $.getJSON("/api/theme/get", function (json) {
         if (themes.includes(json.theme) == true) {
             themediv.setAttribute('href', `/css/themes/${json.theme}.css?token=` + Math.random());
         } else {
-            themediv.setAttribute('href', `/css/themes/dark.css?token=` + Math.random());
+            themediv.setAttribute('href', `/css/themes/ocean%20dark.css?token=` + Math.random());
         }
     })
 
@@ -340,9 +399,9 @@ async function haveiliked(elemid, likecount, postid, loggedin) {
     loggedinbool = loggedin;
     $.getJSON("/api/liked/" + postid, function (json) {
         if (json.liked == true) {
-            return (document.getElementById(elemid).innerHTML = "<button onclick='unlike(\"" + postid + '", "' + elemid + '", "' + eval(likecount) + '")\' "type="button" class="postlike red button" id="i_' + elemid + '">Unlike - ' + eval(likecount) + "</button>");
+            return (document.getElementById(elemid).innerHTML = "<button onclick='unlike(\"" + postid + '", "' + elemid + '", "' + eval(likecount) + '")\' "type="button" class="postlike red button" id="i_' + elemid + '"><i class="lni lni-thumbs-down"></i> - ' + eval(likecount) + "</button>");
         } else {
-            return (document.getElementById(elemid).innerHTML = "<button onclick='like(\"" + postid + '", "' + elemid + '", "' + eval(likecount) + '")\' "type="button" class="postlike button" id="i_' + elemid + '">Like - ' + eval(likecount) + "</button>");
+            return (document.getElementById(elemid).innerHTML = "<button onclick='like(\"" + postid + '", "' + elemid + '", "' + eval(likecount) + '")\' "type="button" class="postlike button" id="i_' + elemid + '"><i class="lni lni-thumbs-up"></i> - ' + eval(likecount) + "</button>");
         }
     });
 }
@@ -450,7 +509,7 @@ function showlatestposts(divclass) {
                     latestimgids.push(`${posts[i]._id}`)
                     html = html + `
                     <div style="width:100%;border-bottom:1px rgb(37,37,37) solid;cursor:pointer;" onclick="url('/s/${posts[i]._id}')">
-                        <p class="commentsbody">${posts[i].body}</p>
+                        <p class="boardlistitem">${posts[i].body}</p>
                         <img class="postimage" style="width:100%" id="latest_img_${posts[i]._id}" src="" loading="lazy"><br>
                         <script>
                         </script>
@@ -459,7 +518,7 @@ function showlatestposts(divclass) {
                 } else {
                     html = html + `
                 <div style="width:100%;border-bottom:2px grey solid;cursor:pointer;" onclick="url('/s/${posts[i]._id}')">
-                    <p class="commentsbody">${posts[i].body}</p>
+                    <p class="boardlistitem">${posts[i].body}</p>
                 </div>
                 `
                 }
@@ -493,7 +552,7 @@ function showboards(divclass) {
             for (i = 0; i < boards.length; i++) {
                 html = html + `
                 <div style="width:100%;border-bottom:2px grey solid;cursor:pointer;" onclick="url('/b/${boards[i].name}')">
-                    <p class="commentsbody">${boards[i].name}</p>
+                    <p class="boardlistitem">${boards[i].name}</p>
                 </div>
                 `
             }
@@ -514,11 +573,11 @@ function hidecomments(postid) {
 
 async function like(postid, elemid, likecount) {
     if (loggedinbool == "true") {
-        document.getElementById(elemid).innerHTML = "<button onclick='unlike(\"" + postid + '", "' + elemid + '", ' + eval(likecount + 1) + ')\' "type="button" class="postlike red button" id="i_' + elemid + '">Unlike - ' + eval(eval(likecount) + 1) + "</button>";
+        document.getElementById(elemid).innerHTML = "<button onclick='unlike(\"" + postid + '", "' + elemid + '", ' + eval(likecount + 1) + ')\' "type="button" class="postlike red button" id="i_' + elemid + '"><i class="lni lni-thumbs-down"></i> - ' + eval(eval(likecount) + 1) + "</button>";
         $.post("/like/new", {
             postid: postid
         }, function (data, status, jqXHR) {
-            return document.getElementById(elemid).innerHTML = "<button onclick='unlike(\"" + postid + '", "' + elemid + '", ' + eval(likecount + 1) + ')\' "type="button" class="postlike red button" id="i_' + elemid + '">Unlike - ' + eval(eval(likecount) + 1) + "</button>";
+            return document.getElementById(elemid).innerHTML = "<button onclick='unlike(\"" + postid + '", "' + elemid + '", ' + eval(likecount + 1) + ')\' "type="button" class="postlike red button" id="i_' + elemid + '"><i class="lni lni-thumbs-down"></i> - ' + eval(eval(likecount) + 1) + "</button>";
         });
     } else {
         window.location = "/login";
@@ -527,11 +586,11 @@ async function like(postid, elemid, likecount) {
 
 async function unlike(postid, elemid, likecount) {
     if (loggedinbool == "true") {
-        document.getElementById(elemid).innerHTML = "<button onclick='like(\"" + postid + '", "' + elemid + '", "' + eval(likecount - 1) + '")\' "type="button" class="postlike button" id="i_' + elemid + '">Like - ' + eval(eval(likecount) - 1) + "</button>";
+        document.getElementById(elemid).innerHTML = "<button onclick='like(\"" + postid + '", "' + elemid + '", "' + eval(likecount - 1) + '")\' "type="button" class="postlike button" id="i_' + elemid + '"><i class="lni lni-thumbs-up"></i> - ' + eval(eval(likecount) - 1) + "</button>";
         $.post("/like/remove", {
             postid: postid
         }, function (data, status, jqXHR) {
-            return document.getElementById(elemid).innerHTML = "<button onclick='like(\"" + postid + '", "' + elemid + '", "' + eval(likecount - 1) + '")\' "type="button" class="postlike button" id="i_' + elemid + '">Like - ' + eval(eval(likecount) - 1) + "</button>";
+            return document.getElementById(elemid).innerHTML = "<button onclick='like(\"" + postid + '", "' + elemid + '", "' + eval(likecount - 1) + '")\' "type="button" class="postlike button" id="i_' + elemid + '"><i class="lni lni-thumbs-up"></i> - ' + eval(eval(likecount) - 1) + "</button>";
         });
     } else {
         window.location = "/login";
@@ -542,10 +601,12 @@ async function premium(array) {
     $.getJSON("/api/premium", function (json) {
         if (json.premium == true) {
             for (i = 0; i < array.length; i++) {
-                document.getElementById(array[i]).innerHTML = `<button class="sidebarbutton" onclick="url('/premium')"><i class="fas fa-star"></i></button>`
+                document.getElementById(array[i]).innerHTML = `<button class="sidebarbutton" onclick="url('/premium')"><i class="lni lni-star"></i></button>`
             }
         } else {
-            return;
+            for (i = 0; i < array.length; i++) {
+                document.getElementById(array[i]).innerHTML = `<button class="sidebarbutton" onclick="url('/premium/pricing')"><i class="lni lni-star"></i></button>`
+            }
         }
     });
 }
@@ -562,12 +623,9 @@ function approvepost(id) {
         id: id,
         approved: true,
         sensitive: false
-    }, function (data, status, jqXHR) {
-        window.location = window.location;
-    });
-    setTimeout(function () {
-        location.reload();
-    }, 500);
+    }, function (data, status, jqXHR) {});
+
+    document.getElementById('approve_' + id).classList.add('hidden')
 }
 
 function approvesensitivepost(id) {
@@ -601,13 +659,11 @@ function removepost(id) {
         id: id,
         approved: false,
         sensitive: true
-    }, function (data, status, jqXHR) {
-        location.reload();
-    });
-    setTimeout(function () {
-        location.reload();
-    }, 100);
-}(function ($) {
+    }, function (data, status, jqXHR) {});
+    document.getElementById("post_" + id).classList.add('hidden')
+}
+
+(function ($) {
     $.fn.replaceTag = function (newTag) {
         var originalElement = this[0],
             originalTag = originalElement.tagName,
@@ -698,16 +754,55 @@ function log(url) {
             "color: rgb(255,255,255)",
             "background-color: rgb(0,0,0)",
             "font-weight: 100",
+            "width: 100%",
             "font-size: 30px",
-            "border-radius: 2px"
+            "border-radius: 2px",
+            "margin: auto",
+            "display: block"
         ].join(';');
 
         // notice the space after %c
-        console.log('%c ', style);
-        console.log('%c Siddes, Welcome to Privacy', baseStyles);
+        // console.log('%c ', style);
+        console.log('%c Siddes, Welcome to Privacy ', baseStyles);
         console.log('if you want to make text art for this, please dm @404');
     };
 
     // Actually loads the image
     image.src = url;
 }
+
+function closelowernoti() {
+    document.getElementById('notificationpopup').classList.add('hidden')
+}
+
+function lowernoti(title, body, link) {
+    document.getElementById('noti_link').setAttribute('href', link)
+    document.getElementById('noti_title').innerText = title
+    document.getElementById('noti_body').innerText = body
+
+    document.getElementById('notificationpopup').classList.remove('hidden')
+}
+
+navigator.serviceWorker.addEventListener('message', event => {
+    lowernoti(event.data.msg.title, event.data.msg.body, event.data.msg.link)
+});
+
+console.log(`
+      ..............................................................................      
+      =MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM=      
+      =MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM=      
+      =MMMMMMMMMM++++MMMMMM==+MMMMMMMM+---MMMMMMMM+---MMMMMMMMMMMMMMMMMMMMMMMMMMMMM=      
+      =MMMMMMM=:      :+MM-   MMMMMMMM=   +MMMMMMM=   MMMMMMMMMMMMMMMMMMMMMMMMMMMMM=      
+      =MMMMMM=   :==.   +MM==+MMMMMMMM=   +MMMMMMM=   MMMMMMMMMMMMMMMMMMMMMMMMMMMMM=      
+      =MMMMMM-   +MM+---+M=...MMM=.  .:   +MM-.  .:   MMM+:.   .-MMM+-.   .-MMMMMMM=      
+      =MMMMMMM.   .-=MMMMM=   MM-   :-.   +M-   :-.   MM+   :-.  :MM   -=.  .MMMMMM=      
+      =MMMMMMMM+-.    .+MM=   MM.  :MM=   +M.  -MM=   MM:  .===   +M.  .-=+MMMMMMMM=      
+      =MMMMMM++++MM+:   +M=   MM   -MM=   +M   -MM=   MM.         +MM-.    .+MMMMMM=      
+      =MMMMMM.  .MMM=   =M=   MM.  :MM=   +M.  :MM=   MM:  .MMMM+MM+--=M+:   MMMMMM=      
+      =MMMMMM+.   ..   .MM=   MM=   ..    +M=   ..    MM+.   ..  :M+.  ::.  :MMMMMM=      
+      =MMMMMMMM+-::::-+MMM+::-MMM+-::-+:::MMM+-::-+-::MMMM=-:::-=MMMM=-:::-=MMMMMMM=      
+      =MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM=      
+      =MMMMMMMMMMMMMMMMMMMMMMMMMM===+=+++=+++=++==+=+++++MMMMMMMMMMMMMMMMMMMMMMMMMM=      
+      =MMMMMMMMMMMMMMMMMMMMMMMMMM++++++++++++++++M+++=++=MMMMMMMMMMMMMMMMMMMMMMMMMM=      
+      .::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::.    
+`)

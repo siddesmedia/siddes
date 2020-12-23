@@ -5,16 +5,18 @@
             <h3 class="sharemodaltitle">
                 New Post
                 <button type="submit" class="button">Post</button>
-                <button onclick="newPost('hide')" class="right closepopup" id="share_close" type="button">X</button>
+                <button onclick="newPost('hide')" class="right closepopup" id="share_close" type="button"><i
+                        class="lni lni-close"></i></button>
             </h3>
             <textarea type="text" placeholder="Your thoughts..." name="body" required class="newposttext"
                 maxlength="1000" id="newpostinput" rows="1"></textarea><br>
             <p id="newpostcount" class="noheader charcount right">0</p><br>
             <input type="text" class="hidden" name="repost" value="false">
-            <label for="image" class="input" style="width: 50%; cursor: pointer;"><i
-                    class="fa fa-camera input"></i></label>
+            <label for="image" class="input" style="width: 50%; cursor: pointer;"><i class="lni lni-camera"></i></label>
             <input type="file" accept="image/png, image/jpg, image/gif" class="input hidden" name="image"
-                style="width: 50%;" value="Upload Image" id="image">
+                style="width: 50%;" value="Upload Image or Video" id="image">
+            <!--<input type="file" accept="image/png, image/jpg, image/gif, video/mp4, video/webm" class="input hidden"
+                name="image" style="width: 50%;" value="Upload Image or Video" id="image">-->
             <button type="submit" class="button">Post</button>
         </form>
     </div>
@@ -24,27 +26,26 @@
 <div id="sharemodal" class="sharebox hidden">
     <h3 class="sharemodaltitle">
         Share Post
-        <button onclick="shareclose()" class="right closepopup" id="share_close" type="button">X</button>
+        <button onclick="shareclose()" class="right closepopup" id="share_close" type="button"><i
+                class="lni lni-close"></i></button>
     </h3>
     <a target="_blank" class="shareicon" id="share_reddit_link"><span id="share_reddit"><i
-                class="fab fa-reddit shareicon fa-2x"></i></span></a>
+                class="lni lni-32 lni-reddit"></i></span></a>
 
     <a target="_blank" class="shareicon" id="share_twitter_link"><span id="share_twitter"><i
-                class="fab fa-twitter shareicon fa-2x"></i></span></a>
+                class="lni lni-32 lni-twitter"></i></span></a>
 
     <a target="_blank" class="shareicon" id="share_facebook_link"><span id="share_facebook"><i
-                class="fab fa-facebook shareicon fa-2x"></i></span></a>
+                class="lni lni-32 lni-facebook"></i></span></a>
 
     <a target="_blank" class="shareicon" id="share_email_link"><span id="share_email"><i
-                class="fa fa-envelope shareicon fa-2x"></i></span></a>
+                class="lni lni-32  lni-envelope"></i></span></a>
     <br><br>
-    <input id="share_link" disabled class="input" style="color: white; width: 100%;" value="https://siddes.com/s/">
+    <input id="share_link" disabled class="input" style="color: white; width: 100%;"
+        value="https://siddes.com/s/"><br><br>
+    <input id="share_iframe" disabled class="input" style="color: white; width: 100%;"
+        value="<iframe src='https://siddes.com/embed/{{postid}}' width='500' height='365'></iframe>">
     <br>
-    <p class="smalltext"
-        style="font-size: x-small; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
-        Reddit, Twitter, and the Facebook logos belong to there respective trademark holders. Icons provided by
-        Font-Awesome.
-    </p>
 </div>
 
 <!-- message box -->
@@ -54,7 +55,8 @@
     <div class="messagebox hidden" id="messagesbox">
         <div class="messagesnav">
             Messages
-            <span class="right messagesx"><button onclick="messages('close')">X</button></span>
+            <span class="right messagesx"><button onclick="messages('close')"><i
+                        class="lni lni-close"></i></button></span>
         </div>
         <div class="row">
             <div class="column messagesection" style="width: 30%;">
@@ -89,7 +91,8 @@
         <span id="alerttitle">
             Alert
         </span>
-        <button onclick="closealert()" class="right closepopup" id="share_close" type="button">X</button>
+        <button onclick="closealert()" class="right closepopup" id="share_close" type="button"><i
+                class="lni lni-close"></i></button>
     </h3>
     <p class="alerttext" id="alerttext">
     </p>

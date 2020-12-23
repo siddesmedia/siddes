@@ -1,3 +1,23 @@
+<style>
+    .inputleft {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        filter: invert(0.1);
+        text-align: right;
+        max-width: 135px;
+    }
+
+    .inputright {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        width: 50%;
+        max-width: 135px;
+    }
+
+    .inputright:focus {
+        outline: none;
+    }
+</style>
 <h3 class="header nobottompadmar">Edit Account</h3>
 <br>
 <span>
@@ -17,29 +37,41 @@
     <label for="description">Bio:</label><br>
     <input type="text" class="input" name="description" value="<%= user.description %>" style="width: 50%;" required>
     <br><br>
+    <label for="notificationson">Notifications:</label><br>
+    <select name="notifications" id="notifications" required class="input">
+        <optgroup label='notifications'>
+            <% if(user.notificationson == 'true') { %>
+            <option value="true" selected>on</option>
+            <option value="false">off</option>
+            <% } else { %>
+            <option value="true">on</option>
+            <option value="false" selected>off</option>
+            <% } %>
+        </optgroup>
+    </select><br><br>
     <label for="theme">Theme:</label><br>
     <select name="theme" id="reason" required class="input">
-        <optgroup label='Theme'>
+        <optgroup label='theme'>
             <% if(user.theme == 'flipped alt') { %>
+            <option>ocean dark</option>
+            <option>flashlight</option>
+            <option>midnight</option>
             <option selected>flipped alt</option>
-            <option>light</option>
-            <option>black</option>
-            <option>dark</option>
-            <% } else if(user.theme == 'light') { %>
+            <% } else if(user.theme == 'flashlight') { %>
+            <option>ocean dark</option>
+            <option selected>flashlight</option>
+            <option>midnight</option>
             <option>flipped alt</option>
-            <option selected>light</option>
-            <option>black</option>
-            <option>dark</option>
-            <% } else if(user.theme == 'black') { %>
+            <% } else if(user.theme == 'midnight') { %>
+            <option>ocean dark</option>
+            <option>flashlight</option>
+            <option selected>midnight</option>
             <option>flipped alt</option>
-            <option>light</option>
-            <option selected>black</option>
-            <option>dark</option>
             <% } else { %>
+            <option selected>ocean dark</option>
+            <option>flashlight</option>
+            <option>midnight</option>
             <option>flipped alt</option>
-            <option>light</option>
-            <option>black</option>
-            <option selected>dark</option>
             <% } %>
         </optgroup>
     </select><br>
@@ -55,11 +87,42 @@
     <br><br>
     <button type="submit" class="button">Save Changes</button>
 </form>
+
 <h3 class="header">Other</h3><br>
+
+<a class="headerred smalltext">Account Links (optional)</a><br>
+<form action="/account/edit/connections" method="POST" class="section">
+
+    <input class="input inputleft" value="github/" disabled><input type="text" class="input inputright" name="github"
+        value="<%= user.githublink %>"><br><br>
+
+    <input class="input inputleft" value="twitter/" disabled><input type="text" class="input inputright" name="twitter"
+        value="<%= user.twitterlink %>"><br><br>
+
+    <input class="input inputleft" value="facebook/" disabled><input type="text" class="input inputright"
+        name="facebook" value="<%= user.facebooklink %>"><br><br>
+
+    <input class="input inputleft" value="discord.gg/" disabled><input type="text" class="input inputright"
+        name="discord" value="<%= user.discordlink %>"><br><br>
+
+    <input class="input inputleft" value="instagram/" disabled><input type="text" class="input inputright"
+        name="instagram" value="<%= user.instagramlink %>"><br><br>
+
+    <input class="input inputleft" value="youtube/" disabled><input type="text" class="input inputright" name="youtube"
+        value="<%= user.youtubelink %>"><br><br>
+
+    <input class="input inputleft" value="steamcommunity/" disabled><input type="text" class="input inputright"
+        name="steam" value="<%= user.steamlink %>"><br><br>
+
+    <button type="submit" class="button">Save Links</button>
+    <br><br>
+</form>
+
 <a class="headerred smalltext">Account ID</a><br>
 <form class="section">
     <input type="text" class="input" style="width: 50%;" disabled value="<%= user._id %>">
 </form>
+
 <script>
     themename()
 </script>

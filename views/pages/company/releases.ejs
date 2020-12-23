@@ -2,6 +2,58 @@
 <span>
     <p class="noheader smalltext">Shhhhh (this is a secret page!)</p>
 </span>
+<div class="fullsection v109">
+    <h4>☞ 1.0.9 (Beta) ☜</h4>
+    <p>Public Beta</p>
+    <ul>
+        <p>Biggest Change</p>
+        <li>notifications</li>
+
+        <p>Notification Notes</p>
+        <li>notifications are only available for chromium on macOS, Windows, Linux, and Android</li>
+        <li>a list of chromium browsers:
+            <ul>
+                <li><a href="https://chrome.google.com">Chrome</a></li>
+                <li><a href="https://brave.com/">Brave Browser</a></li>
+                <li><a href="https://www.chromium.org/getting-involved/download-chromium">Chromium</a></li>
+                <li><a href="https://www.microsoft.com/en-us/edge">Microsoft Edge</a></li>
+                <li><a href="https://vivaldi.com/">Vivaldi</a></li>
+                <li><a href="https://www.epicbrowser.com/">Epic Browser</a></li>
+            </ul>
+        </li>
+
+        <p>Client Side</p>
+        <li>added bottom popup for notifications</li>
+        <li>created notifications service worker (recieve notifications)</li>
+        <li>old dark theme now called black</li>
+        <li>new dark theme is now a little more blue</li>
+        <li>renamed themes and added new ones
+            <ul>
+                <li>dark -> midnight</li>
+                <li>light -> flashlight</li>
+                <li>flipped alt</li>
+                <li>+ocean dark</li>
+            </ul>
+        </li>
+        <li>service worker thread now communicates with the main javascript thread to disp[lay notifications at bottom
+            of screen</li>
+        <li>added spots for account linking in settings</li>
+        <li>added links for accounts that are linked</li>
+        <li>fixed insides nav overflowing on mobile devices and pushing nav over top post</li>
+        <li>added pwa for easy installation from chromium browsers</li>
+
+        <p>Server Side</p>
+        <li>sending notifications through <a
+                href="https://developers.google.com/web/fundamentals/push-notifications/web-push-protocol">vapid</a>
+        </li>
+        <li>fixed hashtag searches retunring polluted results</li>
+        <li>account linking is now saved</li>
+
+        <p>Notes</p>
+        <li>notifications are still considered a flag (experimental) feature inside chromium, if they do not work, turn
+            them to the "ask (default)" preference and it will prompt you again for notifications</li>
+    </ul>
+</div>
 <div class="fullsection">
     <h4>1.0.8 (Beta)</h4>
     <p>Public Beta</p>

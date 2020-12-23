@@ -6,8 +6,15 @@
     .postdiv:hover {
         border: none;
     }
+
+    body {
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+        top: 0;
+    }
 </style>
-<div class="embed" style="width:325px">
+<div class="embed" style="width:100%; top: 0;position: fixed;">
     <div class="postcontainer">
         <div class="postdiv" style="width: auto;border-bottom: none;">
             <div style="cursor: pointer;" onclick="window.location='/embed/<%= post._id %>'">
@@ -22,8 +29,9 @@
                 </span>
                 <% } else { %>
                 <span class="commentsmeta right">
-                    <button onclick="window.location='/report?post=<%= post._id %>'" type="button" class="postreport"><a
-                            class="nostyle" href="/report?post=<%= post._id %>" target='_blank'>Report</a></button>
+                    <button onclick="window.location='/report?post=<%= post._id %>'" type="button"
+                        class="postreport button"><a class="nostyle"
+                            href="/report?post=<%= post._id %>">Report</a></button>
                 </span>
                 <% }} %>
                 <p class="postowner">
@@ -34,14 +42,13 @@
                     <span class="repostbadge">Repost</span>
                     <% } else {} %>
                 </p>
-                <p class="postbody" id="post_<%= post._id %>">
+                <p class="helvetica" id="post_<%= post._id %>">
                     <%= post.body %>
                 </p>
                 <% if(post.media == true) { %>
                 <img class="postimage" src="/usergenerated/images/<%= post._id %>" loading="lazy"><br>
-                <span>
-                    <a href="/usergenerated/images/<%= post._id %>" download class="postbody smalltext">Download
-                        Image</a>
+                <span><a href="/usergenerated/images/<%= post._id %>" download
+                        class="postbody smalltext some_stupid _placeholder_class">Download Image</a>
                 </span><br><br>
                 <% } %>
                 <!--<p class="postmeta">

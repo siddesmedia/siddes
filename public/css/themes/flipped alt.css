@@ -79,7 +79,6 @@ th {
 
 .fa,
 .fas {
-    background-color: transparent !important;
     color: white;
 }
 
@@ -189,7 +188,6 @@ h3.sharemodaltitle {
 
 .postimage {
     border: 1px black solid;
-    border-radius: 25px;
 }
 
 .pfpimage {

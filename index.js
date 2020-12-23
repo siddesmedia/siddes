@@ -3,7 +3,7 @@ const app = express();
 const mongoose = require('mongoose');
 const passport = require('passport');
 const http = require('http').Server(app);
-const io = require('socket.io')(http);
+const io = require('socket.io').listen(http);
 const funcs = require('./config/functions');
 require('dotenv').config()
 require('./config/passport')(passport);
@@ -16,6 +16,12 @@ const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const redis = require('redis')
 const redisClient = redis.createClient(process.env.REDIS_URL)
+const webPush = require('web-push')
+
+const publicVapidKey = process.env.PUBLIC_VAPID_KEY;
+const privateVapidKey = process.env.PRIVATE_VAPID_KEY;
+
+webPush.setVapidDetails('mailto:support@siddes.com', publicVapidKey, privateVapidKey);
 
 app.use(require('serve-static')('./public'));
 app.use(require('cookie-parser')());
@@ -46,6 +52,26 @@ app.use('/*', async function (req, res, next) {
 })
 app.use(require('express-status-monitor')(statusoptions));
 
+io.sockets.on('connection', function (socket) {
+    console.log('socket connection')
+    socket.on('username', function (username) {
+        socket.username = username;
+        io.emit('is_online', '🔵 <i>' + socket.username + ' joined the chat..</i>');
+    });
+
+    socket.on('disconnect', function (username) {
+        io.emit('is_online', '🔴 <i>' + socket.username + ' left the chat..</i>');
+    })
+
+    socket.on('chat_message', function (message) {
+        if (message.trim().length < 1) {
+            return;
+        } else {
+            io.emit('chat_message', '<strong>' + socket.username + '</strong>: ' + message);
+        }
+    });
+});
+
 if (process.env.ENV == "p" || process.env.ENV == "production") {
     const user = require('./routes/user')
     app.use('/', user);
@@ -74,6 +100,8 @@ if (process.env.ENV == "p" || process.env.ENV == "production") {
     const errors = require('./routes/errors')
     app.use('/', errors);
 }
+
+
 if (process.env.ENV == "m" || process.env.ENV == "maintenance") {
     app.get('/*', async function (req, res, next) {
         const about = {
@@ -88,30 +116,11 @@ if (process.env.ENV == "m" || process.env.ENV == "maintenance") {
         return res.render('base', about);
     });
 }
+
 mongoose.connect(process.env.MONGO, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true
-});
-
-io.sockets.on('connection', function (socket) {
-    socket.on('username', function (username) {
-        socket.username = username;
-        io.emit('is_online', '🔵 <i>' + socket.username + ' joined the chat..</i>');
-    });
-
-    socket.on('disconnect', function (username) {
-        io.emit('is_online', '🔴 <i>' + socket.username + ' left the chat..</i>');
-    })
-
-    socket.on('chat_message', function (message) {
-        if (message.trim().length < 1) {
-            return;
-        } else {
-            io.emit('chat_message', '<strong>' + socket.username + '</strong>: ' + message);
-        }
-    });
-
 });
 
 http.listen(port, function () {

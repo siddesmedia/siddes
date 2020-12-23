@@ -31,6 +31,7 @@
         font-weight: bold !important;
         border: none !important;
         border-radius: 25px !important;
+        cursor: pointer;
     }
 
     .purchase {
@@ -42,6 +43,7 @@
         font-weight: bold !important;
         border: none !important;
         border-radius: 25px !important;
+        cursor: pointer;
     }
 
     .padleft10 {
@@ -50,6 +52,8 @@
 
     .center {
         text-align: center;
+        margin: auto;
+        display: block;
     }
 
     .nopadleft {
@@ -89,13 +93,14 @@
         <img width="13px" style="padding: 0;padding-top:5px;" src="https://static-cdn.siddes.com/img/icons/premium.png">
     </span>
     <span>
-        <a href="/">Home</a>
+        <a href="/" style="color: white;">Home</a>
+        <a href="javascript:history.go(-1)" style="color: white;" class="right">Back</a>
     </span>
 </div>
 <div class="mainbodypremium">
     <div class="toppremium">
         <h1 class="header hugetext"><%= name %><br>Premium</h1><br>
-        <h1 class="header nobottompadmar">Premium is Everything You Need Plus More</h1>
+        <h1 class="header nobottompadmar">Premium is Everything you Need, Plus More</h1>
         <p class="section padleft10">
             <%= name %> premium gives you an ad-free browsing experience and a ton of user benefits. It also directly
             helps
@@ -103,29 +108,28 @@
         </p>
         <div id="pricing" class="section nopadleft">
             <button class="yearlypurchase nopadleft">
-                $40.99 USD/Year
+                $30.99 USD/Year
             </button>
             <button class="purchase">
-                $4.99 USD/Month
+                $3.99 USD/Month
             </button>
         </div>
     </div>
     <div class="premiumbottom center">
-        <h3 class="noheader">What Are the Benefits of <%= name %> Premium?</h3>
+        <h3 class="">What Are the Benefits of <%= name %> Premium?</h3>
     </div>
     <div class="benefitsbox">
         <ul>
             <li>Premium Only Live Chat</li>
-            <li>4,000 Monthly Coins</li>
             <li>Ad-free Browsing</li>
             <li>Premium Only Live Streams</li>
-            <li>GIF Profile Pictures</li>
             <li>Bigger File Uploads</li>
+            <li>Multiple File Uploads</li>
             <button class="yearlypurchase">
-                $40.99 USD/Year
+                $30.99 USD/Year
             </button>
             <button class="purchase">
-                $4.99 USD/Month
+                $3.99 USD/Month
             </button>
         </ul>
     </div>

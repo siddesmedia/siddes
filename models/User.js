@@ -170,6 +170,51 @@ const User = new mongoose.Schema({
         unique: false,
         required: true,
         default: false
+    },
+    notifications: {
+        type: Object,
+        unique: true,
+        required: false
+    },
+    notificationson: {
+        type: String,
+        unique: false,
+        required: true
+    },
+    twitterlink: {
+        type: String,
+        unique: false,
+        required: false
+    },
+    githublink: {
+        type: String,
+        unique: false,
+        required: false
+    },
+    facebooklink: {
+        type: String,
+        unique: false,
+        required: false
+    },
+    discordlink: {
+        type: String,
+        unique: false,
+        required: false
+    },
+    instagramlink: {
+        type: String,
+        unique: false,
+        required: false
+    },
+    youtubelink: {
+        type: String,
+        unique: false,
+        required: false
+    },
+    steamlink: {
+        type: String,
+        unique: false,
+        required: false
     }
 });
 

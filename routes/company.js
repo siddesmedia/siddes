@@ -14,7 +14,7 @@ router.get('/', function (req, res, next) {
         loggedin: funcs.loggedin(req.user),
         moderator: funcs.moderator(req.user),
         navbar: true,
-        footer: true
+        footer: false
     };
     return res.render('base', about);
 });
@@ -28,7 +28,7 @@ router.get('/about', function (req, res, next) {
         loggedin: funcs.loggedin(req.user),
         moderator: funcs.moderator(req.user),
         navbar: true,
-        footer: true
+        footer: false
     };
     return res.render('base', about);
 });
@@ -42,7 +42,7 @@ router.get('/transparency', function (req, res, next) {
         loggedin: funcs.loggedin(req.user),
         moderator: funcs.moderator(req.user),
         navbar: true,
-        footer: true
+        footer: false
     };
     return res.render('base', about);
 });
@@ -56,7 +56,7 @@ router.get('/howto', function (req, res, next) {
         loggedin: funcs.loggedin(req.user),
         moderator: funcs.moderator(req.user),
         navbar: true,
-        footer: true
+        footer: false
     };
     return res.render('base', about);
 });
@@ -70,7 +70,7 @@ router.get('/bugs', function (req, res, next) {
         loggedin: funcs.loggedin(req.user),
         moderator: funcs.moderator(req.user),
         navbar: true,
-        footer: true
+        footer: false
     };
     return res.render('base', about);
 });
@@ -112,7 +112,7 @@ router.get('/the-press-sucks', function (req, res, next) {
         loggedin: funcs.loggedin(req.user),
         moderator: funcs.moderator(req.user),
         navbar: true,
-        footer: true
+        footer: false
     };
     return res.render('base', about);
 });
@@ -126,7 +126,7 @@ router.get('/tos', function (req, res, next) {
         loggedin: funcs.loggedin(req.user),
         moderator: funcs.moderator(req.user),
         navbar: true,
-        footer: true
+        footer: false
     };
     return res.render('base', about);
 });
@@ -140,7 +140,7 @@ router.get('/pp', function (req, res, next) {
         loggedin: funcs.loggedin(req.user),
         moderator: funcs.moderator(req.user),
         navbar: true,
-        footer: true
+        footer: false
     };
     return res.render('base', about);
 });
@@ -186,6 +186,19 @@ router.get('/roadmap', function (req, res, next) {
     return res.render('base', about);
 });
 
+router.get('/contact', function (req, res, next) {
+    const about = {
+        title: 'Contact - ' + Name,
+        template: 'pages/company/contact',
+        name: Name,
+        loggedin: funcs.loggedin(req.user),
+        moderator: funcs.moderator(req.user),
+        navbar: true,
+        footer: false
+    };
+    return res.render('base', about);
+});
+
 router.get('/analytics', async function (req, res, next) {
     const analytics = await Analytics.find().sort({
         _id: -1
@@ -219,6 +232,10 @@ router.get('/analytics', async function (req, res, next) {
         chart_labels: chart_labels
     };
     return res.render('base', about);
+});
+
+router.get('/jobs', async function (req, res, next) {
+    res.send('no jobs')
 });
 
 module.exports = router

@@ -1,0 +1,2 @@
+release: chmod u+x backup.sh && ./backup.sh
+web: npm start

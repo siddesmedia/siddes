@@ -1,10 +1,21 @@
 <div class="footer">
     <div class="row">
         <div class="dontshrinkcolumn" style="padding-left: 30px;">
+            <h3 class="noheader nobottompadmar navfooanoleftpad" style="margin-left: 0;"><a
+                    href="https://media.siddes.com" class="nobottompadmar navfooanoleftpad">Siddes Media</a></h3><br>
+            <span class="section"><br>
+                <a href="/company/jobs" class="">Jobs</a><br>
+                <a href="https://media.siddes.com">Siddes Media</a><br>
+                <a href="https://media.siddes.com#mission">Our Mission</a><br>
+                <a href="https://media.siddes.com#employees">Contributors</a><br>
+                <a href="https://github.com/siddesmedia">Open Source</a><br>
+                <a href="https://blog.siddes.com" class="">A Privacy Blog</a><br>
+            </span>
+        </div>
+        <div class="dontshrinkcolumn" style="padding-left: 30px;">
             <h3 class="noheader nobottompadmar navfooanoleftpad" style="margin-left: 0;">Siddes.com</h3><br>
             <span class="section"><br>
                 <a href="/" class="">Home</a><br>
-                <a href="https://blog.siddes.com" class="">A Privacy Blog</a><br>
                 <% if(loggedin == true) { %>
                 <a class="" href="/logout">Logout</a><br>
                 <% } else {} %>
@@ -16,17 +27,30 @@
             </span>
         </div>
         <div class="dontshrinkcolumn" style="padding-left: 30px;">
-            <h3 class="noheader nobottompadmar navfooanoleftpad" style="margin-left: 0;">Company</h3><br>
+            <h3 class="noheader nobottompadmar navfooanoleftpad" style="margin-left: 0;">Resources</h3><br>
             <span class="section"><br>
                 <a href="/company" class="">Company</a><br>
+                <a href="/company/contact" class="">Contact</a><br>
                 <a href="/company/analytics" class="">Analytics</a><br>
                 <a href="/company/status" class="">Status</a><br>
-                <a href="#" class="">Jobs</a><br>
                 <a href="/company/tos" class="">Terms of Service</a><br>
                 <a href="/company/pp" class="">Privacy Policy</a>
             </span>
         </div>
     </div>
+</div>
+<div id="notificationpopup" class="hidden">
+    <span class="noheader" style="margin-left: 0 !important;padding-bottom: 6px;">
+        <div id="noti_title">notification</div>
+    </span>
+    <button class="right button closepopup" onclick="closelowernoti()">
+        X
+    </button>
+    <a id="noti_link" class="nostylea">
+        <span class="nostyle">
+            <div id="noti_body" class="helvetica">notification body</div>
+        </span>
+    </a>
 </div>
 <br>
 <script>

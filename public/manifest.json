@@ -1,0 +1,21 @@
+{
+    "name": "Siddes - Welcome to Privacy",
+    "short_name": "Siddes",
+    "start_url": "/latest/0",
+    "display": "standalone",
+    "background_color": "#5900b3",
+    "theme_color": "black",
+    "scope": ".",
+    "description": "Siddes is a privacy-first social media, welcome to privacy.",
+    "icons": [{
+            "src": "img/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "img/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

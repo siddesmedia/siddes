@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="/css/partials/board.css">
 <div id="posts">
     <% for(var i = 0; i < posts.length; i++) { %>
-    <div class="postcontainer">
+    <div class="postcontainer" id="post_<%= posts[i]._id %>">
         <div class="postdiv">
             <% if(posts[i].sensitive == true) { %>
             <div class="sensitivepost" style="cursor: pointer;" onclick="window.location='/s/<%= posts[i]._id %>'">
@@ -34,8 +34,10 @@
                     <span class="repostbadge">Repost</span>
                     <% } else {} %>
                     <% if(posts[i].boardonly == true) { %>
-                    <span class="repostbadge boardtag" id="board_<%= posts[i].board %>_<%= posts[i]._id %>"
-                        style="border: none;" onclick="url('/board/<%= posts[i].board %>')"></span>
+                    <span class="repostbadge boardtag" style="border: none;"
+                        onclick="url('/board/<%= posts[i].board %>')"><a
+                            id="board_<%= posts[i].board %>_<%= posts[i]._id %>" href="/board/<%= posts[i].board %>"
+                            class="nostylea"></a></span>
 
                     <script>
                         getboardname('board_<%= posts[i].board %>_<%= posts[i]._id %>', '<%= posts[i].board %>')
@@ -46,8 +48,8 @@
 <%= posts[i].body %>
                 </pre>
                 <% if(posts[i].media == true) { %>
-                <img class="postimage" id="img_<%= posts[i]._id %>" src="/usergenerated/images/<%= posts[i]._id %>"
-                    loading="lazy"><br>
+                <img class="postimage" alt="this image doesn't exist..." id="img_<%= posts[i]._id %>"
+                    src="/usergenerated/images/<%= posts[i]._id %>" loading="lazy"><br>
                 <script>
                     // getmedia('img_<%= posts[i]._id %>', '<%= posts[i]._id %>')
                 </script><br><br>
@@ -59,28 +61,27 @@
             <div class="post_bottom_buttons">
                 <span class="seeallcommentsbutton">
                     <button type="button" onclick="expandcomments('<%= posts[i]._id %>')" class="button">
-                        Expand
+                        <i class="lni lni-comments"></i>
                     </button>
                 </span>
                 <span class="right">
                     <span class="modbuttons">
                         <% if(moderator == true) { if(posts[i].approved == true) { %>
                         <button onclick="removepost('<%= posts[i]._id %>')" type="button" class="button">Mod:
-                            Remove
-                            Post</button>
+                            Remove Post</button>
                         <% } else { %>
                         <button onclick=" removepost('<%= posts[i]._id %>')" type="button" class="button">Mod:
-                            Remove
-                            Post</button>
-                        <button onclick=" approvepost('<%= posts[i]._id %>')" type="button" class="button">Mod:
-                            Approve
-                            Post</button>
+                            Remove Post</button>
+                        <button onclick=" approvepost('<%= posts[i]._id %>')" type="button" class="button"
+                            id="approve_<%= posts[i]._id %>">Mod:
+                            Approve Post</button>
 
                         <% }} %>
                     </span>
                     <button onclick="window.location='/account/repost?postid=<%- posts[i]._id %>&repost=true'"
                         type="button" class="postrepost button">Repost</button>
-                    <button onclick="share('<%= posts[i]._id %>')" type="button" class="postshare button">Share</button>
+                    <button onclick="share('<%= posts[i]._id %>')" type="button" class="postshare button"><i
+                            class="lni lni-share"></i></button>
                     <span id="likebutton_<%= posts[i]._id %>">
 
                     </span>

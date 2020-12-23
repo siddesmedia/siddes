@@ -16,7 +16,8 @@ const imgur = require('../config/imgur');
 const uploadimage = multer({
     dest: './usergenerated/imageslarge',
     limits: {
-        fileSize: 4000000
+        fileSize: 8000000,
+        files: 1
     }
 });
 const uploadpfp = multer({
@@ -31,11 +32,19 @@ const mongoose = require('mongoose');
 
 router.get('/', async function (req, res, nect) {
     if (funcs.loggedin(req.user) == true) {
-        res.redirect('/notifications')
+        res.redirect('/home')
     } else {
         res.redirect('/latest/0/')
     }
 })
+
+router.post('/subscribe', (req, res) => {
+    const subscription = JSON.parse(req.body.body);
+
+    res.sendStatus(200);
+
+    funcs.subscribe(subscription, req.user._id);
+});
 
 router.get('/analytics/addvisit', async function (req, res, next) {
     await analytics.analytics()
@@ -311,10 +320,12 @@ router.get('/tag/:hashtag', async function (req, res, next) {
 });
 
 router.get('/tag/:page/:hashtag', async function (req, res, next) {
+    var regex = new RegExp(`\B#\w\w+${req.params.hashtag}`, 'i')
+    console.log(regex)
 
     var posts = await Post.find({
         $text: {
-            $search: '#' + req.params.hashtag
+            $search: `"#${req.params.hashtag}"`
         }
     }).skip(req.params.page * 20).limit(20);
 
@@ -767,8 +778,20 @@ router.post('/post/new', uploadimage.single('image'), async function (req, res, 
         var date = Date.now()
         var mediaid;
 
+        // posts can have images
+        // but its not required
+        // so if they selected an image,
+        // set media to true and upload the img
         if (req.file) {
             media = true
+        }
+
+        // only images are allowed
+        // so if the mime type does not begin with 'i' (image)
+        // dont allow the upload and return a server error
+        if (media == true && req.file.mimetype[0] != 'i') {
+            media = false
+            return res.send('Only Images are Allowed', 501)
         }
 
         if (body.length > 1000) {
@@ -917,6 +940,7 @@ router.post('/account/edit', uploadpfp.any(), async function (req, res, next) {
         var displayname = req.body.displayname;
         var description = req.body.description;
         var theme = req.body.theme;
+        var notificationson = req.body.notifications;
 
         const prohibitedincludes = ["@", "/", "!", "#", "$", "%", "^", "&", "*", "(", ")", "-", "=", "+", "[", "]", "{", "}", "|", "\\", "`", "\"", "~", "'", ":", ";", ",", "<", ">", ",", "."]
         const prohibitedusername = ["login", "signup", "latest", "company"];
@@ -951,13 +975,16 @@ router.post('/account/edit', uploadpfp.any(), async function (req, res, next) {
             username = req.user.username
         }
 
+        console.log(notificationson)
+
         var update = await User.findOneAndUpdate({
             _id: req.user._id
         }, {
             username: username,
             displayname: displayname,
             description: description,
-            theme: theme
+            theme: theme,
+            notificationson: notificationson
         });
 
         update
@@ -1036,7 +1063,35 @@ router.post('/account/edit', uploadpfp.any(), async function (req, res, next) {
         } catch (err) {
             var dog
         }
-        res.redirect('/account/' + req.user._id)
+        res.redirect('/account/edit')
+    }
+})
+
+router.post('/account/edit/connections', async function (req, res, next) {
+    if (!req.user) {
+        res.redirect('/login')
+    } else {
+        var githublink = req.body.github
+        var twitterlink = req.body.twitter
+        var facebooklink = req.body.facebook
+        var discordlink = req.body.discord
+        var instagramlink = req.body.instagram
+        var youtubelink = req.body.youtube
+        var steamlink = req.body.steam
+
+        const updateuserwithconnections = await User.findByIdAndUpdate(req.user._id, {
+            githublink,
+            twitterlink,
+            facebooklink,
+            discordlink,
+            instagramlink,
+            youtubelink,
+            steamlink
+        })
+
+        updateuserwithconnections
+
+        return res.redirect('/account')
     }
 })
 

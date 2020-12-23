@@ -1,6 +1,7 @@
 const Post = require('../models/Post');
 const Comment = require('../models/Comment');
 const User = require('../models/User');
+const webPush = require('web-push');
 
 function loggedin(user) {
     if (user) {
@@ -8,6 +9,30 @@ function loggedin(user) {
     } else {
         return false;
     }
+}
+
+async function sendnotification(userid, title, body, link) {
+    const subscriptionobject = await User.findById(userid)
+
+    if (subscriptionobject.notificationson == 'true') {
+        const payload = JSON.stringify({
+            title: title,
+            link: link,
+            body: body
+        });
+
+        console.log('sent noti')
+
+        webPush.sendNotification(subscriptionobject.notifications, payload).catch(error => console.error(error));
+    }
+}
+
+async function subscribe(subscription, userid) {
+    const updateuserwithnotifications = await User.findByIdAndUpdate(userid, {
+        notifications: subscription
+    })
+
+    updateuserwithnotifications
 }
 
 async function getpostowner(postid) {
@@ -78,6 +103,8 @@ async function addtofeed(feedowner, type, link, feed) {
     }
 
     updateownersfeed;
+
+    sendnotification(feedowner, type, feed, link)
 }
 
 async function getfeed(ownerid) {
@@ -302,5 +329,7 @@ module.exports = {
     getuserbyapikey,
     like,
     removelike,
-    removepost
+    removepost,
+    sendnotification,
+    subscribe
 }

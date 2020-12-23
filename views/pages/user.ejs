@@ -4,6 +4,43 @@
 <div class="pfpimage">
     <img class="pfp" src="<%= user.pfp %>" loading="lazy">
 </div>
+<span id="connections" class="right" style="margin-top: 20px;margin-right: 20px;">
+    <% if(user.twitterlink) { %>
+    <a href="https://twitter.com/<%= user.twitterlink %>" target="_blank" class="connectionicon">
+        <i class="lni lni-twitter-filled"></i>
+    </a>
+    <% } %>
+    <% if(user.githublink) { %>
+    <a href="https://github.com/<%= user.githublink %>" target="_blank" class="connectionicon">
+        <i class="lni lni-github-original"></i>
+    </a>
+    <% } %>
+    <% if(user.facebooklink) { %>
+    <a href="https://facebook.com/<%= user.facebooklink %>" target="_blank" class="connectionicon">
+        <i class="lni lni-facebook-original"></i>
+    </a>
+    <% } %>
+    <% if(user.discordlink) { %>
+    <a href="https://discord.gg/<%= user.discordlink %>" target="_blank" class="connectionicon">
+        <i class="lni lni-discord"></i>
+    </a>
+    <% } %>
+    <% if(user.instagramlink) { %>
+    <a href="https://instagram.com/<%= user.instagramlink %>" target="_blank" class="connectionicon">
+        <i class="lni lni-instagram-filled"></i>
+    </a>
+    <% } %>
+    <% if(user.youtubelink) { %>
+    <a href="https://youtube.com/<%= user.youtubelink %>" target="_blank" class="connectionicon">
+        <i class="lni lni-youtube"></i>
+    </a>
+    <% } %>
+    <% if(user.steamlink) { %>
+    <a href="https://steamcommunity.com/profiles/<%= user.steamlink %>" target="_blank" class="connectionicon">
+        <i class="lni lni-steam"></i>
+    </a>
+    <% } %>
+</span>
 <br>
 <div>
     <h3>
@@ -54,10 +91,10 @@
 </div>
 <div>
     <p class="section">
-        <a class="accountlinks" href="/<%= user.username %>/following">Following:
+        <a class="accountlinks" href="/<%= user.username %>/following">Following
             <span><%= user.following.length %></span></a> - <a class="accountlinks"
-            href="/<%= user.username %>/followers">Followers:
-            <span><%= followers %></span>
+            href="/<%= user.username %>/followers"><span><%= followers %></span> Followers
+
         </a>
         <% if (sameuser == true) { %>
         <a class="accountlinks section" href="/account/edit">Edit Account</a>
@@ -79,7 +116,7 @@
         <p class="section">
             <b>Bio:
             </b>
-            <span class="biotext"><%= user.description %></span>
+            <span class="biotext" id="bio"><%= user.description %></span>
         </p>
         <span class="section">
             <% if(moderator == true) { %>
@@ -143,3 +180,6 @@
     </div>
 </span>
 <% } %>
+<script>
+    replacepostlinks('bio')
+</script>
