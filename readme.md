@@ -6,6 +6,7 @@ Siddes is an open-source Twitter and Reddit alternative built on free speech, ea
 
 [![Website](https://img.shields.io/website/https/siddes.com?down_color=red&down_message=down&up_message=up)](https://www.ruqqus.com) 
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/siddesmedia/siddes)
+![CodeQL](https://github.com/siddesmedia/siddes/workflows/CodeQL/badge.svg?branch=main)
 
 <p align="center">
 <img src="https://github.com/siddesmedia/siddes/raw/main/public/img/logo_high_res.png" width="200px"/>
