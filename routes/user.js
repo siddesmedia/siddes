@@ -20,6 +20,13 @@ const {
     body,
     validationResult
 } = require('express-validator');
+const ratelimit = require("express-rate-limit");
+
+const _15per15 = ratelimit({
+    windowMs: 60000 * 15,
+    max: 15,
+    message: "ratelimited: 15 requests per 15 minutes"
+});
 
 router.get('/signup', forwardAuthenticated, function (req, res, next) {
 
@@ -46,7 +53,7 @@ router.post('/signup',
     }),
     body('username').isLength({
         max: 15
-    }).escape(),
+    }).escape(), _15per15,
     (req, res) => {
 
         const {
@@ -180,6 +187,7 @@ router.get('/login', forwardAuthenticated, function (req, res, next) {
 
 router.post('/login',
     body('username').trim().escape(),
+    _15per15,
     async function (req, res, next) {
 
         var nextpage = '/'

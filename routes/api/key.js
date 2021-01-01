@@ -7,6 +7,11 @@ const Comment = require('../../models/Comment');
 const User = require('../../models/User');
 const funcs = require('../../config/functions');
 const ratelimit = require("express-rate-limit");
+const {
+    body,
+    validationResult,
+    query
+} = require('express-validator');
 
 const _15per15 = ratelimit({
     windowMs: 60000 * 15,
@@ -166,28 +171,33 @@ router.post('/like/add', _60per15, async function (req, res, next) {
     }
 });
 
-router.post('/like/remove', _60per15, async function (req, res, next) {
-    const verify = await verifyapikey(req.body.apikey, req.body.accountid)
-    if (verify == false) {
-        res.status(500).json({
-            "success": false,
-            "message": "invalid api key"
-        })
-    } else {
-        try {
-            funcs.removelike(verify._id, req.body.postid)
-            res.json({
-                "success": true,
-                "message": "like successfully removed or never existed"
-            })
-        } catch (err) {
+router.post('/like/remove', _60per15,
+    body('postid').escape().isLength({
+        max: 35
+    }),
+    async function (req, res, next) {
+        const verify = await verifyapikey(req.body.apikey, req.body.accountid)
+        if (verify == false) {
             res.status(500).json({
                 "success": false,
-                "message": err
+                "message": "invalid api key"
             })
+        } else {
+            try {
+                funcs.removelike(verify._id, req.body.postid)
+                res.json({
+                    "success": true,
+                    "message": "like successfully removed or never existed"
+                })
+            } catch (err) {
+                res.status(500).json({
+                    "success": false,
+                    "message": err
+                })
+            }
         }
     }
-});
+);
 
 router.post('/comments/new', _15per15, async function (req, res, next) {
     const verify = await verifyapikey(req.body.apikey, req.body.accountid)

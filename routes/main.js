@@ -35,8 +35,16 @@ const {
 const bcrypt = require('bcryptjs');
 const {
     body,
-    validationResult
+    validationResult,
+    query
 } = require('express-validator');
+const ratelimit = require("express-rate-limit");
+
+const _15per15 = ratelimit({
+    windowMs: 60000 * 15,
+    max: 15,
+    message: "ratelimited: 15 requests per 15 minutes"
+});
 
 router.get('/', async function (req, res, nect) {
     if (funcs.loggedin(req.user) == true) {
@@ -98,6 +106,8 @@ router.get('/account/:id/banner', async function (req, res, next) {
     }
 })
 router.get('/home', async function (req, res, next) {
+    Number(req.query.p)
+
     if (!req.query.p) {
         return res.redirect(`/home?p=1`)
     }
@@ -163,6 +173,8 @@ router.get('/home', async function (req, res, next) {
 });
 
 router.get('/latest', async function (req, res, next) {
+    Number(req.query.p)
+
     if (!req.query.p) {
         return res.redirect(`/latest?p=1`)
     }
@@ -214,7 +226,13 @@ router.get('/latest', async function (req, res, next) {
     return res.render('base', about);
 });
 
+router.get('/search', async function (req, res, next) {
+    res.redirect('/search/0?q=' + req.query.q)
+})
+
 router.get('/:username', async function (req, res, next) {
+    Number(req.query.p)
+
     if (!req.query.p) {
         return res.redirect(`/${req.params.username}?p=1`)
     }
@@ -395,8 +413,6 @@ router.post('/account/developer/key/regenerate', async function (req, res, next)
             apikey_v2: hash
         })
 
-        console.log(hash)
-
         return updateuserwithnewkey
     });
 
@@ -412,40 +428,39 @@ router.get('/account', function (req, res, next) {
     }
 });
 
-router.get('/search/', async function (req, res, next) {
+router.get('/search/:page',
+    query('q').escape().isLength({
+        max: 30
+    }),
+    async function (req, res, next) {
 
-    res.redirect('/search/0?q=' + req.query.q)
-})
+        var posts = await Post.find({
+            $text: {
+                $search: req.query.q
+            }
+        }).skip(req.params.page * 20).limit(20);
 
-router.get('/search/:page', async function (req, res, next) {
+        var lastpage = false;
 
-    var posts = await Post.find({
-        $text: {
-            $search: req.query.q
+        if (posts.length < 20) {
+            lastpage = true
         }
-    }).skip(req.params.page * 20).limit(20);
 
-    var lastpage = false;
-
-    if (posts.length < 20) {
-        lastpage = true
-    }
-
-    const about = {
-        title: req.query.q + ' - ' + Name,
-        template: 'pages/search',
-        name: Name,
-        loggedin: funcs.loggedin(req.user),
-        moderator: funcs.moderator(req.user),
-        navbar: true,
-        footer: true,
-        posts: posts,
-        lastpage: lastpage,
-        page: req.params.page,
-        searchterm: req.query.q
-    };
-    return res.render('base', about);
-});
+        const about = {
+            title: req.query.q + ' - ' + Name,
+            template: 'pages/search',
+            name: Name,
+            loggedin: funcs.loggedin(req.user),
+            moderator: funcs.moderator(req.user),
+            navbar: true,
+            footer: true,
+            posts: posts,
+            lastpage: lastpage,
+            page: req.params.page,
+            searchterm: req.query.q
+        };
+        return res.render('base', about);
+    });
 
 router.get('/tag/:hashtag', async function (req, res, next) {
 
@@ -453,8 +468,13 @@ router.get('/tag/:hashtag', async function (req, res, next) {
 });
 
 router.get('/tag/:page/:hashtag', async function (req, res, next) {
-    var regex = new RegExp(`\B#\w+${req.params.hashtag}`, 'i')
-    console.log(regex)
+    var hashtag = req.params.hashtag
+
+    if (req.params.hashtag.length > 30) {
+        hashtag = req.params.hashtag.substring(0, 30);
+    }
+
+    var regex = new RegExp(`B#w+${hashtag}`, 'i')
 
     var posts = await Post.find({
         $text: {
@@ -484,25 +504,29 @@ router.get('/tag/:page/:hashtag', async function (req, res, next) {
     return res.render('base', about);
 });
 
-router.get('/account/search', async function (req, res, next) {
+router.get('/account/search',
+    query('q').escape().isLength({
+        max: 15
+    }),
+    async function (req, res, next) {
 
-    var users = await User.find({
-        username: req.query.q
-    })
+        var users = await User.find({
+            username: req.query.q
+        })
 
-    const about = {
-        title: req.query.q + ' - ' + Name,
-        template: 'pages/account/search',
-        name: Name,
-        loggedin: funcs.loggedin(req.user),
-        moderator: funcs.moderator(req.user),
-        navbar: true,
-        footer: true,
-        users: users,
-        searchterm: req.query.q
-    };
-    return res.render('base', about);
-});
+        const about = {
+            title: req.query.q + ' - ' + Name,
+            template: 'pages/account/search',
+            name: Name,
+            loggedin: funcs.loggedin(req.user),
+            moderator: funcs.moderator(req.user),
+            navbar: true,
+            footer: true,
+            users: users,
+            searchterm: req.query.q
+        };
+        return res.render('base', about);
+    });
 
 router.get('/account/clear', async function (req, res, next) {
 
@@ -522,49 +546,52 @@ router.get('/account/clear', async function (req, res, next) {
     }
 })
 
-router.get('/account/repost', async function (req, res, next) {
+router.get('/account/repost',
+    query('postid').escape().isLength({
+        max: 35
+    }),
+    async function (req, res, next) {
 
-    if (!req.user) {
-        res.redirect('/login?next=/account/repost')
-    } else {
-        try {
-            var repostid = req.query.postid
+        if (!req.user) {
+            res.redirect('/login?next=/account/repost')
+        } else {
+            try {
+                var repostid = req.query.postid
 
-            var repostitem = await Post.findById(repostid)
+                var repostitem = await Post.findById(repostid)
 
-            var newpost = new Post({
-                body: repostitem.body,
-                owner: req.user._id,
-                media: repostitem.media,
-                date: Date.now(),
-                repost: true,
-                boardonly: repostitem.boardonly,
-                board: repostitem.board
-            })
-
-            if (repostitem.media == true) {
-                var repostmedia = await Media.findOne({
-                    parentid: repostitem._id
+                var newpost = new Post({
+                    body: repostitem.body,
+                    owner: req.user._id,
+                    media: repostitem.media,
+                    date: Date.now(),
+                    repost: true,
+                    boardonly: repostitem.boardonly,
+                    board: repostitem.board
                 })
 
-                var newmedia = new Media({
-                    owner: repostmedia.owner,
-                    parentid: newpost._id,
-                    file: repostmedia.file
-                })
+                if (repostitem.media == true) {
+                    var repostmedia = await Media.findOne({
+                        parentid: repostitem._id
+                    })
 
-                newmedia.save()
+                    var newmedia = new Media({
+                        owner: repostmedia.owner,
+                        parentid: newpost._id,
+                        file: repostmedia.file
+                    })
+
+                    newmedia.save()
+                }
+
+                newpost.save().then(post => {
+                    res.redirect('/s/' + newpost._id)
+                })
+            } catch (err) {
+                return res.send('Internal Server Error', 500)
             }
-
-            newpost.save().then(post => {
-                res.redirect('/s/' + newpost._id)
-            })
-        } catch (err) {
-            console.log(err)
-            return res.send('Internal Server Error', 500)
         }
-    }
-})
+    })
 
 router.get('/account/messages', async function (req, res, next) {
     if (!req.user) {
@@ -823,7 +850,8 @@ router.get('/usergenerated/user/:parentid', async function (req, res, next) {
 router.post('/post/new',
     body('body').escape(),
     body('owner').escape(),
-    uploadimage.single('image'), async function (req, res, next) {
+    uploadimage.single('image'), _15per15,
+    async function (req, res, next) {
         if (!req.user) {
             res.redirect('/login')
         } else {
@@ -1006,7 +1034,7 @@ router.post('/account/edit',
     }).escape(),
     body('description').isLength({
         max: 300
-    }).escape(),
+    }).escape(), _15per15,
     uploadpfp.any(), async function (req, res, next) {
 
         if (!req.user) {
@@ -1052,8 +1080,6 @@ router.post('/account/edit',
             if (usernameexists == true) {
                 username = req.user.username
             }
-
-            console.log(notificationson)
 
             var update = await User.findOneAndUpdate({
                 _id: req.user._id
@@ -1173,14 +1199,14 @@ router.post('/account/edit/connections',
         if (!req.user) {
             res.redirect('/login')
         } else {
-            var githublink = req.body.github
-            var twitterlink = req.body.twitter
-            var facebooklink = req.body.facebook
-            var discordlink = req.body.discord
-            var instagramlink = req.body.instagram
-            var youtubelink = req.body.youtube
-            var steamlink = req.body.steam
-            var websitelink = req.body.website
+            var githublink = req.body.github.toString()
+            var twitterlink = req.body.twitter.toString()
+            var facebooklink = req.body.facebook.toString()
+            var discordlink = req.body.discord.toString()
+            var instagramlink = req.body.instagram.toString()
+            var youtubelink = req.body.youtube.toString()
+            var steamlink = req.body.steam.toString()
+            var websitelink = req.body.website.toString()
 
             const updateuserwithconnections = await User.findByIdAndUpdate(req.user._id, {
                 githublink: githublink,
@@ -1269,16 +1295,20 @@ router.post('/like/new', async function (req, res, next) {
     })
 })
 
-router.post('/like/remove', async function (req, res, next) {
+router.post('/like/remove',
+    body('postid').escape().isLength({
+        max: 35
+    }), async function (req, res, next) {
 
-    if (!req.user) {
-        res.redirect('/login')
-    } else {
-        funcs.removelike(req.user._id, req.body.postid)
+        if (!req.user) {
+            res.redirect('/login')
+        } else {
+            funcs.removelike(req.user._id, req.body.postid)
+        }
+        res.json({
+            success: true
+        })
     }
-    res.json({
-        success: true
-    })
-})
+)
 
 module.exports = router;
