@@ -9,6 +9,10 @@ const {
 } = require('../config/auth');
 const User = require('../models/User');
 const funcs = require('../config/functions');
+const {
+    body,
+    validationResult
+} = require('express-validator');
 
 router.get('/mod/reports', async function (req, res, next) {
 
@@ -88,31 +92,34 @@ router.get('/mod/viewappeals', async function (req, res, next) {
     return res.render('base', about);
 });
 
-router.post('/mod/reports', async function (req, res, next) {
+router.post('/mod/reports',
+    body('sensitive').toBoolean(),
+    async function (req, res, next) {
 
-    if (!req.user) {
-        return res.redirect('/login?next=/mod/reports')
-    }
-    if (req.user.admin == false) {
-        if (req.user.moderator == false) {
-            return res.redirect('/account')
+        if (!req.user) {
+            return res.redirect('/login?next=/mod/reports')
+        }
+        if (req.user.admin == false) {
+            if (req.user.moderator == false) {
+                return res.redirect('/account')
+            }
+        }
+        const postid = req.body.id;
+        const approved = req.body.approved;
+        const sensitive = req.body.sensitive;
+        if (approved == 'true') {
+            const updateapprovedpost = await Post.findByIdAndUpdate(postid, {
+                reported: false,
+                approved: approved,
+                sensitive: sensitive,
+            })
+            return updateapprovedpost;
+        } else {
+            const removebadpost = await funcs.removepost(postid)
+            return removebadpost;
         }
     }
-    const postid = req.body.id;
-    const approved = req.body.approved;
-    const sensitive = req.body.sensitive;
-    if (approved == 'true') {
-        const updateapprovedpost = await Post.findByIdAndUpdate(postid, {
-            reported: false,
-            approved: approved,
-            sensitive: sensitive,
-        })
-        return updateapprovedpost;
-    } else {
-        const removebadpost = await funcs.removepost(postid)
-        return removebadpost;
-    }
-});
+);
 
 router.get('/report', async function (req, res, next) {
 
@@ -228,22 +235,25 @@ router.post('/mod/appealuploadban', async function (req, res, next) {
     }
 })
 
-router.post('/report', async function (req, res, next) {
+router.post('/report',
+    body('reason').escape(),
+    async function (req, res, next) {
 
-    const postexists = await Post.exists({
-        _id: req.body.post
-    })
-    if (postexists == false) {
-        return res.redirect('/mod/reports')
-    } else {
-        const reportpost = await Post.findByIdAndUpdate(req.body.post, {
-            reported: true,
-            approved: false,
-            reportreason: req.body.reason
+        const postexists = await Post.exists({
+            _id: req.body.post
         })
-        reportpost;
-        res.redirect('/')
+        if (postexists == false) {
+            return res.redirect('/mod/reports')
+        } else {
+            const reportpost = await Post.findByIdAndUpdate(req.body.post, {
+                reported: true,
+                approved: false,
+                reportreason: req.body.reason
+            })
+            reportpost;
+            res.redirect('/')
+        }
     }
-});
+);
 
 module.exports = router;

@@ -33,6 +33,10 @@ const {
     v4: uuidv4
 } = require('uuid')
 const bcrypt = require('bcryptjs');
+const {
+    body,
+    validationResult
+} = require('express-validator');
 
 router.get('/', async function (req, res, nect) {
     if (funcs.loggedin(req.user) == true) {
@@ -449,7 +453,7 @@ router.get('/tag/:hashtag', async function (req, res, next) {
 });
 
 router.get('/tag/:page/:hashtag', async function (req, res, next) {
-    var regex = new RegExp(`\B#\w\w+${req.params.hashtag}`, 'i')
+    var regex = new RegExp(`\B#\w+${req.params.hashtag}`, 'i')
     console.log(regex)
 
     var posts = await Post.find({
@@ -816,233 +820,290 @@ router.get('/usergenerated/user/:parentid', async function (req, res, next) {
     }
 })
 
-router.post('/post/new', uploadimage.single('image'), async function (req, res, next) {
-    if (!req.user) {
-        res.redirect('/login')
-    } else {
-        var body = req.body.body;
-        var owner = req.user._id;
-        var media = false;
-        var date = Date.now()
-        var mediaid;
-
-        // posts can have images
-        // but its not required
-        // so if they selected an image,
-        // set media to true and upload the img
-        if (req.file) {
-            media = true
-        }
-
-        // only images are allowed
-        // so if the mime type does not begin with 'i' (image)
-        // dont allow the upload and return a server error
-        if (media == true && req.file.mimetype[0] != 'i') {
-            media = false
-            return res.send('Only Images are Allowed', 501)
-        }
-
-        if (body.length > 1000) {
-            return res.json({
-                error: 'body too long'
-            })
-        }
-
-        var newPost = new Post({
-            body: body,
-            owner: owner,
-            media: media,
-            date: date,
-            repost: req.body.repost,
-            boardonly: false
-        })
-
-        if (req.user.uploadbanned == true || req.user.suspended == true) {
-            res.redirect('/account')
+router.post('/post/new',
+    body('body').escape(),
+    body('owner').escape(),
+    uploadimage.single('image'), async function (req, res, next) {
+        if (!req.user) {
+            res.redirect('/login')
         } else {
+            var body = req.body.body;
+            var owner = req.user._id;
+            var media = false;
+            var date = Date.now()
+            var mediaid;
 
-            newPost
-                .save()
-                .then(post => {
-                    res.redirect('/s/' + newPost._id);
+            // posts can have images
+            // but its not required
+            // so if they selected an image,
+            // set media to true and upload the img
+            if (req.file) {
+                media = true
+            }
 
-                    if (media == true) {
+            // only images are allowed
+            // so if the mime type does not begin with 'i' (image)
+            // dont allow the upload and return a server error
+            if (media == true && req.file.mimetype[0] != 'i') {
+                media = false
+                return res.send('Only Images are Allowed', 501)
+            }
 
-                        var newMedia = new Media({
-                            owner: req.user._id,
-                            parentid: post._id,
-                            file: 'usergenerated/images/' + req.file.filename
-                        })
-
-                        mediaid = newMedia._id
-
-                        newMedia.save().then(media => {
-
-                        })
-                    }
+            if (body.length > 1000) {
+                return res.json({
+                    error: 'body too long'
                 })
+            }
 
-            // imgur upload is a mess... needs updated
-            if (media == true) {
-                imgur.uploadImageFile({
-                    image: fs.readFileSync(path.join(__dirname, '../', 'usergenerated/imageslarge/' + req.file.filename)),
-                    title: 'an image uploaded to siddes.com',
-                    description: 'an image uploaded to siddes.com'
-                }, async function (err, res) {
-                    if (res.status == 200) {
-                        var updatemedia = await Media.findByIdAndUpdate(mediaid, {
-                            file: res.data.link
-                        })
+            var newPost = new Post({
+                body: body,
+                owner: owner,
+                media: media,
+                date: date,
+                repost: req.body.repost,
+                boardonly: false
+            })
 
-                        updatemedia
-                    }
-                });
+            if (req.user.uploadbanned == true || req.user.suspended == true) {
+                res.redirect('/account')
+            } else {
+
+                newPost
+                    .save()
+                    .then(post => {
+                        res.redirect('/s/' + newPost._id);
+
+                        if (media == true) {
+
+                            var newMedia = new Media({
+                                owner: req.user._id,
+                                parentid: post._id,
+                                file: 'usergenerated/images/' + req.file.filename
+                            })
+
+                            mediaid = newMedia._id
+
+                            newMedia.save().then(media => {
+
+                            })
+                        }
+                    })
+
+                // imgur upload is a mess... needs updated
+                if (media == true) {
+                    imgur.uploadImageFile({
+                        image: fs.readFileSync(path.join(__dirname, '../', 'usergenerated/imageslarge/' + req.file.filename)),
+                        title: 'an image uploaded to siddes.com',
+                        description: 'an image uploaded to siddes.com'
+                    }, async function (err, res) {
+                        if (res.status == 200) {
+                            var updatemedia = await Media.findByIdAndUpdate(mediaid, {
+                                file: res.data.link
+                            })
+
+                            updatemedia
+                        }
+                    });
+                }
             }
         }
     }
-})
+);
 
-router.post('/comment/new', async function (req, res, next) {
+router.post('/comment/new',
+    body('body').escape(),
+    body('parentid').escape(),
+    async function (req, res, next) {
 
-    if (!req.user) {
-        res.redirect('/login')
-    } else {
-        var postowner;
-        var updateownersfeed;
-        var body = req.body.body;
-        var parentid = req.body.parentid;
-        var owner = req.user._id;
-        var date = Date.now()
-        postowner = await funcs.getpostowner(parentid)
-
-        if (body.length == 0) {
-            var car;
+        if (!req.user) {
+            res.redirect('/login')
         } else {
-            funcs.addtofeed(postowner, "Someone commented on your post!", '/s/' + req.body.parentid, body)
-        }
+            var postowner;
+            var updateownersfeed;
+            var body = req.body.body;
+            var parentid = req.body.parentid;
+            var owner = req.user._id;
+            var date = Date.now()
+            postowner = await funcs.getpostowner(parentid)
+
+            if (body.length == 0) {
+                var car;
+            } else {
+                funcs.addtofeed(postowner, "Someone commented on your post!", '/s/' + req.body.parentid, body)
+            }
 
 
-        updateownersfeed;
+            updateownersfeed;
 
-        const newComment = new Comment({
-            reply: false,
-            body: body,
-            parentid: parentid,
-            owner: owner,
-            date: date
-        })
-
-        newComment
-            .save()
-            .then(user => {
-                res.redirect('/s/' + parentid);
+            const newComment = new Comment({
+                reply: false,
+                body: body,
+                parentid: parentid,
+                owner: owner,
+                date: date
             })
-    }
-})
 
-router.post('/comment/reply', async function (req, res, next) {
+            newComment
+                .save()
+                .then(user => {
+                    res.redirect('/s/' + parentid);
+                })
+        }
+    })
 
-    if (!req.user) {
-        res.redirect('/login')
-    } else {
-        var postowner;
-        var updateownersfeed;
-        var body = req.body.body;
-        var parentid = req.body.parentid;
-        var owner = req.user._id;
-        var date = Date.now()
-        postowner = await funcs.getpostowner(parentid)
+router.post('/comment/reply',
+    body('body').escape(),
+    body('parentid').escape(),
+    async function (req, res, next) {
 
-        if (body.length == 0) {
-            var car;
+        if (!req.user) {
+            res.redirect('/login')
         } else {
-            funcs.addtofeed(postowner, "Someone commented on your post!", '/s/' + req.body.parentid, body)
-        }
+            var postowner;
+            var updateownersfeed;
+            var body = req.body.body;
+            var parentid = req.body.parentid;
+            var owner = req.user._id;
+            var date = Date.now()
+            postowner = await funcs.getpostowner(parentid)
+
+            if (body.length == 0) {
+                var car;
+            } else {
+                funcs.addtofeed(postowner, "Someone commented on your post!", '/s/' + req.body.parentid, body)
+            }
 
 
-        updateownersfeed;
+            updateownersfeed;
 
-        const newComment = new Comment({
-            reply: true,
-            parentcomment: req.body.parent,
-            body: body,
-            parentid: parentid,
-            owner: owner,
-            date: date
-        })
-
-        newComment
-            .save()
-            .then(user => {
-                res.redirect('/s/' + parentid);
+            const newComment = new Comment({
+                reply: true,
+                parentcomment: req.body.parent,
+                body: body,
+                parentid: parentid,
+                owner: owner,
+                date: date
             })
+
+            newComment
+                .save()
+                .then(user => {
+                    res.redirect('/s/' + parentid);
+                })
+        }
     }
-})
+)
 
-router.post('/account/edit', uploadpfp.any(), async function (req, res, next) {
+router.post('/account/edit',
+    body('username').isLength({
+        max: 15
+    }).escape(),
+    body('displayname').isLength({
+        max: 15
+    }).escape(),
+    body('theme').isLength({
+        max: 20
+    }).escape(),
+    body('description').isLength({
+        max: 300
+    }).escape(),
+    uploadpfp.any(), async function (req, res, next) {
 
-    if (!req.user) {
-        res.redirect('/login')
-    } else {
-        var username = req.body.username;
-        var displayname = req.body.displayname;
-        var description = req.body.description;
-        var theme = req.body.theme;
-        var notificationson = req.body.notifications;
+        if (!req.user) {
+            res.redirect('/login')
+        } else {
+            var username = req.body.username;
+            var displayname = req.body.displayname;
+            var description = req.body.description;
+            var theme = req.body.theme;
+            var notificationson = req.body.notifications;
 
-        const prohibitedincludes = ["@", "/", "!", "#", "$", "%", "^", "&", "*", "(", ")", "-", "=", "+", "[", "]", "{", "}", "|", "\\", "`", "\"", "~", "'", ":", ";", ",", "<", ">", ",", "."]
-        const prohibitedusername = ["login", "signup", "latest", "company"];
+            const prohibitedincludes = ["@", "/", "!", "#", "$", "%", "^", "&", "*", "(", ")", "-", "=", "+", "[", "]", "{", "}", "|", "\\", "`", "\"", "~", "'", ":", ";", ",", "<", ">", ",", "."]
+            const prohibitedusername = ["login", "signup", "latest", "company"];
 
-        for (i = 0; i < prohibitedincludes.length; i++) {
-            if (username.includes(prohibitedincludes[i]) == true) {
+            for (i = 0; i < prohibitedincludes.length; i++) {
+                if (username.includes(prohibitedincludes[i]) == true) {
+                    return res.redirect(url.format({
+                        pathname: "/account/edit",
+                        query: {
+                            "error": "That username is not allowed"
+                        }
+                    }))
+                } else {}
+            }
+
+            if (prohibitedusername.includes(username) == true) {
                 return res.redirect(url.format({
                     pathname: "/account/edit",
                     query: {
                         "error": "That username is not allowed"
                     }
                 }))
-            } else {}
-        }
-
-        if (prohibitedusername.includes(username) == true) {
-            return res.redirect(url.format({
-                pathname: "/account/edit",
-                query: {
-                    "error": "That username is not allowed"
-                }
-            }))
-        }
-
-        var usernameexists = await User.exists({
-            username: {
-                '$regex': new RegExp(username, 'i')
             }
-        })
 
-        if (usernameexists == true) {
-            username = req.user.username
-        }
+            var usernameexists = await User.exists({
+                username: {
+                    '$regex': new RegExp(username, 'i')
+                }
+            })
 
-        console.log(notificationson)
+            if (usernameexists == true) {
+                username = req.user.username
+            }
 
-        var update = await User.findOneAndUpdate({
-            _id: req.user._id
-        }, {
-            username: username,
-            displayname: displayname,
-            description: description,
-            theme: theme,
-            notificationson: notificationson
-        });
+            console.log(notificationson)
 
-        update
+            var update = await User.findOneAndUpdate({
+                _id: req.user._id
+            }, {
+                username: username,
+                displayname: displayname,
+                description: description,
+                theme: theme,
+                notificationson: notificationson
+            });
 
-        try {
-            if (req.files) {
-                if (req.files.length == 1) {
-                    if (req.files[0].fieldname == 'banner') {
+            update
+
+            try {
+                if (req.files) {
+                    if (req.files.length == 1) {
+                        if (req.files[0].fieldname == 'banner') {
+                            imgur.uploadImageFile({
+                                image: fs.readFileSync(req.files[0].path),
+                                title: 'an image uploaded to siddes.com',
+                                description: 'an image uploaded to siddes.com'
+                            }, async function (err, res) {
+                                if (res.status == 200) {
+                                    var updatepfp = await User.findOneAndUpdate({
+                                        _id: req.user._id
+                                    }, {
+                                        banner: res.data.link
+                                    });
+
+                                    updatepfp
+                                }
+                            });
+                        } else {
+                            imgur.uploadImageFile({
+                                image: fs.readFileSync(req.files[0].path),
+                                title: 'an image uploaded to siddes.com',
+                                description: 'an image uploaded to siddes.com'
+                            }, async function (err, res) {
+                                if (res.status == 200) {
+                                    var updatepfp = await User.findOneAndUpdate({
+                                        _id: req.user._id
+                                    }, {
+                                        pfp: res.data.link
+                                    });
+
+                                    updatepfp
+                                }
+                            });
+                        }
+                    } else if (req.files.length == 2) {
                         imgur.uploadImageFile({
-                            image: fs.readFileSync(req.files[0].path),
+                            image: fs.readFileSync(req.files[1].path),
                             title: 'an image uploaded to siddes.com',
                             description: 'an image uploaded to siddes.com'
                         }, async function (err, res) {
@@ -1056,7 +1117,7 @@ router.post('/account/edit', uploadpfp.any(), async function (req, res, next) {
                                 updatepfp
                             }
                         });
-                    } else {
+
                         imgur.uploadImageFile({
                             image: fs.readFileSync(req.files[0].path),
                             title: 'an image uploaded to siddes.com',
@@ -1073,77 +1134,68 @@ router.post('/account/edit', uploadpfp.any(), async function (req, res, next) {
                             }
                         });
                     }
-                } else if (req.files.length == 2) {
-                    imgur.uploadImageFile({
-                        image: fs.readFileSync(req.files[1].path),
-                        title: 'an image uploaded to siddes.com',
-                        description: 'an image uploaded to siddes.com'
-                    }, async function (err, res) {
-                        if (res.status == 200) {
-                            var updatepfp = await User.findOneAndUpdate({
-                                _id: req.user._id
-                            }, {
-                                banner: res.data.link
-                            });
-
-                            updatepfp
-                        }
-                    });
-
-                    imgur.uploadImageFile({
-                        image: fs.readFileSync(req.files[0].path),
-                        title: 'an image uploaded to siddes.com',
-                        description: 'an image uploaded to siddes.com'
-                    }, async function (err, res) {
-                        if (res.status == 200) {
-                            var updatepfp = await User.findOneAndUpdate({
-                                _id: req.user._id
-                            }, {
-                                pfp: res.data.link
-                            });
-
-                            updatepfp
-                        }
-                    });
                 }
+                updatepfp
+            } catch (err) {
+                var dog
             }
-            updatepfp
-        } catch (err) {
-            var dog
+            res.redirect('/account/edit')
         }
-        res.redirect('/account/edit')
     }
-})
+)
 
-router.post('/account/edit/connections', async function (req, res, next) {
-    if (!req.user) {
-        res.redirect('/login')
-    } else {
-        var githublink = req.body.github
-        var twitterlink = req.body.twitter
-        var facebooklink = req.body.facebook
-        var discordlink = req.body.discord
-        var instagramlink = req.body.instagram
-        var youtubelink = req.body.youtube
-        var steamlink = req.body.steam
-        var websitelink = req.body.website
+router.post('/account/edit/connections',
+    body('github').isLength({
+        max: 30
+    }).escape(),
+    body('twitter').isLength({
+        max: 15
+    }).escape(),
+    body('facebook').isLength({
+        max: 50
+    }).escape(),
+    body('discord').isLength({
+        max: 10
+    }).escape(),
+    body('instagram').isLength({
+        max: 30
+    }).escape(),
+    body('youtube').isLength({
+        max: 50
+    }).escape(),
+    body('steam').isLength({
+        max: 50
+    }).escape(),
+    body('website').escape(),
+    async function (req, res, next) {
+        if (!req.user) {
+            res.redirect('/login')
+        } else {
+            var githublink = req.body.github
+            var twitterlink = req.body.twitter
+            var facebooklink = req.body.facebook
+            var discordlink = req.body.discord
+            var instagramlink = req.body.instagram
+            var youtubelink = req.body.youtube
+            var steamlink = req.body.steam
+            var websitelink = req.body.website
 
-        const updateuserwithconnections = await User.findByIdAndUpdate(req.user._id, {
-            githublink,
-            twitterlink,
-            facebooklink,
-            discordlink,
-            instagramlink,
-            youtubelink,
-            steamlink,
-            websitelink
-        })
+            const updateuserwithconnections = await User.findByIdAndUpdate(req.user._id, {
+                githublink,
+                twitterlink,
+                facebooklink,
+                discordlink,
+                instagramlink,
+                youtubelink,
+                steamlink,
+                websitelink
+            })
 
-        updateuserwithconnections
+            updateuserwithconnections
 
-        return res.redirect('/account')
-    }
-})
+            return res.redirect('/account')
+        }
+    })
 
 router.post('/follow/new', async function (req, res, next) {
 
