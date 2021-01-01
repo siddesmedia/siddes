@@ -59,9 +59,9 @@ To keep our development going, you can donate to Siddes. Links and addresses com
 
 ## Installing
 
-### [Install on macOS](https://github.com/siddesmedia/siddes/wiki/install-macos)
+### [Install on macOS](https://github.com/siddesmedia/siddes/wiki/macOS-installation)
 
-### [Install on Linux](https://github.com/siddesmedia/siddes/wiki/install-linux)
+### [Install on Linux](https://github.com/siddesmedia/siddes/wiki/Linux-installation)
 
 #### [MPL 2.0](https://github.com/siddesmedia/siddes/blob/master/LICENSE)
 
