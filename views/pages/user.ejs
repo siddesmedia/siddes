@@ -40,6 +40,10 @@
         <i class="lni lni-steam"></i>
     </a>
     <% } %>
+    <% if(user.websitelink) { %>
+    <a href="https://<%= user.websitelink %>" target="_blank" class="connectionicon">
+        <i class="lni lni-website-alt"></i> </a>
+    <% } %>
 </span>
 <br>
 <div>

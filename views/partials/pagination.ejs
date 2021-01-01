@@ -1,0 +1,16 @@
+<% if(page == 0) { %>
+<button onclick="window.location='/latest?p=<%= page %>'" disabled class="button pagination">...</button>
+<% if (lastpage == true ) { %>
+<button onclick="window.location='/latest?p=<%= eval(page)+2 %>'" class="button pagination" disabled>...</button>
+<% } else { %>
+<button onclick="window.location='/latest?p=<%= eval(page)+2 %>'" class="button pagination"
+    rel="next"><%= eval(page)+2 %></button>
+<% } %>
+<% } else if (lastpage == true ) { %>
+<button onclick="window.location='/latest?p=<%= page %>'" class="button pagination" rel="prev"><%= page %></button>
+<button onclick="window.location='/latest?p=<%= eval(page)+2 %>'" class="button pagination" disabled>...</button>
+<% } else { %>
+<button onclick="window.location='/latest?p=<%= page %>'" class="button pagination"><%= page %></button>
+<button onclick="window.location='/latest?p=<%= eval(page)+2 %>'" class="button pagination"
+    rel="next"><%= eval(page)+2 %></button>
+<% } %>

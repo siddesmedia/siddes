@@ -84,15 +84,15 @@
         <% } %>
         <button class="sidebarbutton" onclick="showmenu('show')" id="showmenu"><i class="lni lni-menu"></i></button>
         <span id="premiumsidebar"></span><br><br><br><br>
-        <span class="sidebarleftbottom" onclick="leftmenu()">
+        <span class="sidebarleftbottom">
             <% if(loggedin == true) { %>
-            <button class="sidebarbutton profileclick" style="padding: 5px;">
+            <button class="sidebarbutton profileclick" style="padding: 5px;" type="button">
                 <img width="40px" src="/account/pfp" class="">
             </button>
-            <button class="sidebarbutton hidden" id="leftmenusection">
+            <button class="sidebarbutton" id="leftmenusection">
                 <span class="">
                     <% if(loggedin == true) { %>
-                    <a class="button linkbutton" href='javascript:newPost("show")'><i class="fa text">New
+                    <a class="button linkbutton " href='javascript:newPost("show")'><i class="fa text">New
                             Post</i></a><br><br>
                     <a class="button linkbutton" href='/b/insides'><i class="fa text">Joined Insides</i></a><br><br>
                     <a class="button linkbutton" href='javascript:messages("open")'><i

@@ -135,6 +135,10 @@ router.post('/signup', (req, res) => {
 });
 
 router.get('/login', forwardAuthenticated, function (req, res, next) {
+    var nextpage
+    if (req.query.next) {
+        nextpage = req.query.next
+    }
 
     passport.authenticate('local', {
         failureRedirect: '/login'
@@ -154,17 +158,21 @@ router.get('/login', forwardAuthenticated, function (req, res, next) {
         moderator: funcs.moderator(req.user),
         navbar: true,
         footer: true,
+        nextpage: nextpage,
         error: errormessage
     };
     return res.render('base', about);
 });
 
 router.post('/login', async function (req, res, next) {
-
+    var nextpage = '/'
+    if (req.body.nextpage) {
+        nextpage = req.body.nextpage
+    }
 
     try {
         passport.authenticate('local', {
-            successRedirect: '/',
+            successRedirect: nextpage,
             failureRedirect: '/login',
         })(req, res, next);
     } catch (err) {
@@ -178,7 +186,6 @@ router.post('/login', async function (req, res, next) {
 });
 
 router.get('/logout', (req, res) => {
-
     req.logout();
     res.redirect('/login');
 });

@@ -94,7 +94,15 @@ topofpagemobile {
     display: none;
 }
 
-.profileclick:hover .profilemore {
+#leftmenusection {
+    display: none;
+}
+
+#leftmenusection:hover {
+    display: block;
+}
+
+.profileclick:active+#leftmenusection {
     display: block;
 }
 
@@ -264,7 +272,8 @@ topofpagemobile {
 }
 
 .postimage {
-    width: 300px;
+    width: 90%;
+    max-width: 300px;
     border: 2px rgb(236, 236, 236) solid;
     border-radius: 10px;
 }

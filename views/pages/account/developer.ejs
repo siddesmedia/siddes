@@ -2,11 +2,6 @@
 <div class="section">
     <p>You can find the developer documentation <a href="/account/developer/docs" class="link">here</a>. (there is no
         current use for API keys)</p>
-    <button
-        onclick="document.getElementById('apikey').classList.remove('hidden');document.getElementById('showbutton').classList.add('hidden');document.getElementById('hidebutton').classList.remove('hidden');"
-        id="showbutton" class="button">Click To Show API Key</button>
-    <button
-        onclick="document.getElementById('apikey').classList.add('hidden');document.getElementById('showbutton').classList.remove('hidden');document.getElementById('hidebutton').classList.add('hidden');"
-        id="hidebutton" class="hidden button">Click To Hide API Key</button>
-    <input disabled value="<%= apikey %>" class="apikey hidden" style="width:35%" id="apikey">
+    <button onclick="regeneratekey()" class="button">Regenerate API Key</button>
 </div>
+<script src="/js/api_helper.js"></script>

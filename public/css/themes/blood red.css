@@ -1,0 +1,527 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v7.0.29,
+* Autoprefixer: v9.7.6
+* Browsers: last 4 version
+*/
+
+/*
+    Copyright (c) 2020 - Present Jude Wilson on Behalf of Social Media
+
+    All other use is prohibited without permission.
+
+    Last updated:
+    Dec 9th, 2020
+*/
+
+:root {
+    --primary-color: rgb(32, 20, 20);
+    --accent-color: rgb(76, 49, 49);
+    --third-color: rgb(252, 93, 93);
+    --fourth-color: rgb(253, 150, 150);
+    --dark-color: rgb(14, 14, 14);
+    --dark-second-color: rgb(42, 42, 42);
+    --light-color: rgb(255, 255, 255);
+    --light-second-color: rgb(201, 201, 201);
+    --grey-color: rgb(173, 173, 173);
+}
+
+body {
+    background-color: var(--primary-color);
+}
+
+a {
+    color: var(--third-color);
+}
+
+.nostyle {
+    color: var(--third-color);
+    text-decoration: none;
+}
+
+.nostylea {
+    color: var(--light-color);
+    text-decoration: none;
+}
+
+.badge {
+    font-size: 10px;
+    border: 1px var(--light-color) solid;
+}
+
+.newposttext {
+    background-color: var(--accent-color);
+    color: var(--light-color);
+    font-size: large;
+}
+
+table {
+    font-family: arial, sans-serif;
+}
+
+td,
+th {
+    border: 1px solid var(--accent-color);
+    text-align: left;
+    color: var(--fourth-color);
+}
+
+.dotted {
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABZJREFUeNpi2r9//38gYGAEESAAEGAAasgJOgzOKCoAAAAASUVORK5CYII=);
+}
+
+.sidebar {
+    background-color: var(--primary-color);
+    border-left: 2px var(--dark-color) solid;
+}
+
+.sidebarleft {
+    background-color: var(--primary-color);
+    border-right: 2px var(--dark-color) solid;
+}
+
+.sidebarbutton {
+    border-radius: 35px;
+    border: none;
+    background-color: var(--accent-color);
+    color: var(--grey-color)
+}
+
+.sidebarbutton:hover {
+    background-color: var(--third-color);
+    color: var(--dark-color);
+}
+
+/*.sidebar input {
+    background-color: black;
+}*/
+
+.sidebar a,
+.footer a,
+.sidetext {
+    color: var(--light-color);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    text-decoration: none;
+}
+
+.sidebar a:hover,
+.footer a:hover {
+    color: var(--light-color);
+    text-decoration: underline;
+}
+
+.postbox {
+    border: 1px solid var(--primary-color);
+    background-color: var(--dark-color);
+}
+
+.sharebox {
+    border: 1px solid var(--primary-color);
+    background-color: var(--dark-color);
+    color: var(--light-color);
+    border-radius: 25px;
+}
+
+.customalertbox {
+    border: 1px solid var(--primary-color);
+    background-color: var(--dark-color);
+    color: var(--light-color);
+    border-radius: 25px;
+}
+
+.sharemodaltitle {
+    color: var(--light-color);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.shareicon {
+    color: var(--light-color);
+}
+
+.closepopup {
+    border: none;
+    background-color: var(--primary-color);
+    border-radius: 25px;
+    color: var(--grey-color);
+}
+
+#file-upload-button {
+    border: none;
+}
+
+.postimage {
+    border: 2px var(--dark-color) solid;
+}
+
+.pfpimage {
+    border-radius: 20000px;
+    border: 2px var(--dark-color) solid;
+}
+
+.bannerimg {}
+
+/* post classes */
+.reportstatus {}
+
+.pagination {}
+
+.postdiv {
+    border-top: 2px var(--dark-color) solid;
+}
+
+.postdivnohover {
+    border-bottom: 2px var(--dark-color) solid;
+}
+
+.postdiv:hover {
+    border-top: 2px var(--dark-second-color) solid;
+}
+
+/*.roundpostdiv {
+    border: 2px rgb(218, 0, 0) solid;
+    -webkit-box-shadow: 10px 10px 0px 0px rgba(255, 255, 255, 0.75);
+    box-shadow: 10px 10px 0px 0px rgba(255, 255, 255, 0.75);
+}*/
+
+.postownerlink {
+    font-weight: bolder;
+    color: var(--grey-color) !important;
+    text-decoration: none;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: small;
+}
+
+p,
+label {
+    color: var(--light-color) !important;
+
+}
+
+.postownerlink:hover {
+    font-weight: bolder;
+    color: var(--light-color);
+    text-decoration: underline;
+    font-size: small;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.postbody {
+    color: var(--light-color);
+}
+
+.expandcommentdiv {
+    background-color: var(--dark-color);
+}
+
+.idcard {}
+
+.postmeta {}
+
+.button,
+.input {
+    background-color: var(--dark-second-color);
+    border-radius: 100px;
+    border: none;
+    color: var(--grey-color);
+
+}
+
+.commentsbody {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.postcomment:hover {
+    background-color: rgb(67, 183, 255);
+    color: black;
+}
+
+.postlike:hover {
+    background-color: rgb(255, 73, 73);
+    color: black;
+}
+
+.postrepost:hover {
+    background-color: rgb(75, 255, 90);
+    color: black;
+}
+
+.postshare:hover {
+    background-color: rgb(255, 239, 146);
+    color: black;
+}
+
+.postcommentinput:hover {
+    background-color: rgb(246, 212, 255);
+    color: black !important;
+}
+
+.postdiv input {
+    background-color: var(--dark-second-color);
+    border-radius: 100px;
+    border: none;
+    color: grey;
+}
+
+.fullsection ul li,
+.fullsection p,
+.fullsection h4 {
+    color: var(--light-second-color) !important;
+}
+
+.biotext {
+    color: var(--light-second-color);
+}
+
+.accountlinks {
+    color: var(--light-second-color);
+    font-weight: bolder;
+    text-decoration: none;
+    border-bottom: none;
+}
+
+.versionlink {
+    background: none !important;
+    border: none;
+    font-size: medium;
+    color: white;
+}
+
+.accountlinks:hover {
+    color: var(--light-second-color);
+    font-weight: bolder;
+    text-decoration: none;
+    border-bottom: 1px solid;
+}
+
+/* hashtag and metions in text */
+.hashtag {
+    text-decoration: none;
+    color: var(--light-color);
+}
+
+.hashtag::after {
+    background-color: rgb(218, 0, 0);
+}
+
+.hashtag:hover {
+    color: var(--dark-color);
+}
+
+.mention {
+    text-decoration: none;
+    color: white;
+}
+
+.mention::after {
+    background-color: rgb(0, 145, 255);
+}
+
+.mention:hover {
+    color: black;
+}
+
+.link {
+    text-decoration: none;
+    color: white;
+}
+
+.link::after {
+    background-color: rgb(0, 136, 73);
+}
+
+.link:hover {
+    color: black;
+}
+
+.red {
+    background-color: rgb(255, 85, 85);
+    color: black;
+}
+
+/* badges */
+.devbadge {
+    background-color: rgb(0, 145, 255);
+}
+
+/* navbar/footer */
+.navbar {
+    background: var(--dark-color);
+    border: 5px var(--dark-color) solid;
+}
+
+.navbar a {
+    color: var(--light-color);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    text-decoration: none;
+}
+
+.navbar button {}
+
+.navbar input {}
+
+.navbar a:hover {
+    color: white;
+    text-decoration: none;
+    border-bottom: 1px var(--light-color) solid;
+}
+
+.header {
+    text-decoration: none;
+    color: var(--light-color);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.header::after {
+    background-color: rgb(0, 145, 255);
+}
+
+.header:hover {
+    color: var(--dark-color);
+}
+
+.header:hover::after {
+    height: 100%;
+}
+
+.headerred {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    text-decoration: none;
+    color: var(--light-color);
+}
+
+.headerred::after {
+    background-color: rgb(218, 0, 0);
+}
+
+.headerred:hover {
+    color: var(--dark-color) !important;
+}
+
+.sensitivepost {
+    border: 2px var(--dark-color) solid;
+    border-radius: 25px;
+}
+
+.embed {
+    border: 2px var(--dark-second-color) solid;
+    border-radius: 25px;
+}
+
+.sortby {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.error {
+    color: var(--light-color);
+    background-color: rgb(255, 97, 97);
+    border-radius: 25px;
+}
+
+.icon {}
+
+.noheader {
+    text-decoration: none;
+    color: var(--light-color);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.smallheader {
+    text-decoration: none;
+}
+
+.fullsection {
+    border-top: 2px var(--dark-color) solid;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.fullsection:hover {
+    border-top: 2px var(--dark-second-color) solid;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.section {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.borderbottom {
+    border-bottom: 1px var(--grey-color) solid;
+}
+
+.trendingitem {
+    border-bottom: 1px var(--grey-color) solid;
+}
+
+.mobilesearch {
+    background-color: var(--dark-color);
+}
+
+.footer {
+    border-top: 2px var(--dark-color) solid;
+}
+
+.messagesbutton {
+    background-color: var(--dark-color) !important;
+}
+
+.messagesnav {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.messagecolnav {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.messagebox {
+    background-color: var(--accent-color);
+    border: 1px var(--dark-second-color) solid;
+}
+
+.messagesection {
+    border-left: 1px var(--dark-second-color) solid !important;
+}
+
+.dmbox {}
+
+.chatselect {}
+
+.chat {
+    background-color: var(--accent-color) !important;
+    color: var(--light-color);
+    border-bottom: 1px var(--primary-color) solid;
+}
+
+.messagesx {}
+
+.messagesx button {
+    color: var(--light-color);
+}
+
+.dmbottombar {
+    border-top: 1px var(--accent-color) solid;
+    background-color: var(--accent-color);
+}
+
+.dminput {
+    background-color: var(--primary-color);
+    color: var(--light-color);
+}
+
+
+.messages {}
+
+.message {
+    background-color: var(--grey-color);
+    color: var(--dark-color);
+    z-index: -1;
+}
+
+.dmsend {
+    background-color: var(--primary-color);
+    color: var(--light-color);
+}
+
+.sidebarcontainer {
+    background-color: var(--primary-color);
+}

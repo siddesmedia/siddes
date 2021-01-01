@@ -13,7 +13,7 @@ const funcs = require('../config/functions');
 router.get('/premium/live', async function (req, res, next) {
 
     if (!req.user) {
-        return res.redirect('/login')
+        return res.redirect('/login?next=/premium/live')
     }
     if (req.user.premium == false) {
         return res.redirect('/premium/pricing')
@@ -35,7 +35,7 @@ router.get('/premium/live', async function (req, res, next) {
 router.get('/premium', async function (req, res, next) {
 
     if (!req.user) {
-        return res.redirect('/login')
+        return res.redirect('/login?next=/premium')
     }
     if (req.user.premium == false) {
         return res.redirect('/premium/pricing')

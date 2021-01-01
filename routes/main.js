@@ -29,12 +29,16 @@ const uploadpfp = multer({
 const analytics = require('../middleware/simple-lytics')
 const url = require('url');
 const mongoose = require('mongoose');
+const {
+    v4: uuidv4
+} = require('uuid')
+const bcrypt = require('bcryptjs');
 
 router.get('/', async function (req, res, nect) {
     if (funcs.loggedin(req.user) == true) {
-        res.redirect('/home')
+        res.redirect('/home?p=1')
     } else {
-        res.redirect('/latest/0/')
+        res.redirect('/latest?p=1')
     }
 })
 
@@ -89,56 +93,22 @@ router.get('/account/:id/banner', async function (req, res, next) {
         res.sendFile(path.join(__dirname, '../usergenerated/images/notfound.jpeg'))
     }
 })
-
-router.get('/latest/:page', async function (req, res, next) {
-
-    if (isNaN(req.params.page) == true) {
-        return next()
-    }
-    var posts;
-    if (isNaN(req.query.limit) == false) {
-        if (req.query < 40) {
-            posts = await Post.find().sort({
-                date: -1
-            }).skip(req.params.page * eval(req.query.limit)).limit(eval(req.query.limit));
-        } else {
-            posts = await Post.find().sort({
-                date: -1
-            }).skip(req.params.page * 20).limit(20);
-        }
-    } else {
-        posts = await Post.find().sort({
-            date: -1
-        }).skip(req.params.page * 20).limit(20);
+router.get('/home', async function (req, res, next) {
+    if (!req.query.p) {
+        return res.redirect(`/home?p=1`)
     }
 
-    var lastpage = false;
-
-    if (posts.length < 20) {
-        lastpage = true
+    if (req.query.p < 1) {
+        return res.redirect(`/home?p=1`)
     }
 
-    const about = {
-        title: 'The Latest - ' + Name,
-        template: 'pages/latest',
-        name: Name,
-        loggedin: funcs.loggedin(req.user),
-        moderator: funcs.moderator(req.user),
-        navbar: true,
-        footer: true,
-        page: req.params.page,
-        posts: posts,
-        lastpage: lastpage
-    };
-    return res.render('base', about);
-});
+    req.query.p = req.query.p - 1
 
-router.get('/home/:page', async function (req, res, next) {
     if (!req.user) {
         return res.redirect('/latest')
     }
 
-    if (isNaN(req.params.page) == true) {
+    if (isNaN(req.query.p) == true) {
         next()
     }
 
@@ -151,20 +121,20 @@ router.get('/home/:page', async function (req, res, next) {
                 owner: user.following
             }).sort({
                 date: -1
-            }).skip(req.params.page * eval(req.query.limit)).limit(eval(req.query.limit));
+            }).skip(req.query.p * eval(req.query.limit)).limit(eval(req.query.limit));
         } else {
             posts = await Post.find({
                 owner: user.following
             }).sort({
                 date: -1
-            }).skip(req.params.page * 20).limit(20);
+            }).skip(req.query.p * 20).limit(20);
         }
     } else {
         posts = await Post.find({
             owner: user.following
         }).sort({
             date: -1
-        }).skip(req.params.page * 20).limit(20);
+        }).skip(req.query.p * 20).limit(20);
     }
 
     var lastpage = false;
@@ -181,11 +151,148 @@ router.get('/home/:page', async function (req, res, next) {
         moderator: funcs.moderator(req.user),
         navbar: true,
         footer: true,
-        page: req.params.page,
+        page: req.query.p,
         posts: posts,
         lastpage: lastpage
     };
     return res.render('base', about);
+});
+
+router.get('/latest', async function (req, res, next) {
+    if (!req.query.p) {
+        return res.redirect(`/latest?p=1`)
+    }
+
+    if (req.query.p < 1) {
+        return res.redirect(`/latest?p=1`)
+    }
+
+    req.query.p = req.query.p - 1
+
+    if (isNaN(req.query.p) == true) {
+        return next()
+    }
+    var posts;
+    if (isNaN(req.query.limit) == false) {
+        if (req.query.limit < 40) {
+            posts = await Post.find().sort({
+                date: -1
+            }).skip(req.query.p * eval(req.query.limit)).limit(eval(req.query.limit));
+        } else {
+            posts = await Post.find().sort({
+                date: -1
+            }).skip(req.query.p * 20).limit(20);
+        }
+    } else {
+        posts = await Post.find().sort({
+            date: -1
+        }).skip(req.query.p * 20).limit(20);
+    }
+
+    var lastpage = false;
+
+    if (posts.length < 20) {
+        lastpage = true
+    }
+
+    const about = {
+        title: 'The Latest - ' + Name,
+        template: 'pages/latest',
+        name: Name,
+        loggedin: funcs.loggedin(req.user),
+        moderator: funcs.moderator(req.user),
+        navbar: true,
+        footer: true,
+        page: req.query.p,
+        posts: posts,
+        lastpage: lastpage
+    };
+    return res.render('base', about);
+});
+
+router.get('/:username', async function (req, res, next) {
+    if (!req.query.p) {
+        return res.redirect(`/${req.params.username}?p=1`)
+    }
+
+    if (req.query.p < 1) {
+        return res.redirect(`/${req.params.username}?p=1`)
+    }
+
+    req.query.p = req.query.p - 1
+
+    var userObject = await User.exists({
+        username: req.params.username
+    })
+
+    if (userObject == false) {
+        next()
+    } else {
+        var followers;
+
+        var user = await User.findOne({
+            username: req.params.username
+        })
+
+        var followercount = await User.find({
+            following: user._id.toString()
+        })
+
+        followers = followercount.length.toString()
+
+        var posts = await Post.find({
+            owner: await funcs.getuserid(req.params.username)
+        }).sort({
+            date: -1
+        }).skip(req.query.p * 20).limit(20);
+
+        var currentUser;
+        var followingbool;
+        var lastpage = false;
+
+        if (posts.length < 20) {
+            lastpage = true
+        }
+
+        var follows;
+        if (!req.user) {
+            currentUser = null;
+            followingbool = null;
+        } else {
+            follows = await User.findById(req.user._id)
+
+            followingbool = follows.following.includes(user._id)
+
+            if (req.user.username == user.username) {
+                currentUser = true;
+            } else {
+                currentUser = false;
+            }
+        }
+
+        const username = req.params.username
+
+        const about = {
+            title: username + ' - ' + Name,
+            template: 'pages/user',
+            name: Name,
+            loggedin: funcs.loggedin(req.user),
+            moderator: funcs.moderator(req.user),
+            admin: funcs.admin(req.user),
+            navbar: true,
+            footer: true,
+            page: req.query.p,
+            lastpage: lastpage,
+
+            // user data being loaded
+            user: user,
+            posts: posts,
+            sameuser: currentUser,
+            follows: followingbool,
+            followers: followers
+        };
+        return res.render('base', about);
+    }
 });
 
 router.get('/notifications', async function (req, res, next) {
@@ -228,7 +335,7 @@ router.get('/embed/:postid', async function (req, res, next) {
 router.get('/account/edit', async function (req, res, next) {
 
     if (!req.user) {
-        res.redirect('/login')
+        res.redirect('/login?next=/account/edit')
     } else {
         const user = await User.findById({
             _id: req.user._id
@@ -251,13 +358,13 @@ router.get('/account/edit', async function (req, res, next) {
 router.get('/account/developer', async function (req, res, next) {
 
     if (!req.user) {
-        res.redirect('/login')
+        res.redirect('/login?next=/account/developer')
     } else {
         var user = await funcs.getuser(req.user._id)
-        var apikey = user.apikey;
+        var apikey = user.apikey_v2;
 
         const about = {
-            title: 'New User - ' + Name,
+            title: 'Developer - ' + Name,
             template: 'pages/account/developer',
             name: Name,
             loggedin: funcs.loggedin(req.user),
@@ -270,10 +377,32 @@ router.get('/account/developer', async function (req, res, next) {
     }
 })
 
+router.post('/account/developer/key/regenerate', async function (req, res, next) {
+    var newkey = uuidv4().toString()
+
+    res.json({
+        success: true,
+        key: newkey
+    })
+
+    bcrypt.hash(newkey, 10, async (err, hash) => {
+        if (err) throw err;
+        const updateuserwithnewkey = await User.findByIdAndUpdate(req.user._id, {
+            apikey_v2: hash
+        })
+
+        console.log(hash)
+
+        return updateuserwithnewkey
+    });
+
+    newkey = 'placeholder so nothing malicious gets the key'
+})
+
 router.get('/account', function (req, res, next) {
 
     if (!req.user) {
-        res.redirect('/login')
+        res.redirect('/login?next=/account')
     } else {
         res.redirect('/' + req.user.username)
     }
@@ -374,7 +503,7 @@ router.get('/account/search', async function (req, res, next) {
 router.get('/account/clear', async function (req, res, next) {
 
     if (!req.user) {
-        res.redirect('/login')
+        res.redirect('/login?next=/account/clear')
     } else {
         const about = {
             title: 'Clear Account - ' + Name,
@@ -392,7 +521,7 @@ router.get('/account/clear', async function (req, res, next) {
 router.get('/account/repost', async function (req, res, next) {
 
     if (!req.user) {
-        res.redirect('/login')
+        res.redirect('/login?next=/account/repost')
     } else {
         try {
             var repostid = req.query.postid
@@ -435,7 +564,7 @@ router.get('/account/repost', async function (req, res, next) {
 
 router.get('/account/messages', async function (req, res, next) {
     if (!req.user) {
-        return res.redirect('/login')
+        return res.redirect('/login?next=/account/messages')
     }
 
     try {
@@ -471,7 +600,7 @@ router.get('/account/messages', async function (req, res, next) {
 
 router.get('/account/messages/:id', async function (req, res, next) {
     if (!req.user) {
-        return res.redirect('/login')
+        return res.redirect('/login?next=/account/messages/' + req.params.id)
     }
 
     try {
@@ -495,7 +624,7 @@ router.get('/account/messages/:id', async function (req, res, next) {
 router.get('/account/clear/confirm', async function (req, res, next) {
 
     if (!req.user) {
-        res.redirect('/login')
+        res.redirect('/login?next=/account/clear/confirm')
     } else {
         const userid = req.user._id;
         const clearuser = await User.findOneAndUpdate({
@@ -660,87 +789,6 @@ router.get('/s/:postid', async function (req, res, next) {
     } catch (err) {
         next()
     }
-});
-
-router.get('/:username/:page', async function (req, res, next) {
-
-    var userObject = await User.exists({
-        username: req.params.username
-    })
-
-    if (userObject == false) {
-        next()
-    } else {
-        var followers;
-
-        var user = await User.findOne({
-            username: req.params.username
-        })
-
-        var followercount = await User.find({
-            following: user._id.toString()
-        })
-
-        followers = followercount.length.toString()
-
-        var posts = await Post.find({
-            owner: await funcs.getuserid(req.params.username)
-        }).sort({
-            date: -1
-        }).skip(req.params.page * 20).limit(20);
-
-        var currentUser;
-        var followingbool;
-        var lastpage = false;
-
-        if (posts.length < 20) {
-            lastpage = true
-        }
-
-        var follows;
-        if (!req.user) {
-            currentUser = null;
-            followingbool = null;
-        } else {
-            follows = await User.findById(req.user._id)
-
-            followingbool = follows.following.includes(user._id)
-
-            if (req.user.username == user.username) {
-                currentUser = true;
-            } else {
-                currentUser = false;
-            }
-        }
-
-        const username = req.params.username
-
-        const about = {
-            title: username + ' - ' + Name,
-            template: 'pages/user',
-            name: Name,
-            loggedin: funcs.loggedin(req.user),
-            moderator: funcs.moderator(req.user),
-            admin: funcs.admin(req.user),
-            navbar: true,
-            footer: true,
-            page: req.params.page,
-            lastpage: lastpage,
-
-            // user data being loaded
-            user: user,
-            posts: posts,
-            sameuser: currentUser,
-            follows: followingbool,
-            followers: followers
-        };
-        return res.render('base', about);
-    }
-});
-
-router.get('/:username', async function (req, res, next) {
-
-    res.redirect('/' + req.params.username + '/0')
 });
 
 router.get('/usergenerated/images/:parentid', async function (req, res, next) {
@@ -1078,6 +1126,7 @@ router.post('/account/edit/connections', async function (req, res, next) {
         var instagramlink = req.body.instagram
         var youtubelink = req.body.youtube
         var steamlink = req.body.steam
+        var websitelink = req.body.website
 
         const updateuserwithconnections = await User.findByIdAndUpdate(req.user._id, {
             githublink,
@@ -1086,7 +1135,8 @@ router.post('/account/edit/connections', async function (req, res, next) {
             discordlink,
             instagramlink,
             youtubelink,
-            steamlink
+            steamlink,
+            websitelink
         })
 
         updateuserwithconnections

@@ -57,21 +57,31 @@
             <option>flashlight</option>
             <option>midnight</option>
             <option selected>flipped alt</option>
+            <option>blood red</option>
             <% } else if(user.theme == 'flashlight') { %>
             <option>ocean dark</option>
             <option selected>flashlight</option>
             <option>midnight</option>
             <option>flipped alt</option>
+            <option>blood red</option>
             <% } else if(user.theme == 'midnight') { %>
             <option>ocean dark</option>
             <option>flashlight</option>
             <option selected>midnight</option>
             <option>flipped alt</option>
+            <option>blood red</option>
+            <% } else if(user.theme == 'blood red') { %>
+            <option>ocean dark</option>
+            <option>flashlight</option>
+            <option>midnight</option>
+            <option>flipped alt</option>
+            <option selected>blood red</option>
             <% } else { %>
             <option selected>ocean dark</option>
             <option>flashlight</option>
             <option>midnight</option>
             <option>flipped alt</option>
+            <option>blood red</option>
             <% } %>
         </optgroup>
     </select><br>
@@ -113,6 +123,9 @@
 
     <input class="input inputleft" value="steamcommunity/" disabled><input type="text" class="input inputright"
         name="steam" value="<%= user.steamlink %>"><br><br>
+
+    <input class="input inputleft" value="https://" disabled><input type="text" class="input inputright" name="website"
+        value="<%= user.websitelink %>"><br><br>
 
     <button type="submit" class="button">Save Links</button>
     <br><br>

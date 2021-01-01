@@ -17,7 +17,7 @@
 <div class="embed" style="width:100%; top: 0;position: fixed;">
     <div class="postcontainer">
         <div class="postdiv" style="width: auto;border-bottom: none;">
-            <div style="cursor: pointer;" onclick="window.location='/embed/<%= post._id %>'">
+            <div style="cursor: pointer;">
                 <% if (post.approved == true) { %>
                 <span class="commentsmeta right">
                     <button type="button" class="postreport button"
@@ -57,8 +57,9 @@
             </div>
             <div class="post_bottom_buttons">
                 <span class="seeallcommentsbutton">
-                    <button type="button" class="button" onclick="window.location='/embed/<%= post._id %>#comments'">See
-                        Comments</button>
+                    <button type="button" onclick="expandcomments('<%= post._id %>')" class="button">
+                        <i class="lni lni-comments"></i>
+                    </button>
                 </span>
                 <span class="right">
                     <span class="modbuttons">
@@ -71,9 +72,9 @@
                         <% }} %>
                     </span>
                     <span>
-                        <button onclick="window.parent.location='/s/<%= post._id %>'" target='_blank'
-                            class="button">View On
-                            <%= name %></button>
+                        <button onclick="window.parent.location='/s/<%= post._id %>'" target='_blank' class="button">
+                            View on <%= name %>
+                        </button>
                     </span>
                     <span id="likebutton_<%= post._id %>">
 
@@ -81,6 +82,9 @@
                 </span>
             </div>
         </div>
+        <span class="expandedcomments" id="expand_<%= post._id %>">
+
+        </span>
     </div>
     <script>
         replacepostlinks('post_<%= post._id %>')

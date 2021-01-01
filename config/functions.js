@@ -2,6 +2,7 @@ const Post = require('../models/Post');
 const Comment = require('../models/Comment');
 const User = require('../models/User');
 const webPush = require('web-push');
+const bcrypt = require('bcryptjs')
 
 function loggedin(user) {
     if (user) {
@@ -160,19 +161,20 @@ function admin(user) {
     }
 }
 
-async function getuserbyapikey(apikey) {
-    var userid = await User.find({
-        apikey: apikey
-    })
-    if (userid.length == 0) {
-        userid = false
-    } else {
-        userid = await User.findOne({
-            apikey: apikey
-        })
-    }
+async function getuserbyapikey(apikey, accountid) {
+    const user = await User.findById(accountid)
+    var match = false
 
-    return userid
+    bcrypt.compare(apikey, user.apikey_v2, (err, isMatch) => {
+        if (err) throw err;
+        if (isMatch) {
+            match = true
+        } else {
+            match = false
+        }
+    });
+
+    return match
 }
 
 async function like(id, postid) {

@@ -121,7 +121,7 @@ function share(id) {
     document.getElementById('share_reddit_link').setAttribute('href', "https://www.reddit.com/submit?title=Check out this post on Siddes!&text=Here it is: https://www.siddes.com/s/" + id);
     document.getElementById('share_twitter_link').setAttribute('href', "https://www.twitter.com/share?title=Check out this post on Siddes!&text=Here it is: https://www.siddes.com/s/" + id);
     document.getElementById('share_facebook_link').setAttribute('href', "https://www.facebook.com/sharer/sharer.php?u=https://www.siddes.com/s/" + id);
-    document.getElementById('share_email_link').setAttribute('href', "mailto:email@example.com?subject=You won't believe what I found on Siddes!&body=Here it is: https://www.siddes.com/s/" + id);
+    document.getElementById('share_email_link').setAttribute('href', "mailto:?subject=You won't believe what I found on Siddes.com!&body=Here it is: https://www.siddes.com/s/" + id);
     document.getElementById('share_link').setAttribute('value', "https://siddes.com/s/" + id);
     document.getElementById('share_iframe').value = document.getElementById('share_iframe').value.replace('{{postid}}', id)
     return document.getElementById('sharemodal').classList.remove('hidden')
@@ -261,7 +261,7 @@ function sendmessage(id) {
 
 function changetheme() {
     var themediv = document.getElementById('themelink')
-    var themes = ['flipped alt', 'ocean dark', 'flashlight', "midnight"]
+    var themes = ['flipped alt', 'ocean dark', 'flashlight', "midnight", "blood red"]
 
     $.getJSON("/api/theme/get", function (json) {
         if (themes.includes(json.theme) == true) {
@@ -806,3 +806,28 @@ console.log(`
       =MMMMMMMMMMMMMMMMMMMMMMMMMM++++++++++++++++M+++=++=MMMMMMMMMMMMMMMMMMMMMMMMMM=      
       .::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::.    
 `)
+
+/* Prevent a tag refrshing the page
+ * 
+ * Not being used because it is very buggy
+ * 
+ * when a page errors out, ex 404, it just console
+ * logs an error instead of something happening
+ * 
+ * $(document).ready(function () {
+ *     $('a').click(function (e) {
+ *         $.get($(this).attr('href'), function (data) {
+ *             var color = document.getElementById('body').style.background
+ *             var colordoc = document.open("text/html", "replace");
+ *             colordoc.write('<body style="background-color:' + color +
+ *                 ';position:fixed;right:0;left:0;bottom:0;top:0;"></body>');
+ *             var newdoc = document.open("text/html", "replace");
+ *             newdoc.write(data);
+ *             colordoc.close();
+ *             newdoc.close();
+ *         })
+ *
+ *         e.preventDefault()
+ *     });
+ * });
+ */

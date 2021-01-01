@@ -72,6 +72,11 @@ const User = new mongoose.Schema({
         unique: true,
         required: true,
     },
+    apikey_v2: {
+        type: String,
+        unique: true,
+        required: false,
+    },
     pfp: {
         type: String,
         unique: false,
@@ -212,6 +217,11 @@ const User = new mongoose.Schema({
         required: false
     },
     steamlink: {
+        type: String,
+        unique: false,
+        required: false
+    },
+    websitelink: {
         type: String,
         unique: false,
         required: false

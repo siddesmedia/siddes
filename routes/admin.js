@@ -16,7 +16,7 @@ const Media = require('../models/Media');
 router.get('/admin/redis/flush', async function (req, res, next) {
 
     if (!req.user) {
-        return res.redirect('/login')
+        return res.redirect('/login?next=/admin/redis/flush')
     }
     if (req.user.admin == false) {
         return res.redirect('/account')
@@ -36,7 +36,7 @@ router.get('/admin/redis/flush', async function (req, res, next) {
 router.get('/admin/report', async function (req, res, next) {
 
     if (!req.user) {
-        return res.redirect('/login')
+        return res.redirect('/login?next=/admin/report')
     }
     if (req.user.admin == false) {
         return res.redirect('/account')
@@ -68,7 +68,7 @@ router.get('/admin/report', async function (req, res, next) {
 router.get('/admin/board/create', async function (req, res, next) {
 
     if (!req.user) {
-        return res.redirect('/login')
+        return res.redirect('/login?next=/admin/board/create')
     }
     if (req.user.admin == false) {
         return res.redirect('/account')
@@ -115,7 +115,7 @@ router.post('/admin/board/create', async function (req, res, next) {
 
 router.get('/admin/suspend/:id/:reason', async function (req, res, next) {
     if (!req.user) {
-        return res.redirect('/login')
+        return res.redirect('/login?next=/admin/suspend/' + req.params.id + '/' + req.params.reason)
     }
     if (req.user.admin == false) {
         if (req.user.moderator == false) {
@@ -146,7 +146,7 @@ router.get('/admin/suspend/:id/:reason', async function (req, res, next) {
 
 router.get('/admin/verify/:id', async function (req, res, next) {
     if (!req.user) {
-        return res.redirect('/login')
+        return res.redirect('/login?next=/admin/verify/' + req.params.id)
     }
     if (req.user.admin == false) {
         if (req.user.moderator == false) {
@@ -175,7 +175,7 @@ router.get('/admin/verify/:id', async function (req, res, next) {
 
 router.get('/admin/unverify/:id', async function (req, res, next) {
     if (!req.user) {
-        return res.redirect('/login')
+        return res.redirect('/login?next=/admin/unverify/' + req.params.id)
     }
     if (req.user.admin == false) {
         if (req.user.moderator == false) {
@@ -204,7 +204,7 @@ router.get('/admin/unverify/:id', async function (req, res, next) {
 
 router.get('/admin/viewappeals', async function (req, res, next) {
     if (!req.user) {
-        return res.redirect('/login')
+        return res.redirect('/login?next=/admin/viewappeals')
     }
     if (req.user.admin == false) {
         if (req.user.moderator == false) {
@@ -251,7 +251,7 @@ router.get('/admin/appeals', async function (req, res, next) {
 
 router.get('/admin/unsuspend/:id', async function (req, res, next) {
     if (!req.user) {
-        return res.redirect('/login')
+        return res.redirect('/login?next=/admin/unsuspend/' + req.params.id)
     }
     if (req.user.admin == false) {
         return res.redirect('/account')

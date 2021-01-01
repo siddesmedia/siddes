@@ -13,7 +13,7 @@ const funcs = require('../config/functions');
 router.get('/mod/reports', async function (req, res, next) {
 
     if (!req.user) {
-        return res.redirect('/login')
+        return res.redirect('/login?next=/mod/reports')
     }
     if (req.user.admin == false) {
         if (req.user.moderator == false) {
@@ -40,7 +40,7 @@ router.get('/mod/reports', async function (req, res, next) {
 router.get('/mod', async function (req, res, next) {
 
     if (!req.user) {
-        return res.redirect('/login')
+        return res.redirect('/login?next=/mod')
     }
     if (req.user.admin == false) {
         if (req.user.moderator == false) {
@@ -63,7 +63,7 @@ router.get('/mod', async function (req, res, next) {
 
 router.get('/mod/viewappeals', async function (req, res, next) {
     if (!req.user) {
-        return res.redirect('/login')
+        return res.redirect('/login?next=/mod/viewappeals')
     }
     if (req.user.admin == false) {
         if (req.user.moderator == false) {
@@ -91,7 +91,7 @@ router.get('/mod/viewappeals', async function (req, res, next) {
 router.post('/mod/reports', async function (req, res, next) {
 
     if (!req.user) {
-        return res.redirect('/login')
+        return res.redirect('/login?next=/mod/reports')
     }
     if (req.user.admin == false) {
         if (req.user.moderator == false) {
@@ -147,7 +147,7 @@ router.get('/report', async function (req, res, next) {
 
 router.get('/mod/uploadban/:id/:reason', async function (req, res, next) {
     if (!req.user) {
-        return res.redirect('/login')
+        return res.redirect('/login?next=/mod/uploadban/' + req.params.id + '/' + req.params.reason)
     }
     if (req.user.admin == false) {
         if (req.user.moderator == false) {
@@ -178,7 +178,7 @@ router.get('/mod/uploadban/:id/:reason', async function (req, res, next) {
 
 router.get('/mod/removeuploadban/:id', async function (req, res, next) {
     if (!req.user) {
-        return res.redirect('/login')
+        return res.redirect('/login?next=/mod/removeuploadban/' + req.params.id)
     }
     if (req.user.admin == false) {
         if (req.user.moderator == false) {

@@ -46,10 +46,7 @@ app.set('view engine', 'ejs');
 
 app.use(passport.initialize());
 app.use(passport.session());
-app.use('/*', async function (req, res, next) {
-    console.log(req.method + ' ' + res.statusCode + ' ' + req.originalUrl /*+ ' ' + req.ip*/ )
-    next()
-})
+
 app.use(require('express-status-monitor')(statusoptions));
 
 io.sockets.on('connection', function (socket) {
@@ -120,7 +117,8 @@ if (process.env.ENV == "m" || process.env.ENV == "maintenance") {
 mongoose.connect(process.env.MONGO, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true
+    useCreateIndex: true,
+    useFindAndModify: false
 });
 
 http.listen(port, function () {

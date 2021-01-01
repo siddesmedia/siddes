@@ -13,7 +13,15 @@ function urlBase64ToUint8Array(base64String) {
     return outputArray;
 }
 
-const publicVapidKey = 'BEYfNQ_VPTam_6_81sKGr-UFDiXg5B8q4ahLcGcM5q4aBkhCSBIZdDeFfNmcd0sKvOtLyA4m_3sHx2QEHgGldks';
+var publicVapidKey = 'BEYfNQ_VPTam_6_81sKGr-UFDiXg5B8q4ahLcGcM5q4aBkhCSBIZdDeFfNmcd0sKvOtLyA4m_3sHx2QEHgGldks';
+
+if (window.location.includes('siddes.com')) {
+    // production key
+    publicVapidKey = 'BEYfNQ_VPTam_6_81sKGr-UFDiXg5B8q4ahLcGcM5q4aBkhCSBIZdDeFfNmcd0sKvOtLyA4m_3sHx2QEHgGldks';
+} else {
+    // development key
+    publicVapidKey = 'BK7sh-gCg-85KnB9_ViY7J49EF10yfa0iBABxE7Ly7pF8vSmfyldAb2L-C9HdnkyTjZvP9UclWAlo1ZX4JpPueE';
+}
 
 if (window.Notification) {
     Notification.requestPermission(() => {

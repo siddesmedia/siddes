@@ -21,7 +21,7 @@ const _60per15 = ratelimit({
 });
 
 router.post('/posts/new', _15per15, async function (req, res, next) {
-    const verify = await verifyapikey(req.body.apikey)
+    const verify = await verifyapikey(req.body.apikey, req.body.accountid)
     if (verify == false) {
         res.status(500).json({
             "success": false,
@@ -61,7 +61,7 @@ router.post('/posts/new', _15per15, async function (req, res, next) {
 });
 
 router.get('/feed/get', _60per15, async function (req, res, next) {
-    const verify = await verifyapikey(req.body.apikey)
+    const verify = await verifyapikey(req.body.apikey, req.body.accountid)
     if (verify == false) {
         res.status(500).json({
             "success": false,
@@ -111,7 +111,7 @@ router.get('/posts/get', _60per15, async function (req, res, next) {
 });
 
 router.get('/latest/get', _60per15, async function (req, res, next) {
-    const verify = await verifyapikey(req.body.apikey)
+    const verify = await verifyapikey(req.body.apikey, req.body.accountid)
     if (verify == false) {
         res.status(500).json({
             "success": false,
@@ -143,8 +143,9 @@ router.get('/latest/get', _60per15, async function (req, res, next) {
 });
 
 router.post('/like/add', _60per15, async function (req, res, next) {
-    const verify = await verifyapikey(req.body.apikey)
-    if (verify == false) {
+    console.log(req.body)
+    const verify = await verifyapikey(req.body.apikey, req.body.accountid)
+    if (verify == req.user) {
         res.status(500).json({
             "success": false,
             "message": "invalid api key"
@@ -166,7 +167,7 @@ router.post('/like/add', _60per15, async function (req, res, next) {
 });
 
 router.post('/like/remove', _60per15, async function (req, res, next) {
-    const verify = await verifyapikey(req.body.apikey)
+    const verify = await verifyapikey(req.body.apikey, req.body.accountid)
     if (verify == false) {
         res.status(500).json({
             "success": false,
@@ -189,7 +190,7 @@ router.post('/like/remove', _60per15, async function (req, res, next) {
 });
 
 router.post('/comments/new', _15per15, async function (req, res, next) {
-    const verify = await verifyapikey(req.body.apikey)
+    const verify = await verifyapikey(req.body.apikey, req.body.accountid)
     if (verify == false) {
         res.status(500).json({
             "success": false,
@@ -239,9 +240,9 @@ router.post('/comments/new', _15per15, async function (req, res, next) {
     }
 });
 
-async function verifyapikey(apikey) {
+async function verifyapikey(apikey, accountid) {
     const rawapikey = apikey
-    return await funcs.getuserbyapikey(rawapikey)
+    return await funcs.getuserbyapikey(rawapikey, accountid)
 }
 
 module.exports = router;
