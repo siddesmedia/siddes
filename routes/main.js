@@ -1181,14 +1181,14 @@ router.post('/account/edit/connections',
             var websitelink = req.body.website
 
             const updateuserwithconnections = await User.findByIdAndUpdate(req.user._id, {
-                githublink,
-                twitterlink,
-                facebooklink,
-                discordlink,
-                instagramlink,
-                youtubelink,
-                steamlink,
-                websitelink
+                githublink: githublink,
+                twitterlink: twitterlink,
+                facebooklink: facebooklink,
+                discordlink: discordlink,
+                instagramlink: instagramlink,
+                youtubelink: youtubelink,
+                steamlink: steamlink,
+                websitelink: websitelink
             })
 
             updateuserwithconnections
