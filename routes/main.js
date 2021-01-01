@@ -468,14 +468,6 @@ router.get('/tag/:hashtag', async function (req, res, next) {
 });
 
 router.get('/tag/:page/:hashtag', async function (req, res, next) {
-    var hashtag = req.params.hashtag
-
-    if (req.params.hashtag.length > 30) {
-        hashtag = req.params.hashtag.substring(0, 30);
-    }
-
-    var regex = new RegExp(`B#w+${hashtag}`, 'i')
-
     var posts = await Post.find({
         $text: {
             $search: `"#${req.params.hashtag}"`
