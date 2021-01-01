@@ -125,7 +125,7 @@ router.get('/home', async function (req, res, next) {
                 owner: user.following
             }).sort({
                 date: -1
-            }).skip(req.query.p * eval(req.query.limit)).limit(eval(req.query.limit));
+            }).skip(req.query.p * Number(req.query.limit)).limit(Number(req.query.limit));
         } else {
             posts = await Post.find({
                 owner: user.following
@@ -181,7 +181,7 @@ router.get('/latest', async function (req, res, next) {
         if (req.query.limit < 40) {
             posts = await Post.find().sort({
                 date: -1
-            }).skip(req.query.p * eval(req.query.limit)).limit(eval(req.query.limit));
+            }).skip(req.query.p * Number(req.query.limit)).limit(Number(req.query.limit));
         } else {
             posts = await Post.find().sort({
                 date: -1
@@ -1041,7 +1041,7 @@ router.post('/account/edit',
                 }))
             }
 
-            
+
 
             var usernameexists = await User.exists({
                 username: {

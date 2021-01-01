@@ -113,7 +113,7 @@ router.get('/b/insides/:page', async function (req, res, next) {
                 board: user.boards
             }).sort({
                 date: -1
-            }).skip(req.params.page * eval(req.query.limit)).limit(eval(req.query.limit));
+            }).skip(req.params.page * Number(req.query.limit)).limit(Number(req.query.limit));
         } else {
             posts = await Post.find({
                 boardonly: true,
