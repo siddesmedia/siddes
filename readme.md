@@ -21,7 +21,7 @@ All past commited API keys (when we were closed source) have been disabled and w
 - No ads
 - US hosting
 
-## Why shhould I use Siddes?
+## Why should I use Siddes?
 
 We don't want to censor our users. So, we won't.
 
