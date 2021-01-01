@@ -1041,6 +1041,8 @@ router.post('/account/edit',
                 }))
             }
 
+            
+
             var usernameexists = await User.exists({
                 username: {
                     '$regex': new RegExp(username, 'i')

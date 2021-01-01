@@ -44,6 +44,9 @@ router.post('/signup',
     body('password2').isLength({
         min: 8
     }),
+    body('username').isLength({
+        max: 15
+    }).escape(),
     (req, res) => {
 
         const {
