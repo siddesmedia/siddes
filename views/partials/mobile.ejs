@@ -1,0 +1,58 @@
+<div class="sidebar sidebarextension hidden" id="sidebarext">
+    <form action="/search" method="GET"
+        style="width: 90%;margin-left: auto;margin-right: auto;display: block;padding: 5px;">
+        <input name="q" type="text" class="input" placeholder="Search <%= name %>" style="width: 80%;">
+        <button class="button" type="submit"><i class="lni lni-search-alt"></i></button>
+    </form>
+    <br>
+    <button onclick='showmenu("hide")' class="button">Close Menu</button>
+    <br><br>
+    <span class="">
+        <a href="/home">Home</a><br>
+        <% if(loggedin == true) { %>
+        <a href="/account/edit">Settings</a><br>
+        <a href="/logout">Logout</a><br>
+        <% } else if(loggedin == false) { %>
+        <a href="/login">Login</a><br>
+        <a href="/signup">Register</a><br>
+        <% } %>
+        <% if(moderator == true) { %>
+        <a href="/mod">Moderators</a><br>
+        <% } else {} %>
+        <a href="/company/bugs">Report a Bug</a><br>
+        <a href="/company">Company</a><br>
+        <a href="/company/tos">Terms of Service</a><br>
+        <a href="/company/pp">Privacy Policy</a><br>
+        <span id="premiumsidebarext"></span><br><br>
+        <button class="sidebarbutton" style="text-align: left;border-radius: 10px;width: 60%;">
+            The Latest
+            <br><br>
+            <div class="expandcommentdiv sidebarcontainer latest" style="width: 95%;display: block;margin: auto;">
+
+            </div>
+        </button>
+        <br>
+        <button class="sidebarbutton" style="text-align: left;border-radius: 10px;width: 60%;">
+            Insides
+            <br><br>
+            <div class="expandcommentdiv sidebarcontainer boards" style="width: 95%;display: block;margin: auto;">
+
+            </div>
+        </button>
+        <span>
+            <p class="sidetext">
+                &copy; 2020 to Present, <a class="navfooanoleftpad" href="/company"><%= name %></a>
+            </p>
+        </span>
+    </span>
+</div>
+<div class="mobile">
+    <div class="mobilesearch">
+        <form action="/search" method="GET" style="width: 100%;">
+            <input name="q" type="text" class="input left" placeholder="Search <%= name %>"
+                style="width: 79%;margin-bottom: 8px;margin:auto;display: block;">
+            <button style="width: 20%;margin-bottom: 8px;margin:auto;display: block;" type="submit"
+                class="button right"><i class="lni lni-search-alt"></i></button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,60 @@
+<div class="sidebar">
+    <span class="sidebartextsection">
+        <form action="/search" method="GET" style="width: 100%;">
+            <input name="q" type="text" class="input" placeholder="Search <%= name %>"
+                style="width: 90%;margin-bottom: 8px;margin:auto;display: block;">
+        </form>
+        <br>
+        <span id="thelatestcontainer">
+            <button class="sidebarbutton" style="text-align: left;border-radius: 10px;">
+                The Latest
+                <br><br>
+                <div class="expandcommentdiv sidebarcontainer latest" style="width: 95%;display: block;margin: auto;">
+
+                </div>
+            </button>
+        </span>
+        <span id="thelatestcontainer">
+            <button class="sidebarbutton" style="text-align: left;border-radius: 10px;">
+                <span onclick="url('/boards/explore')" style="cursor: pointer;">
+                    Insides
+                </span>
+                <br><br>
+                <div class="expandcommentdiv sidebarcontainer boards" style="width: 95%;display: block;margin: auto;">
+
+                </div>
+            </button>
+        </span>
+        <br>
+
+        <p class="sidetext smalltext">
+            &copy; 2020
+            <a class="navfooanoleftpad" href="/company">
+                <%= name %>
+            </a>
+            •
+            <a class="navfooanoleftpad" href="/company/contact">
+                Contact
+            </a>
+            •
+            <a class="navfooanoleftpad" href="/account/developer/home">
+                Developer
+            </a>
+            <!--•
+            <a class="navfooanoleftpad" href="/account/developer/docs">
+                Contact
+            </a>-->
+            •
+            <button class="versionlink smalltext" onclick="window.location.href='/company/releases'">
+                Beta V<span id="version"></span>
+            </button><br><br>
+            <span class="navfooanoleftpad">
+                Icons by <a class="navfooanoleftpad" href="https://lineicons.com/" target="_blank">LineIcons</a>
+            </span>
+        </p><br><br><br>
+    </span>
+</div>
+<script>
+    showlatestposts('latest')
+    showboards('boards')
+</script>

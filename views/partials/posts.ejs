@@ -44,9 +44,9 @@
                     </script>
                     <% } else {} %>
                 </p>
-                <pre class="postbody" id="post_<%= posts[i]._id %>">
-<%= posts[i].body %>
-                </pre>
+                <span class="postbody" id="post_<%= posts[i]._id %>">
+                    <%= posts[i].body %>
+                </span>
                 <% if(posts[i].media == true) { %>
                 <img class="postimage" alt="this image doesn't exist..." id="img_<%= posts[i]._id %>"
                     src="/usergenerated/images/<%= posts[i]._id %>" loading="lazy"><br>
