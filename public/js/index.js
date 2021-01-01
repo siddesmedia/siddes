@@ -601,11 +601,11 @@ async function premium(array) {
     $.getJSON("/api/premium", function (json) {
         if (json.premium == true) {
             for (i = 0; i < array.length; i++) {
-                document.getElementById(array[i]).innerHTML = `<button class="sidebarbutton" onclick="url('/premium')"><i class="lni lni-star"></i></button>`
+                document.getElementById(array[i]).innerHTML = `<button class="navbarbutton" onclick="url('/premium')"><i class="lni lni-star"></i></button>`
             }
         } else {
             for (i = 0; i < array.length; i++) {
-                document.getElementById(array[i]).innerHTML = `<button class="sidebarbutton" onclick="url('/premium/pricing')"><i class="lni lni-star"></i></button>`
+                document.getElementById(array[i]).innerHTML = `<button class="navbarbutton" onclick="url('/premium/pricing')"><i class="lni lni-star"></i></button>`
             }
         }
     });

@@ -1,18 +1,11 @@
-* {
-    word-wrap: wrap;
-}
-
 body {
     padding: 0;
-    margin: 0;
-    width: 90%;
+    margin: 0 auto;
 }
 
 .postbody {
     width: 100%;
-    word-break: normal;
     word-wrap: wrap;
-    word-break: break-all;
 }
 
 .postimage {
@@ -63,6 +56,25 @@ body {
     float: left;
 }
 
+.button,
+.input,
+.navbutton {
+    background-color: rgb(236, 236, 236);
+    border-radius: 100px;
+    border: none;
+    color: grey;
+    /* rgb(90, 90, 90) */
+    padding: 4px;
+    -webkit-animation: 2s;
+    animation: 2s;
+    font-size: small;
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
+    transition: 0.3s;
+    -webkit-appearance: none;
+
+}
+
 /** dms */
 .messagesbutton {
     position: fixed;
@@ -74,18 +86,6 @@ body {
     border-radius: 0 !important;
     border-top-left-radius: 0 !important;
     background-color: black !important;
-}
-
-.boardnav {
-    overflow: scroll;
-}
-
-.boardinfo {
-    overflow: scroll !important;
-    min-width: 440px;
-    word-wrap: none;
-    word-break: none;
-    overflow-wrap: none;
 }
 
 .messagesnav {
@@ -212,4 +212,262 @@ body {
     margin: 0;
     border-radius: 2px;
     background-color: white;
+}
+
+/** share box */
+.sharebox {
+    z-index: 10000000000;
+    position: fixed;
+    top: 30%;
+    height: 200px;
+    max-height: 200px;
+    left: 12.5%;
+    right: 12.5%;
+    border: 1px solid grey;
+    background-color: rgb(240, 240, 240);
+    color: black;
+    border-radius: 25px;
+    padding: 15px;
+}
+
+.sharemodaltitle {
+    color: black;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.shareicon {
+    color: black;
+    width: 40px;
+}
+
+/** boards */
+.boardnav {
+    overflow: scroll;
+}
+
+.boardinfo {
+    overflow: scroll !important;
+    min-width: 440px;
+    word-wrap: none;
+    word-break: none;
+    overflow-wrap: none;
+}
+
+/** mentions, hashtags, and links */
+/* hashtag and metions in text */
+.hashtag {
+    position: relative;
+    text-decoration: none;
+    display: inline-block;
+    color: black;
+    padding: 0 1px;
+    -webkit-transition: color ease 0.3s;
+    -o-transition: color ease 0.3s;
+    transition: color ease 0.3s;
+}
+
+.hashtag::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    height: 5%;
+    left: 0;
+    bottom: 0;
+    background-color: var(--red);
+    -webkit-transition: all ease 0.3s;
+    -o-transition: all ease 0.3s;
+    transition: all ease 0.3s;
+}
+
+.hashtag:hover {
+    color: white;
+}
+
+.hashtag:hover::after {
+    height: 100%;
+}
+
+.mention {
+    position: relative;
+    text-decoration: none;
+    display: inline-block;
+    color: black;
+    padding: 0 1px;
+    -webkit-transition: color ease 0.3s;
+    -o-transition: color ease 0.3s;
+    transition: color ease 0.3s;
+}
+
+.mention::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    height: 5%;
+    left: 0;
+    bottom: 0;
+    background-color: var(--blue);
+    -webkit-transition: all ease 0.3s;
+    -o-transition: all ease 0.3s;
+    transition: all ease 0.3s;
+}
+
+.mention:hover {
+    color: white;
+}
+
+.mention:hover::after {
+    height: 100%;
+}
+
+.link {
+    position: relative;
+    text-decoration: none;
+    display: inline-block;
+    color: black;
+    padding: 0 1px;
+    -webkit-transition: color ease 0.3s;
+    -o-transition: color ease 0.3s;
+    transition: color ease 0.3s;
+}
+
+.link::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    height: 5%;
+    left: 0;
+    bottom: 0;
+    background-color: var(--green);
+    -webkit-transition: all ease 0.3s;
+    -o-transition: all ease 0.3s;
+    transition: all ease 0.3s;
+}
+
+.link:hover {
+    color: white;
+}
+
+.link:hover::after {
+    height: 100%;
+}
+
+/** sidebar buttons */
+.sidebarbutton {
+    padding: 13px;
+    width: 90%;
+    display: block;
+    margin: auto;
+    margin-bottom: 8px;
+    border-radius: 35px;
+    border: none;
+    background-color: rgb(236, 236, 236);
+    color: grey;
+    -webkit-transition: 1s;
+    -o-transition: 1s;
+    transition: 1s;
+}
+
+.sidebarbutton:hover {
+    background-color: rgb(196, 196, 196);
+    color: rgb(102, 102, 102);
+}
+
+/** sidebar */
+.sidebar {
+    height: 100%;
+    position: fixed;
+    z-index: 1000000000;
+    top: 0;
+    background-color: white;
+    overflow-x: hidden;
+    padding-top: 20px;
+    border-left: 1px gray solid;
+}
+
+.sidebarleftbottom {}
+
+.sidebarleft {
+    max-height: 60px;
+    width: 100%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    background-color: white;
+    overflow-x: hidden;
+    padding-top: 20px;
+    border-bottom: 1px gray solid;
+}
+
+/** headers */
+.header {
+    position: relative;
+    text-decoration: none;
+    display: inline-block;
+    color: black;
+    padding: 0 1px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    -webkit-transition: color ease 0.3s;
+    -o-transition: color ease 0.3s;
+    transition: color ease 0.3s;
+    margin-left: 25px;
+}
+
+.header::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    height: 5%;
+    left: 0;
+    bottom: 0;
+    background-color: var(--blue);
+    -webkit-transition: all ease 0.3s;
+    -o-transition: all ease 0.3s;
+    transition: all ease 0.3s;
+}
+
+.header:hover {
+    color: white;
+}
+
+.header:hover::after {
+    height: 100%;
+}
+
+.headerred {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    position: relative;
+    text-decoration: none;
+    display: inline-block;
+    color: black;
+    padding: 0 1px;
+    -webkit-transition: color ease 0.3s;
+    -o-transition: color ease 0.3s;
+    transition: color ease 0.3s;
+    margin-left: 25px;
+}
+
+.headerred::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    height: 5%;
+    left: 0;
+    bottom: 0;
+    background-color: var(--red);
+    -webkit-transition: all ease 0.3s;
+    -o-transition: all ease 0.3s;
+    transition: all ease 0.3s;
+}
+
+.headerred:hover {
+    color: white !important;
+}
+
+.headerred:hover::after {
+    height: 100%;
 }

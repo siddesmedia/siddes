@@ -63,25 +63,18 @@
 </head>
 
 <body id="body">
-    <section>
+    <header>
         <% if (navbar == true) { %>
-        <%- include('partials/top-navbar') %>
-        <% } %>
-    </section>
+        <%- include('partials/top') %>
+        <% } else {} %>
+    </header><br><br><br>
     <div class="row">
-        <div class="col-xs-3 col-sm-3 col-md-2">
-            <header>
-                <% if (navbar == true) { %>
-                <%- include('partials/left') %>
-                <% } else {} %>
-            </header>
-        </div>
-        <div class="col-xs-9 col-sm-6 col-md-8">
+        <div class="col-xs-8 col-sm-9 col-md-10">
             <content>
                 <%- include(template) %>
             </content>
         </div>
-        <div class="col-xs-hidden col-sm-3 col-md-2">
+        <div class="col-xs-4 col-sm-3 col-md-2">
             <header>
                 <% if (navbar == true) { %>
                 <%- include('partials/right') %>
