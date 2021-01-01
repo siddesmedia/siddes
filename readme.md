@@ -56,6 +56,7 @@ To keep our development going, you can donate to Siddes. Links and addresses com
 
 - [Twitter](https://twitter.com/siddesmedia)
 - [Siddes](https://siddes.com/Siddes)
+- [Discord](https://discord.gg/fMpq9aNtmQ)
 
 ## Installing
 
