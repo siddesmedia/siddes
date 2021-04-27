@@ -46,7 +46,7 @@
     "passport-local": "^1.0.0",
     "protonmail-api": "^2.1.0",
     "ratelimit": "0.0.4",
-    "redis": "^3.0.2",
+    "redis": "^3.1.1",
     "serve-static": "^1.14.1",
     "sharp": "^0.26.3",
     "shelljs": "^0.8.4",
